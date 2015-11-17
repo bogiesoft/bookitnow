@@ -1,0 +1,734 @@
+ $(function() {
+	 
+	 
+	 $('.bxslider1').bxSlider({
+         minSlides: 4,
+         maxSlides: 8,
+         slideWidth: 360,
+         slideMargin: 2,
+         moveSlides: 1,
+         responsive: true,
+         nextSelector: '#slider-next',
+         prevSelector: '#slider-prev',
+         nextText: 'Onward →',
+         prevText: '← Go back'
+       });  
+	 
+	//Check to see if the window is top if not then display button
+		$(window).scroll(function(){
+			if ($(this).scrollTop() > 100) {
+				$('.scrollToTop').fadeIn();
+			} else {
+				$('.scrollToTop').fadeOut();
+			}
+		});
+		
+		//Click event to scroll to top
+		$('.scrollToTop').click(function(){
+			$('html, body').animate({scrollTop : 0},800);
+			return false;
+		});
+
+		      $("#slider").responsiveSlides({
+		      	auto: true,
+		      	nav: true,
+		      	speed: 500,
+		        namespace: "callbacks",
+		        pager: true,
+		      });
+		  
+			
+	// Datepicker
+	var dateToday = new Date();
+	$("#datepicker,#datepicker1,#datepicker3").datepicker({
+		defaultDate: "+1w",	   
+		minDate: dateToday,  
+		dateFormat: "dd/mm/yy"
+	});    
+   
+	
+	
+    $('ul.nav-tabs li').click(function(){
+    	
+    	if($(this).find('a').attr('href') == '#panel3')
+    	{    		
+    		if($(this).attr('class') == 'hotel')justAHotel('#panel3');
+    	}
+    	else if($(this).find('a').attr('href') == '#panel1')
+    	{   
+    		
+    		if($(this).attr('class') == 'flight')justAFlight('#panel1');
+    	}
+    	else
+    	{
+    	
+    		justAFlightNHotel('#panel2');
+    		//alert($.cookie('actve_tab_cookie'))
+    		//if($(this).attr('class') == 'active-item flight')
+    			
+    	}
+    });
+   
+    if($.cookie('actve_tab_cookie') != undefined)
+	{ 
+    	
+    	$('a[href="'+$.cookie('actve_tab_cookie')+'"]').trigger('click');
+    	/*if($.cookie('actve_tab_cookie') == '#panel3')justAHotel('#panel3');
+    	else if($.cookie('actve_tab_cookie') == '#panel2')justAFlightNHotel('#panel2');
+    	else justAFlight('#panel1');*/
+    	
+	}
+    else
+    {
+    	justAFlightNHotel('#panel2');
+    }   
+		
+	$('#da-slider').cslider({
+	         autoplay    : true,
+	         bgincrement : 100
+	       });
+	
+	
+	
+		
+ });
+		
+		//popup for block further search options during ajax request
+		function blockSearchingTabs() {
+            $.blockUI.defaults.css = {};
+            $('#dvContent').block({
+                message: '<div><img src="/images/loader-bar.gif" alt=""  width="225px"/></div>',
+                overlayCSS: { backgroundColor: '#fff' }
+            });
+        }
+		//close popup once get the ajax response
+        function unblockSearchingTabs() {
+            $('#dvContent').unblock();
+        }
+        function room_parllalization(request_data)
+        {
+        	if($('select[name="hotel_childrens"]').val() >= 1 && !isNaN($('select[name="hotel_rooms"]').val()) && $('select[name="hotel_rooms"]').val() > 1)
+			{
+		var cunt_ad = 0;
+			$('.room_box_adult_hot').each(function(){
+				if(parseInt($(this).val()) > 0){    							
+					cunt_ad = cunt_ad +  parseInt($(this).val());
+				}
+				else{    							
+					alert("Please fill all rooms with atleast one adult" );  
+					return false;
+				}
+			});
+			if(cunt_ad != parseInt($('select[name="hotel_adults"]').val()))
+			{
+				alert('Adults count not matched with given count');
+				return false;
+			}
+			var cunt_ch = 0;
+			$('.room_box_child_hot').each(function(){
+				if(parseInt($(this).val()) > 0){    							
+				cunt_ch = cunt_ch +  parseInt($(this).val());
+				}
+			});
+			if(cunt_ch != parseInt($('select[name="hotel_childrens"]').val()))
+			{
+				alert('Children count not matched with given count');
+				return false;
+			
+			}
+			//var room_data = request_data;
+			var count = 1;
+				var str = '';
+			for (var i=0;i<request_data.length;i++)
+		{
+			
+			if ((request_data[i].name).substring(0, 9) == 'num_adult') {
+
+					str += request_data[i].value + '-';
+				}
+			else if ((request_data[i].name).substring(0, 9) == 'num_child'){
+					if(request_data[i].value == '')request_data[i].value = 0;
+					str += request_data[i].value + ',';
+					count++;
+				}    					   
+			}
+			var t = {};
+			t['name'] = 'pax';
+			t['value'] = str;
+			
+			request_data.push(t);
+			submit_fnh_hotel_fun(request_data);  
+
+		return false;
+		} 
+		else if(!isNaN($('select[name="hotel_rooms"]').val()) && $('select[name="hotel_rooms"]').val() > 1 && $('select[name="hotel_rooms"]').val() < Number($('select[name="hotel_adults"]').val()))
+			{
+				var str = '';
+				
+				$divi =  Math.floor(Number($('select[name="hotel_adults"]').val()) / Number($('select[name="hotel_rooms"]').val()));
+				$rem = Number($('select[name="hotel_adults"]').val()) % Number($('select[name="hotel_rooms"]').val());
+				str += $divi + '-' + 0 + ',';
+				str += ($divi + $rem) + '-' + 0 + ',';   
+				var t = {};
+				t['name'] = 'pax';
+				t['value'] = str;
+				request_data.push(t);    
+				//$.cookie('mul_submition_prevent',1);
+				submit_fnh_hotel_fun(request_data);
+
+				return false;    				
+			}
+			else{
+				//$.cookie('mul_submition_prevent',1);
+				submit_fnh_hotel_fun(request_data);  
+
+				return false;
+			}
+        	
+        	
+        	
+        	
+        	
+        	
+			
+			/******************end****************************/
+			
+        }
+               
+        function hotelsForm(e)
+        {
+        	var request_data = $(e).serializeArray();
+        	
+			var count = 0;
+			//console.log(request_data);return false;
+			
+			
+			$.each(request_data, function(index, value){
+				
+			
+				var req_list = ['hotel_travel_to','hotel_check_in_date','hotel_rooms','hotel_nights','hotel_adults'];
+				
+    				if($.inArray(value.name,req_list) != -1 && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+    				{
+    					alert($.inArray(value.name,req_list));
+					var msg = $('[name="'+ value.name +'"]').prev('label').text();
+    					alert('Please select '+ msg +' field');
+    					count++;
+    					//return false;
+    				}
+				
+				
+    			});
+			if(count)return false;		
+			//blockSearchingTabs();
+			
+			var t = {};
+			var arr_val = $('select[name="hotel_travel_to"]').val();
+			t['name'] = 'mapper';
+			t['value'] = $('select[name="hotel_travel_to"] option[value="'+arr_val+'"]').attr('mapper');
+			request_data.push(t);
+			room_parllalization(request_data);
+			return false;
+			
+        }
+        
+        function justAHotel(tab)
+        {
+        	/*
+    		 * Start - Hotels form js
+    		 */	 	
+    		$('select[name="hotel_rooms"]').change(function(){			
+    			var str='';			
+    			for(var i=$(this).val();i<=($(this).val() * 4 );i++)
+    			{
+    				str += '<option>'+i+'</option>';
+    			}
+    			$.cookie('selected_hotel_rooms_cookie', $(this).val());			
+    			$.cookie('hotel_adults_html_cookie', str);
+    			$('select[name="hotel_adults"]').html(str);
+    		});
+    		
+    		
+    		$('select[name="hotel_adults"]').change(function(){			
+    			$.cookie('selected_hotel_adults_cookie', $(this).val());	
+    		});		
+    		
+    		$('select[name="hotel_nights"]').change(function(){
+    			$.cookie('selected_hotel_nights_cookie', $(this).val());
+    		});
+    		$('input[name="hotel_check_in_date"]').change(function(){			
+    			$.cookie('selected_hotel_date_cookie', $(this).val());
+    		});
+    		
+    		$('select[name="hotel_travel_to"]').change(function(){			
+    			$.cookie('selected_hotel_travel_to_cookie', $(this).val());	
+    		});		
+    		/*
+    		 * Populate form with required things with cookie values during page refresh
+    		 */	
+    		
+    		if($.cookie('hotel_adults_html_cookie') != 'undefined')
+    		{			
+    			$('select[name="hotel_adults"]').html($.cookie('hotel_adults_html_cookie'));
+    		}
+    		
+    		if($.cookie('selected_hotel_date_cookie') != 'undefined')
+    		{	
+    			$('input[name="hotel_check_in_date"]').val($.cookie('selected_hotel_date_cookie'));
+    		}
+    		
+    		$('select[name="hotel_rooms"] option[value='+$.cookie('selected_hotel_rooms_cookie')+']').attr('selected','selected');			
+    		$('select[name="hotel_adults"] option[value='+$.cookie('selected_hotel_adults_cookie')+']').attr('selected','selected');			
+    		$('select[name="hotel_nights"] option[value='+$.cookie('selected_hotel_nights_cookie')+']').attr('selected','selected');
+    		$('select[name="hotel_travel_to"] option[value="'+$.cookie('selected_hotel_travel_to_cookie')+'"]').attr('selected','selected');
+    		
+    		$.cookie('actve_tab_cookie',tab);
+    		/*
+    		 * End -  Hotels form js
+    		 */
+    		
+    		 roomBase_hotel();
+    	
+        }
+        
+        
+        
+        function justAFlight(tab){
+        	  	
+       
+        	/*
+        	 * Start - Flights form js
+        	 */
+        	
+        		/*-------------- fetch the arrivals list based on destination selection ------------------*/
+        		
+        		$('.flyform select').change(function(){
+        			
+        			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
+        			{
+        				alert("Please choose proper destination");
+        			}
+        			else
+        			{
+        				var request_data = {};
+        				request_data.dest_shrtcode = $(this).val();	
+
+        				blockSearchingTabs();
+        				$.post( "welcome/fetch_results",request_data, function( data ) {					
+        					  $('.travelto select').html('');	
+        					  $('.travelto select').append(data);	
+        					  unblockSearchingTabs();
+        					  $.cookie('selected_dept_cookie', request_data.dest_shrtcode);	
+        					}, "html");
+        			}
+        		});
+        		
+        		$('select[name="arrival_airports"]').change(function(){
+        			
+        			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
+        			{
+        				alert("Please choose proper destination");
+        			}
+        			else
+        			{				
+        				$.cookie('selected_arrival_cookie', $(this).val());			
+        			}
+        		});	
+        		
+        		$('form[name="flight_hotel_form"]').submit(function(){
+        			var request_data = $(this).serializeArray();
+        			var count = 0;
+        			$.each(request_data, function(index, value){				
+        				if(value.name != 'children' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+        				{
+        					alert('Please select '+ value.name +' field');
+        					count++;
+        					return false;
+        				}
+        			});
+        			if(count)return false;		
+        			$.post( "welcome/fetch_filtered_flights",request_data, function( data ) {
+        				
+        				if(data == 'notavailable')
+        				{
+        					window.location = "notavailable";
+        				}
+        				else
+        				{
+        					window.location = data;
+        				}				
+        				}, "html");
+        			return false;
+        		});
+        		
+        		
+        		
+        		$('select[name="rooms"]').change(function(){
+        			var str='';
+        			
+        			for(var i=$(this).val();i<=($(this).val() * 4 );i++)
+        			{
+        				str += '<option>'+i+'</option>';
+        			}
+        			$.cookie('selected_rooms_cookie', $(this).val());			
+        			$.cookie('adults_html_cookie', str);
+        			$('select[name="adults"]').html(str);
+        		});
+        		
+        		$('select[name="adults"]').change(function(){			
+        			$.cookie('selected_adults_cookie', $(this).val());	
+        		});		
+        		
+        		$('select[name="nights"]').change(function(){
+        			$.cookie('selected_nights_cookie', $(this).val());
+        		});
+        		$('input[name="departure_date"]').change(function(){			
+        			$.cookie('selected_date_cookie', $(this).val());
+        		});
+        		
+        		/*
+        		 * Populate form with required things with cookie values during page refresh
+        		 */	
+        		
+        		if($.cookie('adults_html_cookie') != 'undefined')
+        		{			
+        			$('select[name="adults"]').html($.cookie('adults_html_cookie'));
+        		}
+        		if($.cookie('selected_date_cookie') != 'undefined')
+        		{	
+        			$('input[name="departure_date"]').val($.cookie('selected_date_cookie'));
+        		}
+        		
+        		$('select[name="rooms"] option[value='+$.cookie('selected_rooms_cookie')+']').attr('selected','selected');			
+        		$('select[name="adults"] option[value='+$.cookie('selected_adults_cookie')+']').attr('selected','selected');			
+        		$('select[name="nights"] option[value='+$.cookie('selected_nights_cookie')+']').attr('selected','selected');
+        		
+        		if($.cookie('selected_dept_cookie') != -1 && $.cookie('selected_dept_cookie') != '' && $.cookie('selected_dept_cookie') != undefined)
+        		{
+        			
+        			$('select[name="departure_airports"] option[value="'+$.cookie('selected_dept_cookie')+'"]').attr('selected','selected');
+        			
+        			var request_data = {};
+        			request_data.dest_shrtcode = $.cookie('selected_dept_cookie');				
+        			$.post( "welcome/fetch_results",request_data, function( data ) {				
+        				  $('.travelto select').html('');
+        				  $('.travelto select').append(data);
+        				  if($.cookie('selected_arrival_cookie') != -1  || $.cookie('selected_dept_cookie') != '')
+        				  {
+        					  $('select[name="arrival_airports"] option[value='+$.cookie('selected_arrival_cookie')+']').attr('selected','selected');
+        				  }
+        				}, "html");
+        		}
+        		
+        		$.cookie('actve_tab_cookie',tab);
+        	/*
+        	 * End - Flights form js
+        	 */
+
+        	
+        }
+        
+        
+        function justAFlightNHotel(tab){       	
+        	/*
+    		 *  Start - Flights&Hotels Js
+    		 */
+    		/*-------------- fetch the arrivals list based on destination selection ------------------*/
+    		
+    		$('select[name="full_departure_airports"]').change(function(){
+    			
+    			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
+    			{
+    				alert("Please choose proper destination");
+    			}
+    			else
+    			{
+    				
+    				var request_data = {};
+    				request_data.dest_shrtcode = $(this).val();	
+
+    				blockSearchingTabs();
+    				$.post( "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
+    					
+    					  $('select[name="full_arrival_airports"]').html('');	
+    					  $('select[name="full_arrival_airports"]').append(data);	
+    					  unblockSearchingTabs();
+    					  $.cookie('selected_full_dept_cookie', request_data.dest_shrtcode);	
+    					}, "html");
+    			}
+    		});
+    		
+    		$('select[name="full_arrival_airports"]').change(function(){
+    			
+    			
+    			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
+    			{
+    				alert("Please choose proper destination");
+    			}
+    			else
+    			{				
+    				$.cookie('selected_full_arrival_cookie', $(this).val());			
+    			}
+    		});	
+    	
+    		
+    		$('select[name="full_rooms"]').change(function(){
+    			var str='';
+    			
+    			for(var i=$(this).val();i<=($(this).val() * 4 );i++)
+    			{
+    				str += '<option>'+i+'</option>';
+    			}
+    			$.cookie('selected_full_rooms_cookie', $(this).val());			
+    			$.cookie('full_adults_html_cookie', str);
+    			$('select[name="full_adults"]').html(str);
+    		});
+    		
+    		$('select[name="full_adults"]').change(function(){			
+    			$.cookie('selected_full_adults_cookie', $(this).val());	
+    		});		
+    		
+    		$('select[name="full_nights"]').change(function(){
+    			$.cookie('selected_full_nights_cookie', $(this).val());
+    		});
+    		$('input[name="full_departure_date"]').change(function(){			
+    			$.cookie('selected_full_date_cookie', $(this).val());
+    		});
+
+    		/*
+    		 * Populate form with required things with cookie values during page refresh
+    		 */	
+    		
+    		if($.cookie('full_adults_html_cookie') != 'undefined')
+    		{			
+    			$('select[name="full_adults"]').html($.cookie('full_adults_html_cookie'));
+    		}
+    		if($.cookie('selected_full_date_cookie') != 'undefined')
+    		{	
+    			$('input[name="full_departure_date"]').val($.cookie('selected_full_date_cookie'));
+    		}
+    		
+    		$('select[name="full_rooms"] option[value='+$.cookie('selected_full_rooms_cookie')+']').attr('selected','selected');			
+    		$('select[name="full_adults"] option[value='+$.cookie('selected_full_adults_cookie')+']').attr('selected','selected');			
+    		$('select[name="full_nights"] option[value='+$.cookie('selected_full_nights_cookie')+']').attr('selected','selected');
+    		$('select[name="full_arrival_airports"]').html('<option value="-1">Select Destination</option>');
+    		if($.cookie('selected_full_dept_cookie') != -1 && $.cookie('selected_full_dept_cookie') != '' && $.cookie('selected_full_dept_cookie') != undefined)
+    		{
+    			
+    			$('select[name="full_departure_airports"] option[value="'+$.cookie('selected_full_dept_cookie')+'"]').attr('selected','selected');
+    			
+    			var request_data = {};
+    			request_data.dest_shrtcode = $.cookie('selected_full_dept_cookie');				
+    			$.post( "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {    				
+    				$('select[name="full_arrival_airports"]').html('');
+    				  $('select[name="full_arrival_airports"]').append(data);
+    				
+    				  unblockSearchingTabs();
+    				 
+    				  if($.cookie('selected_full_arrival_cookie') != -1  || $.cookie('selected_full_dept_cookie') != '')
+    				  {    					  
+    					  $('select[name="full_arrival_airports"] option[value="'+$.cookie('selected_full_arrival_cookie')+'"]').attr('selected','selected');
+    				  }
+    				}, "html");		
+    				
+    		}
+    		
+    		$.cookie('actve_tab_cookie',tab);
+    	/*
+    	 * End - Flight&Hotels form js
+    	 */
+    		
+    			roomBase();
+    			
+    		
+        }
+        
+       
+        
+        function full_pack_submit(e)
+        {
+        	
+       		//$('form[name="full_pack_form"]').on( "submit",function(){ 
+       			
+    			var request_data = $(e).serializeArray();
+    			
+    			var arr_val = $('select[name="full_arrival_airports"]').val();
+    			    			
+    			var count = 0;
+    			$.each(request_data, function(index, value){	
+				var req_list = ['full_departure_airports','full_arrival_airports','full_departure_date','full_rooms','full_nights','full_adults'];
+    				if($.inArray(value.name,req_list) != -1  && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+    				{
+					var msg = $('[name="'+ value.name +'"]').prev('label').text();
+    					alert('Please select '+ msg +' field');
+    					count++;
+    					return false;
+    				}
+				
+				
+    			});
+    			if(count)return false;	  			
+        		
+    			var t = {};
+    			t['name'] = 'mapper';
+    			t['value'] = $('select[name="full_arrival_airports"] option[value="'+arr_val+'"]').attr('mapper');
+    			request_data.push(t);
+    			
+    			if($('select[name="full_children"]').val() >= 1 && !isNaN($('select[name="full_rooms"]').val()) && $('select[name="full_rooms"]').val() > 1)
+    				{
+				var cunt_ad = 0;
+    				$('.room_box_adult').each(function(){
+    					if(parseInt($(this).val()) > 0){    							
+    						cunt_ad = cunt_ad +  parseInt($(this).val());
+    					}
+    					else{    							
+    						alert("Please fill all rooms with atleast one adult" );  
+    						return false;
+    					}
+    				});
+    				if(cunt_ad != parseInt($('select[name="full_adults"]').val()))
+    				{
+    					alert('Adults count not matched with given count');
+    					return false;
+    				}
+    				var cunt_ch = 0;
+    				$('.room_box_child').each(function(){
+    					if(parseInt($(this).val()) > 0){    							
+    					cunt_ch = cunt_ch +  parseInt($(this).val());
+    					}
+    				});
+    				if(cunt_ch != parseInt($('select[name="full_children"]').val()))
+    				{
+    					alert('Children count not matched with given count');
+    					return false;
+    				
+    				}
+    				//var room_data = request_data;
+    				var count = 1;
+    					var str = '';
+    				for (var i=0;i<request_data.length;i++)
+				{
+					
+					if ((request_data[i].name).substring(0, 9) == 'num_adult') {
+    
+    						str += request_data[i].value + '-';
+    					}
+					else if ((request_data[i].name).substring(0, 9) == 'num_child'){
+    						if(request_data[i].value == '')request_data[i].value = 0;
+    						str += request_data[i].value + ',';
+    						count++;
+    					}    					   
+    				}
+    				var t = {};
+    				t['name'] = 'pax';
+    				t['value'] = str;
+    				
+    				request_data.push(t);
+				submit_fnh_fun(request_data);  
+
+				return false;
+				} 
+				else if(!isNaN($('select[name="full_rooms"]').val()) && $('select[name="full_rooms"]').val() > 1 && $('select[name="full_rooms"]').val() < Number($('select[name="full_adults"]').val()))
+	    			{
+	    				var str = '';
+	    				
+	    				$divi =  Math.floor(Number($('select[name="full_adults"]').val()) / Number($('select[name="full_rooms"]').val()));
+	    				$rem = Number($('select[name="full_adults"]').val()) % Number($('select[name="full_rooms"]').val());
+	    				str += $divi + '-' + 0 + ',';
+	    				str += ($divi + $rem) + '-' + 0 + ',';   
+	    				var t = {};
+						t['name'] = 'pax';
+						t['value'] = str;
+						request_data.push(t);    
+						//$.cookie('mul_submition_prevent',1);
+						submit_fnh_fun(request_data);
+
+						return false;    				
+	    			}
+	    			else{
+	    				//$.cookie('mul_submition_prevent',1);
+	    				submit_fnh_fun(request_data);  
+
+	    				return false;
+	    			}		
+    			
+        }
+        
+        function submit_fnh_fun(request_data)
+        {
+        	//console.log(request_data);return false;
+        	blockSearchingTabs();
+        	//if($.cookie('mul_submition_prevent') == 1)
+        	//{    	
+        		//$.cookie('mul_submition_prevent',0);
+	        	$.post( "welcome/check_results_for_full_pack_fun",request_data, function( data ) {
+	        		
+					if(data == 'notavailable')
+					{
+						unblockSearchingTabs();
+						window.location = "notavailable";
+					}
+					else
+					{
+						unblockSearchingTabs();
+						window.location = data;
+					}				
+				}, "html");
+        	//}
+        }
+        
+        function submit_fnh_hotel_fun(request_data)
+        {
+        	blockSearchingTabs();
+        	//if($.cookie('mul_submition_prevent') == 1)
+        	//{   	
+        	//	$.cookie('mul_submition_prevent',0);
+	        	$.post( "/welcome/hotel/fetch_filtered_hotels",request_data, function( data ) {
+	        		//console.log(data);return false;
+
+					if(data == 'notavailable')
+					{
+						unblockSearchingTabs();
+						window.location = "notavailable";
+					}
+					else
+					{
+						unblockSearchingTabs();
+						window.location = data;
+					}				
+				}, "html");
+        	//}
+        }
+        
+        
+
+	function roomBase()
+	{
+	
+		var str = '';var kp = "";
+		$('#append_ext').html(str);
+		if(Number($('select[name="full_rooms"]').val()) >= 2 && Number($('select[name="full_children"]').val()) >= 1)
+		{
+		    for(var i=1;i<=Number($('select[name="full_rooms"]').val());i++)
+		    {
+			str +=  '<div class="adults"><label for="email">Room - '+i+':</label><input type="text" '+kp+'  placeholder="Number of Adults" name="num_adult_'+i+'" class="room_box_adult" ><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="room_box_child"  placeholder="Number of Childeren"></div>';
+ 		    }			
+		}
+		$('#append_ext').html(str);
+		
+	}
+	function roomBase_hotel()
+	{
+		var str = '';var kp = "";
+		$('#append_ext_hotel').html(str);
+		if(Number($('select[name="hotel_rooms"]').val()) >= 2 && Number($('select[name="hotel_childrens"]').val()) >= 1)
+		{
+		    for(var i=1;i<=Number($('select[name="hotel_rooms"]').val());i++)
+		    {
+			str +=  '<div class="adults"><label for="email">Room - '+i+':</label><input type="text" '+kp+'  placeholder="Number of Adults" name="num_adult_'+i+'" class="room_box_adult_hot" ><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="room_box_child_hot"  placeholder="Number of Childeren"></div>';
+ 		    }			
+		}
+		
+		$('#append_ext_hotel').html(str);
+		
+	}

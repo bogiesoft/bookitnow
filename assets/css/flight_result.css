@@ -1,0 +1,466 @@
+
+
+
+
+
+
+#tabwrap_flights {
+	padding: 0;
+	margin: 20px 0 0
+}
+#tabs_flights {
+	margin: 0;
+	padding: 0;
+	width: 100%
+}
+#tabs_flights li {
+	display: block;
+	float: left;
+	width: 32.53%;
+	margin: 0 .5% 0 0;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px
+}
+#tabs_flights li a {
+	width: 100%;
+	padding: 10px;
+	margin: 0;
+	display: block;
+	text-decoration: none;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background: #f0f0f0;
+	border: 1px solid #DFDFDF;
+	border-bottom: none;
+	color: #024A75;
+	position: relative;
+	opacity: .75;
+font-size:15px;
+
+}
+#tabs_flights li a:hover {
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	opacity: 1
+}
+#tabs_flights li.current a {
+	background: #06AAD1;
+	color: #fff;
+	border: 1px solid #09c;
+	border-bottom: none;
+	opacity: 1
+}
+#tabs_flights li a .dropcover {
+	display: none
+}
+#tabs_flights li.current a .dropcover {
+	display: none;
+	background: #06AAD1;
+	position: absolute;
+	bottom: -3px;
+	width: 100%;
+	left: 0;
+	height: 5px;
+	z-index: 1000000
+}
+#tabs_flights li a .tab_header {
+	font-weight: 400
+}
+#tabs_flights li.current a .tab_header {
+	font-weight: 700;
+	color: #fff
+}
+#tabs_flights li.current .price {
+	color: #fff;
+	font-size: 110%;
+	font-weight: 700;
+	text-shadow: none
+}
+#tabs_flights li a .price {
+	color: #06AAD1;
+	font-size: 110%;
+	font-weight: 700
+}
+#tabs_flights small {
+	font-size: 12px
+}
+#tabs_flights li.dayplus2, #tabs_flights li.dayplus3, #tabs_flights li.dayminus2, #tabs_flights li.dayminus3 {
+	display: none
+}
+.flight_luggage_input {
+	height: 36px;
+	line-height: 36px;
+	vertical-align: middle;
+	margin-top: 3px
+}
+.flight_luggage_input a.button {
+	display: inline-block;
+	padding: 0 10px;
+	height: 36px;
+	margin: 0;
+	font-size: 140%
+}
+.flight_info {
+	width: 100%;
+	float: none;
+	clear: both
+}
+.flight_depart {
+	width: 100%;
+	float: none;
+	clear: both;
+	border-right: none;
+	padding-bottom: 5px
+}
+.flight_return {
+	width: 100%;
+	float: none;
+	clear: both;
+	border-right: none;
+	padding-bottom: 5px;
+	margin-left: 0
+}
+.flight_cost {
+	width: 70%;
+	float: left;
+	clear: none
+}
+.flight_cost .txt_large {
+	font-size: 300%
+}
+.flight_button {
+	width: 29%;
+	float: left;
+	clear: none;
+	margin-left: 1%
+}
+.flight_price {
+	width: 100%;
+	clear: both;
+	float: none;
+	text-align: left;
+	padding: 8px 0 0
+}
+.flight_logo {
+	display: block;
+	width: 100%
+}
+.flight_logo img {
+	border: 1px solid #ddd;
+	margin-bottom: 6px;
+	float: left
+}
+.bags_info {
+	float: left;
+	width: 50%;
+	text-align: left;
+	padding-right: 8px
+}
+.bags_input {
+	float: right;
+	width: 45%;
+	text-align: left
+}
+.bags_input_group .button.minus {
+	display: inline-block;
+	height: 40px;
+	line-height: 32px;
+	box-shadow: none;
+	border-radius: 0;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	margin: 0;
+	padding: 0 5px;
+	font-size: 30px;
+	width: 36px
+}
+.bags_input_group .button.plus {
+	display: inline-block;
+	height: 40px;
+	line-height: 32px;
+	box-shadow: none;
+	border-radius: 0;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	margin: 0;
+	padding: 0 5px;
+	font-size: 30px;
+	width: 36px
+}
+.bags_input_group .bag_qty {
+	display: inline-block
+}
+.bags_input_group .bag_qty input {
+	width: 36px;
+	float: left;
+	border-radius: 0;
+	border: 0;
+	margin: 0;
+	margin-top: 0;
+	padding: 0 5px;
+	height: 36px;
+	text-align: center;
+	border: 1px solid #ccc;
+	height: 40px
+}
+.your_search {
+	display: none
+}
+.filter_section {
+	font-size: 95%;
+	padding-bottom: 10px;
+	margin-bottom: 15px;
+	border-bottom: 2px dotted #ddd
+}
+.filter_section .heading {
+	font-size: 120%;
+	font-weight: 700;
+	padding-bottom: 5px
+}
+.flightresult {
+	clear: both;
+	padding: 8px;
+	margin-bottom: 10px;
+	display: block
+}
+.flightresult:nth-of-type(odd) {
+	background: #fff
+}
+.flightresult:nth-of-type(even) {
+	background: #f0f0f0
+}
+.icon_flightdepart {
+	-ms-transform: rotate(315deg);
+	-webkit-transform: rotate(315deg);
+	transform: rotate(315deg);
+	font-size:20px; 
+}
+.icon_flightreturn {
+	-ms-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-230deg);
+	font-size:20px;
+}
+@media only screen and (min-width:481px) {
+.bags_info {
+	float: left;
+	width: 65%;
+	text-align: left;
+	padding-right: 8px
+}
+.bags_input {
+	float: right;
+	width: 35%;
+	text-align: left;
+	padding-left: 8px
+}
+.flight_info {
+	width: 60%;
+	float: left;
+	clear: none
+}
+.flight_price {
+	width: 40%;
+	clear: none;
+	float: left;
+	text-align: left;
+	padding: 8px 0 0
+}
+.flight_cost {
+	width: 100%;
+	float: none;
+	clear: both
+}
+.flight_cost .txt_large {
+	font-size: 300%
+}
+.flight_button {
+	width: 100%;
+	float: none;
+	clear: none;
+	margin-left: 0
+}
+}
+@media only screen and (min-width:641px) {
+#tabs_flights li {
+	width: 13.2856%;
+	margin: 0 .5%
+}
+#tabs_flights li.dayplus2, #tabs_flights li.dayplus3, #tabs_flights li.dayminus2, #tabs_flights li.dayminus3 {
+	display: block
+}
+}
+@media only screen and (min-width:768px) {
+#tabwrap_flights {
+	padding: 0;
+	margin: 0
+}
+.your_search {
+	display: block
+}
+.bags_info {
+	float: left;
+	width: 80%;
+	text-align: left;
+	padding-right: 8px
+}
+.bags_input {
+	float: right;
+	width: 20%;
+	text-align: center;
+	padding-left: 8px
+}
+.flight_info {
+	width: 80%;
+	float: left;
+	clear: both
+}
+.flight_price {
+	width: 20%;
+	float: left;
+	clear: none;
+	margin-left: none;
+	padding-top: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	background: none;
+	text-align: center
+}
+.flight_depart {
+	width: 49%;
+	float: left;
+	clear: none;
+	padding-bottom: 0
+}
+.flight_return {
+	width: 49%;
+	float: left;
+	clear: none;
+	margin-left: 1%;
+	border-right: 1px solid #ddd;
+	padding-bottom: 0
+}
+.flight_cost, .flight_button {
+	width: 100%;
+	float: none;
+	clear: both;
+	border-right: none;
+	padding-bottom: 0
+}
+.flight_cost .txt_large {
+	font-size: 180%
+}
+.flight_bags {
+	padding-top: 10px;
+	font-weight: 400;
+	font-size: 94%
+}
+}
+.lbl_sub {
+	position: absolute;
+	left: 50px;
+	bottom: 15px;
+	font-size: 100%
+	
+}
+.lbl_logo {
+	position: absolute;
+	left: 55px;
+	top: 10px
+}
+.filtercheckbox {
+	border-radius: 5px;
+	margin-bottom: 0;
+	position: relative;
+	text-align: left
+}
+input[type='radio'], input[type='checkbox'] {
+	opacity: 0;
+	position: absolute;
+	filter: alpha(opacity=0);
+	margin: 0;
+	left: 0;
+	top: 0
+}
+input[type='radio']:focus + label, input[type="checkbox"]:focus + label {
+	color: #f90
+}
+input[type="checkbox"] + label, input[type="radio"] + label {
+	background: url(/images/sprite_checks.png) no-repeat;
+	position: relative;
+	margin: 0;
+	padding: 5px 0 5px 50px;
+	cursor: pointer;
+	height: 50px;
+	opacity: .75;
+	display: block;
+	z-index: 0;
+	background-position: 0 0;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0
+}
+input[type="checkbox"] + label {
+	background-position: 0 0
+}
+input[type="radio"] + label {
+	background-position: 0 -200px
+}
+input[type='checkbox']:checked + label {
+	background-position: 0 -50px;
+	color: #fff;
+	opacity: 1
+}
+input[type='radio']:checked + label {
+	background-position: 0 -300px
+}
+input[type='checkbox']:disabled + label {
+	background-position: 0 -400px;
+	color: #999
+}
+input[type='radio']:disabled + label {
+	background-position: 0 -600px;
+	color: #999
+}
+input[type='checkbox']:disabled:checked + label {
+	background-position: 0 -500px;
+	color: #999
+}
+input[type='radio']:disabled:checked + label {
+	background-position: 0 -700px;
+	color: #999
+}
+@media only screen and (min-width:961px) {
+input[type='checkbox']:checked:hover + label {
+	background-position: 0 -150px
+}
+input[type='checkbox']:hover + label {
+	background-position: 0 -100px
+}
+}
+.filter_cb.on {
+	background-color: #06AAD1
+}
+.tab_header {
+	font-weight: 700
+}
+.cheapest_flight::before {
+	display: block;
+	font-weight: 700;
+	position: absolute;
+	top: -16px;
+	height: 20px;
+	line-height: 20px;
+	color: #fff;
+	left: 0;
+	background: #f90;
+	width: 90%;
+	margin: 0 5%;
+	border-radius: 5px;
+	content: "Best Price";
+	box-shadow: 0 1px 1px #000;
+	font-size: 80%;
+	opacity: 1
+}
