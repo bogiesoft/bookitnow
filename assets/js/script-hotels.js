@@ -1,6 +1,6 @@
  $(function() {
  
-	 
+	 $('.datepicker_book').datepicker();
 	 $('.bxslider1').bxSlider({
          minSlides: 4,
          maxSlides: 8,
