@@ -63,8 +63,8 @@ class Extras extends CI_Controller {
 			}
 			
 			
-			$data['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-			$data['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+		//	$data['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
+			//$data['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
 			//Future  - Region should be dynamic
 			//$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
 			$data['ext_fields'] = $this->SavingsNExtFields->fetchFilelsByCond(array('region'=>0));
@@ -135,23 +135,112 @@ class Extras extends CI_Controller {
 	{
 		if($this->input->post())
 		{			
-			/*if($this->input->post('subscribe'))
+			$subscribe = false;
+			if($this->input->post('subscribe'))
 			{
 				$this->load->model('SubscribersList');
-				$info = array('fname' => $this->input->post('fname'),
-						'lname' => $this->input->post('lname'),
-						'email' => $this->input->post('email')
-				);			
-				$this->SubscribersList->createRecord($info);
-			}*/
+				$row_sub = $this->SubscribersList->fetch_a_search(array('email' => $this->input->post('email')));
+				if(empty($row_sub))
+				{
+					$info = array('fname' => $this->input->post('fname'),
+							'lname' => $this->input->post('lname'),
+							'email' => $this->input->post('email')
+					);
+					$this->SubscribersList->createRecord($info);					
+				}
+				$subscribe = true;				
+			}
+			$data = array();			
+			$this->load->model('FullSearch');
+			$rows = $this->FullSearch->fetch_a_search(array('url_hash' => $this->input->post('segment')));			
+			$this->load->model('PhaseFlightOrHotel');
+			$this->load->model('AlLugagePrice');
+			$this->load->model('SavingsNExtFields');
+				
+			$flit = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$rows[0]['id']));
+			$hotel = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'pack_hotel','full_pack_id'=>$rows[0]['id']));
+				
 			
-			//echo '<pre>';print_r($this->input->post());exit;
+			$fobj= json_decode($flit[0]['pack_info'],true);
+			$lug_row = $this->AlLugagePrice->fetch_a_search(array('airline_code'=>$fobj['@attributes']['suppcode']));
+			$hobjs = json_decode($hotel[0]['pack_info'],true);
+			//Body Preparation
+			$tot_sel = 0;$ppr = '';$pprp = '';
+			if($rows[0]['pax'] != '')
+			{
+				$ser_arr = explode(',',$rows[0]['pax']);
+				$rc = 1;
+				foreach ($ser_arr as $key => $ser)
+				{
+					$ser_arr_sub = explode('-',$ser);
+					$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+					$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+					$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+					$rc++;
+				}
+			}
+			else
+			{
+				$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
+				$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
+				$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+			}
+			$dscode = $fobj['@attributes']['depapt'];
+			$ascode = $fobj['@attributes']['arrapt'];
+			$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
+			$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',@$arrivals[(string)$ascode])[0]);
+			$dscode = trim(explode('-',@$departures[(string)$dscode])[0]);
+			$sel_info = $this->selctionBlock_fun($this->input->post('segment'));
+			
+			$body = '';
+			$body .= '<b>Dear '.$this->input->post('title').' '.$this->input->post('fname').'</b>
+					<br>Please find details of your recent search on <a href="'.base_url().'">bookitnow.com</a><br>
+					<br><b>YOUR PARTY:</b><br>'.$ppr.'<b><br>FLIGHTS:</b><br>'.
+					$dscode.' To '.$ascode.'<br>Departure Date : 
+					<span class="aBn" data-term="goog_1032159087" tabindex="0">
+							<span class="aQJ">'.date('d M Y',$this->cvtDt(str_date($flit[0]['flight_selected_date']))).'</span>
+					</span>
+					<br>'.$hobjs[0]['@attributes']['nights'].' Nights duration<br>
+					Depart at <span class="aBn" data-term="goog_1032159088" tabindex="0"><span class="aQJ">'.
+					substr(explode(' ',$fobj['@attributes']['outdep'])[1],0,-3).'</span></span><br>
+					Flights Per Person: &#163;'.$fobj['@attributes']['sellpricepp'].' x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+					Flights Total: &#163;'.$fobj['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+					<b><br>HOTEL:</b><br>'.urldecode($hobjs[0]['@attributes']['hotelname']).' in '.urldecode($hobjs[0]['@attributes']['resort']).
+					'<br>'.(int)$hobjs[0]['@attributes']['starrating'].' Star, '.boardbasis($hobjs[0]['@attributes']['boardbasis']).'<br>
+					Selected Room(s): <br>'.$pprp.'Total Room(s): &#163;'.$tot_sel.'<br><br><b> ATOL Admin Charge </b><br>
+					This is an ATOL charged : 2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+					Total ATOL : &#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50).'<br>'.
+					$sel_info['sel_block']['segment'].'<br><b> HOLIDAY TOTAL:</b>
+					<br>&#163;'. $sel_info['whole'] .'<br><br>
+			<a href="'.base_url().'extras/'.$this->input->post('segment').'" target="_blank">CLICK HERE TO SEARCH THIS HOLIDAY AGAIN</a><br><br>
+			Want to know more? Need help or advice? Call us on 0208 548 2658 <br><br>
+			Do not just travel, well travel!
+<img src="https://ci6.googleusercontent.com/proxy/FDg_fZ9IpYz-JP1QS-2FSmydrrO9Eq070M1SxzevBI5jFRZPzdiKBU9g-M2micrw8ctujkHcpQtlob_l-GoSptZElxAIVcira05itPuM5bkmq14h7x5bppNyr_LICjbpd27g4QscIQ4TvQ=s0-d-e1-ft#http://mandrillapp.com/track/open.php?u=30475359&amp;id=4c7542725e3540b49402a5bf768304d9" height="1" width="1" class="CToWUd"><div class="yj6qo"></div><div class="adL">
+</div>';
+				$list =  array($this->input->post('email'));
+				$sub = 'Quick Quote By BookItNow';
+// 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
+// 				{				
+// 				}
+						
+			
+			
+			if($subscribe)echo json_encode(array('status' => 'subscribe'));
+			else echo json_encode(array('status' => 'success'));
+			//$res = $this->selctionBlock_fun($this->input->post('segment'));
+			//echo '<pre>';print_r($data['hobjs']);
+			exit;
 		}
 		
 		
 		
 		
 		
+	}
+	
+	function test()
+	{
+		$this->load->view('test');
 	}
 	
 	function selctionBlock_fun($seg)
@@ -449,7 +538,6 @@ class Extras extends CI_Controller {
 			//Future  - Region should be dynamic
 			$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
 			$arr1 = array();
-			
  			foreach ($data['ext_fields'] as $ext_fields)
  			{
  				$arr1[$ext_fields['category']][] = $ext_fields;
@@ -465,10 +553,9 @@ class Extras extends CI_Controller {
 			/*
 			 * Selection block
 			 */
-			
 			$data['sel_info'] = $this->selctionBlock_fun($this->uri->segment(2));
 			
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
 			$this->layouts->set_title('Book');
 			$this->layouts->view('booking_view',$data);
 		}
@@ -476,6 +563,7 @@ class Extras extends CI_Controller {
 		{
 			redirect(base_url());
 		}
+			
 	}
 	
 	function booking_submition()
@@ -519,17 +607,9 @@ class Extras extends CI_Controller {
 			$data['home_tel'] = $post_data['home_tel'];
 			$data['email'] =	$post_data['email'];		
 			$data['postal_code'] = $post_data['post_code'];
-			$data['city_country'] = $post_data['city'];
-			$data['card_type'] = $post_data['card_type'];
-			$data['name_card'] = $post_data['name_card'];
-			$data['card_number'] = $post_data['card_number'];
+			$data['city_country'] = $post_data['city'];	
 			$this->load->model('BookingInfo');
 		
-			/*if(strtotime(str_replace('/', '-', $this->input->post('dob'))) < strtotime(date('d-m-Y')))
-			{
-				echo '<span class="status expired">Expired</span>';exit;
-			}*/
-			
 			if($this->BookingInfo->createRecord($data))
 			{
 				$list = array($post_data['email']);
@@ -576,6 +656,6 @@ class Extras extends CI_Controller {
 			
 		}
 		
-		exit;
+		
 	}
 }

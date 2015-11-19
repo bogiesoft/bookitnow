@@ -1,6 +1,6 @@
  $(function() {
 	 
-	 
+	
 	 $('.bxslider1').bxSlider({
          minSlides: 4,
          maxSlides: 8,
@@ -655,9 +655,21 @@
         }
         
         function submit_fnh_fun(request_data)
-        {
-        	//console.log(request_data);return false;
-        	blockSearchingTabs();
+        {        
+        	var str = '';
+        	$.each(request_data, function(index, value){
+        		if(value.name == 'full_departure_airports')str += $('select[name="full_departure_airports"] option:selected').text() + ' - ';
+        		if(value.name == 'full_arrival_airports')str += $('select[name="full_arrival_airports"] option:selected').text() + ' | ';
+        		if(value.name == 'full_nights')str += $('select[name="full_nights"] option:selected').text() + ' nights | ';
+        		if(value.name == 'full_departure_date')str += $('input[name="full_departure_date"]').val() + ' | ';
+        		if(value.name == 'full_adults')str += $('select[name="full_adults"] option:selected').text() + ' Adults,';
+        		if(isNaN(Number($('select[name="full_children"] option:selected').text())))var t = 0;
+        		else t = $('select[name="full_children"] option:selected').text();
+        		if(value.name == 'full_children')str += t + ' Children | ';
+        		if(value.name == 'full_rooms')str += $('select[name="full_rooms"] option:selected').text() + ' Room(s) | ';
+        		
+        	});
+        	callWaitPageForextra();
         	//if($.cookie('mul_submition_prevent') == 1)
         	//{    	
         		//$.cookie('mul_submition_prevent',0);
@@ -665,8 +677,14 @@
 	        		
 					if(data == 'notavailable')
 					{
-						unblockSearchingTabs();
+						//unblockSearchingTabs();
+						
+			        	//console.log(str);return false;
+			        	var date = new Date();
+			        	date.setTime(date.getTime() + (60 * 1000));
+			        	$.cookie('notavailable_info', str, { expires: date });	
 						window.location = "notavailable";
+						
 					}
 					else
 					{
@@ -689,6 +707,7 @@
 					if(data == 'notavailable')
 					{
 						unblockSearchingTabs();
+						
 						window.location = "notavailable";
 					}
 					else
@@ -732,3 +751,14 @@
 		$('#append_ext_hotel').html(str);
 		
 	}
+	
+	function callWaitPageForextra()
+    {
+    	var html = '<head><meta charset="utf-8"><title>superescapes | Terms Of Use</title><meta name="viewport" content="width=device-width, initial-scale=1"><link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/modal_popup.css" rel="stylesheet" type="text/css"><link href="styles/bootstrap-responsive.min.css" rel="stylesheet" /><link rel="stylesheet" href="/assets/js/jquery-ui.css"><link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/custom.css" rel="stylesheet" type="text/css"><link href="/assets/css/responsive.css" rel="stylesheet" type="text/css"><link href="/assets/css/menu.css" rel="stylesheet"><link  href="/assets/css/inner-page.css" rel="stylesheet"><link href="/assets/css/menu.css" rel="stylesheet"></head><body><div class="clearfix"></div><div class="container main-wrappage"><div class="row"><div class="col-sm-12 col-md12 col-xs-12" style="text-align:center"><h3><img src="/images/logo.png"></h1><br><h2>Discounts Applied &amp; Selected Options Have Been Saved.<br></h2><div style="margin: 15px 0;"><img src="/images/loader-bar.gif"> </div><div class="box-border-wrap"><h5 class="loading-page"><b>Proceeding To Booking Details</b></h5></div><h4>Book With Confidence</h4><h5>Fully ABTA and ATOL Bonded for financial protection<h5><h3><img src="/images/abta.png"></h1><br> </div></div></div></div></div><div class="clearfix"></div> <div class="clearfix"></div></body>';
+    	$('html').html(html);
+    	return true;
+    	/*$.post('/welcome/extras/save_extras_fun',{lug:id,crypt:crypt},function(data){
+    		
+    		
+    	},'json');*/
+    }

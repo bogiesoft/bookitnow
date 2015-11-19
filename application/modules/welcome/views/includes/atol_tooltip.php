@@ -21,6 +21,8 @@
        </small>
      </div>
  </div>
+ 
+ 
                                     
 <div id="quickQuote"  style="display: none; max-width: 480px;">
      <div>
@@ -53,6 +55,7 @@
              <label> Email Address</label><br>
                    <input name="email" type="text"  title="Email">
           </div>
+          
           <div>
              <label>Subscribe to Our Newsletter</label><br>
               <input type="checkbox" name="subscribe" checked="checked" title="Subscribe">
@@ -65,3 +68,15 @@
        
 	</div>
 </div>
+
+
+<div id="cphContent_divQuoteSent" style="display:none;">
+                            <h3 class="padded bg_1 txt_white">Thank You</h3>
+                            <h5 class="bg_2 txt_white padded has_bottom_margin">Details have been emailed to you</h5>
+                            <small>You may instantly check avaiability and price for this trip at any time by clicking
+                    the link provided in your email.<br>
+                                Please note that prices are subject to supplier availability and are subject to
+                    change.</small><br>
+                            <br>
+                            <a class="button save-for-later" id="button" name="button" onclick="$.fancybox.close();">CLOSE THIS WINDOW &nbsp;<i aria-hidden="true" class="icon-envelope"></i></a>
+                        </div>

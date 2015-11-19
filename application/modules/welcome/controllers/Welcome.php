@@ -916,32 +916,7 @@ class Welcome extends CI_Controller {
 		return $result;
 	}
 	
-	/*public function raw_flights_fun($hash)
-	{
-		$search_dates=array();
-		if(empty($this->cache->get($hash)))
-		{
-			$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->input->post('crypt')));
-			if(!empty($rows))
-			{
-				$flex = 3;
-				$req_url = $rows[0]['service_url'];
-				$data['results'] = new SimpleXMLElement($this->download_page($req_url));
-				if($data['results']->attributes()->offers > 0)
-				{
-					$coded_date = json_decode(json_encode($data['results']),true);
-					$this->search_upto_flex_days($coded_date,$rows[0]['selected_date'],$flex,$search_dates);
-					$search_dates[$rows[0]['selected_date']]['offers_list'] = $coded_date['offer'];
-					$search_dates[$rows[0]['selected_date']]['best_price'] = $this->best_price_date_wise_fun($coded_date['offer']);
-				}
-				$this->cache->save($hash,$search_dates,3600);
-			}
-		}
-		else{
-			$search_dates = $this->cache->get($hash);
-		}
-		return $search_dates;
-	}*/
+	
 	
 	public function raw_flights_pred_fun($hash,$req_url,$selected_date,$flex=3)
 	{
@@ -987,9 +962,11 @@ class Welcome extends CI_Controller {
 	}
 	
 	public function notavailable()
-	{
-		echo "sdf";exit;
+	{		
 		$data = array();
+		$data['message'] = '<h5 class="text-one">Bristol - Cyprus (Search all) | 1 Nights | November 20 2015 | All Inclusive | Any Rating Star | 2 Adults, 0 Children, 0 infant | 1 Rooms</h1>'; 
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/custom.css','css/responsive.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/inner-page.css','js/responsee.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->set_title('No Results Page');
 		$this->layouts->view('notavailable',$data);
 	}
 	

@@ -35,7 +35,7 @@
 				 	<!--  <p class="online-save">Online Savings: <span class="online-rate">&#163;57.70</span></p>			
 					<p class="online-save">RRP:  	<span class="text-decoration">&#163;665.04</span></P>-->
 					<p class="online-save">Total Cost:  	<span class="online-rate">&#163;<?php echo $sel_info['whole']; ?></span></P>					
-					<p> <a href="<?php echo base_url().'book/'.$this->uri->segment(2);?>" class="btn-small btn-default-small" role="button" >BOOK NOW</a></p>	
+					<p> <a href="<?php echo base_url().'book/'.$this->uri->segment(2);?>" class="btn-small btn-default-small" role="button" onclick="return callWaitPageForextra();">BOOK NOW</a></p>	
 					<p class="later"><a id="cphContent_lnkDesktopBasketQQ" onclick="LoadQQPopup(this);">Save for Later<a></p>					
 				   </div>
 			 	</div>
@@ -261,7 +261,7 @@
                   <small>Per Person: &#163;<span id="pprice"><?php echo ($sel_info['whole'] / ($seg[0]['num_adults'] + $seg[0]['num_children']));?></span>  X <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']);?></small>
               </div>
          <div class="conatiner-bg">
-         	<a onclick="callWaitPageForextra();" class="button full_width txt_xtra_large" href="<?php echo base_url().'book/'.$this->uri->segment(2);?>"><i aria-hidden="true" class="icon-lock"></i>&nbsp;BOOK NOW</a>
+         	<a onclick="return callWaitPageForextra();" class="button full_width txt_xtra_large" href="<?php echo base_url().'book/'.$this->uri->segment(2);?>"><i aria-hidden="true" class="icon-lock"></i>&nbsp;BOOK NOW</a>
     	 </div>
 	  </div>
     

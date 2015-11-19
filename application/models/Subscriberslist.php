@@ -12,11 +12,11 @@ class SubscribersList extends CI_Model {
 		return $this->db->insert(SUBSCRIBERSSLIST_TABLE,$data);
 	}
 	
-	/*public function fetch_a_search($array,$limit=1,$offset=0)
+	public function fetch_a_search($array,$limit=1,$offset=0)
 	{
-		return $this->db->get_where(LUGGAGE_TABLE, $array , $limit, $offset)->result_array();		
+		return $this->db->get_where(SUBSCRIBERSSLIST_TABLE, $array , $limit, $offset)->result_array();		
 	}
-	public function update_row($data,$id)
+	/*public function update_row($data,$id)
 	 {
 	 	$this->db->where('id',$id);
 	 	return $this->db->update(LUGGAGE_TABLE,$data);

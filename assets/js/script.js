@@ -1,5 +1,9 @@
  $(function() {
- 
+	
+		if($.cookie('notavailable_info') != '' || $.cookie('notavailable_info') != undefined || $.cookie('notavailable_info') != null)
+		{
+			$('#no_res').html($.cookie('notavailable_info'));
+		}
 	 
 	 $('.bxslider1').bxSlider({
          minSlides: 4,
@@ -13,7 +17,7 @@
          nextText: 'Onward →',
          prevText: '← Go back'
        });  
-	 
+	 $(".megamenu").megamenu();
 	//Check to see if the window is top if not then display button
 		$(window).scroll(function(){
 			if ($(this).scrollTop() > 100) {
@@ -348,3 +352,4 @@
         	});      	
         }
         
+      

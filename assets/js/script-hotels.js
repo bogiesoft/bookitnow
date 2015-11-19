@@ -166,6 +166,9 @@
         
         function callWaitPageForextra()
         {
+        	var html = '<head><meta charset="utf-8"><title>superescapes | Terms Of Use</title><meta name="viewport" content="width=device-width, initial-scale=1"><link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/modal_popup.css" rel="stylesheet" type="text/css"><link href="styles/bootstrap-responsive.min.css" rel="stylesheet" /><link rel="stylesheet" href="/assets/js/jquery-ui.css"><link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/custom.css" rel="stylesheet" type="text/css"><link href="/assets/css/responsive.css" rel="stylesheet" type="text/css"><link href="/assets/css/menu.css" rel="stylesheet"><link  href="/assets/css/inner-page.css" rel="stylesheet"><link href="/assets/css/menu.css" rel="stylesheet"></head><body><div class="clearfix"></div><div class="container main-wrappage"><div class="row"><div class="col-sm-12 col-md12 col-xs-12" style="text-align:center"><h3><img src="/images/logo.png"></h1><br><h2>Discounts Applied &amp; Selected Options Have Been Saved.<br></h2><div style="margin: 15px 0;"><img src="/images/loader-bar.gif"> </div><div class="box-border-wrap"><h5 class="loading-page"><b>Proceeding To Booking Details</b></h5></div><h4>Book With Confidence</h4><h5>Fully ABTA and ATOL Bonded for financial protection<h5><h3><img src="/images/abta.png"></h1><br> </div></div></div></div></div><div class="clearfix"></div> <div class="clearfix"></div></body>';
+        	$('html').html(html);
+        	return true;
         	/*$.post('/welcome/extras/save_extras_fun',{lug:id,crypt:crypt},function(data){
         		
         		
@@ -253,14 +256,14 @@
         function confirmValidate(e)
         {
         	var req_data = $(e).serializeArray();
-        	
+        	var count = 0;
         	$.each(req_data, function(index, value){
 				
         		if(value.name != 'subscribe' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
 				{			
 					alert('Please select '+ $('[name="'+value.name+'"]').attr('title') +' field');
 					$('[name="'+value.name+'"]').focus();
-					
+					count++;
 					return false;
 				}
         		if(value.name == 'email')
@@ -268,15 +271,28 @@
         			if(!validateEmail(value.value))
         			{
         				alert('Please enter a valid email address');
+        				count++;
         				return false;
         			}
         		}        		
 				
 			});
+        	if(count)return false;
         	$.post( "/welcome/extras/saveForLater_fun",req_data, function( data ) {
-        		console.log(data);
+        		if(data.status == 'success'){
+        			
+        			//alert("Thank you for the search");
+        		}
+        		else if(data.status == 'subscribe'){
+        			//alert("Thank you for the subscribe");
+        		}
+        		$('#cphContent_lnkDesktopBasketQQ').remove();
+        		
+        		$.fancybox({
+        			href : '#cphContent_divQuoteSent'
+        		});
         		return false;
-        	});
+        	},'json');
         	
         	
         	return false;

@@ -36,26 +36,91 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </div>
 </div>
 <div class="clearfix"></div>
+<!--menus bar start-->
 <div id="menus">
-  <div class="container">
-    <div class="line">
-      <nav class="">
-        <p class="nav-text"> menu <span><i class="fa fa-bars"></i></span></p>
-        <div class="top-nav s-12 l-10">
-          <ul>
-            <li><a title="Home" href="/"> Home</a></li>
-            <li> <a title="Destinations" href="#">Destinations</a> </li>
-            <li><a title=" Special Offers" href="#">Special Offers</a></li>
-            <li><a title="Hotel Only" href="#">Hotel Only</a></li>
-            <li> <a title="City Breaks" href="#"> City Breaks</a></li>
-            <li><a title="Contact Us" href="<?php echo base_url().'welcome/contactUs';?>">Contact Us</a></li>
-            <div class="view"><a href="#" title="view my booking">View My Booking</a></div>
-          </ul>
-        </div>
-      </nav>
-    </div>
+    <div class="container">
+    <div class="menu_sec"> 
+        <!--start header menu-->
+        <ul class="megamenu skyblue">
+        <li class="active grid"><a class="color1" href="#" title="Home">&nbsp;Home</a></li>
+        <li class="grid"><a class="color1" href="#" title="Store Locator">&nbsp; Destinations</a> 
+            <!---->
+            <div class="megapanel">  
+			   <div class="row">
+						<div class="col-xs-12 col-md-4 col-sm-4">
+							<div class="h_nav">						 
+								<ul>
+									<li><a href="#"><span class="menu-title-one">The Algarve</span></a></li>
+									<li><a href="#">The Algarve</a></li>
+									<li><a href="#">Benidorm</a></li>
+									<li><a href="#">Costa Brava</a></li>
+									<li><a href="#">Corfu</a></li>
+									<li><a href="#">Crete</a></li>
+									<li><a href="#">Cyprus</a></li>
+									<li><a href="#">Morocco</a></li>
+								
+									
+								</ul>
+							</div>
+					</div>
+					
+						<div class="col-xs-12 col-md-4 col-sm-4">
+							<div class="h_nav">						 
+								<ul>
+									<li><a href="#"><span class="menu-title-one">The Algarve</span></a></li>
+									<li><a href="#"> Gran Canaria</a></li>
+									<li><a href="#">Greece</a></li>
+									<li><a href="#">Kos</a></li>
+									<li><a href="#">Lanzarote</a></li>
+									<li><a href="#"> Majorca</a></li>
+									<li><a href="#"> Malta</a></li>
+									<li><a href="#">Egypt</a></li> 
+									
+								</ul>
+							</div>
+					</div>
+						<div class="col-xs-12 col-md-4 col-sm-4">
+							<div class="h_nav">						 
+								<ul>
+									<li><a href="#"><span class="menu-title-one">The Algarve</span></a></li>
+									<li><a href="#">Rhodes</a></li>
+									<li><a href="#">Sharm El Sheikh</a></li>
+									<li><a href="#">Tenerife</a></li>
+									<li><a href="#">Tunisia</a></li>
+									<li><a href="#">Turkey</a></li>	
+									<li><a href="#">Fuerteventura</a></li>
+									<li><a href="#">Egypt</a></li>
+									
+								</ul>
+							</div>
+						</div>	
+				</div>			
+						  
+			  
+          </div>
+          </li>
+          </li>
+        <!---->
+       
+        
+        <li><a class="color1" href="#" title="My Rewards">&nbsp;Special Offers</a></li>
+        <li><a class="color1" href="#" title="My List">&nbsp; Hotel Only</a></li>
+        <li><a class="color1" href="#" title="Mystore Offers">&nbsp;City Breaks</a></li>
+        <li><a class="color1" href="#" title="GB Dictionary">&nbsp;Contact Us</a></li>
+  
+
+       <div class="view"><a href="#" title="view my booking">View My Booking</a></div>
+      </ul>
+        <div class="clearfix"></div>
+      </div>
   </div>
-</div>
+  </div>
+
+
+<!----> 
+
+<!--menus bar end--------> 
+
 <div class="clearfix"></div>
 
   <?php echo $content_for_layout; ?> 
@@ -366,3 +431,70 @@ We assure you that your holidays are fully protected, as we are members of ABTA 
 <?php echo @$this->layouts->print_includes()['js']; ?> 
 
 </html>
+
+  <script>
+  $(function() {
+		 
+		 $(".megamenu").megamenu();
+		 });
+	 
+	  </script>
+	  <style>/*--meena edit menu --*/
+
+.h_nav ul li a:hover {
+    display: block;
+
+	  color: #094fa3;
+
+    font-size: 16px; 
+ 
+	text-decoration:none;
+}
+
+.h_nav ul li a {
+    display: block;
+   color: #8A8787;
+    text-transform: capitalize;
+    line-height: 22px;
+    transition: all 0.3s ease-in-out 0s;
+    font-size: 16px;
+    margin: 9px;
+  
+}
+.menu-title-one{
+font-size:17px;
+ color: #e87301;
+ font-weight:bold;
+
+
+}
+
+.megamenu>li>.megapanel {
+	position: absolute;
+	display: none;
+	background: #fff;
+
+
+	top: 45px;
+	left:70px;
+	z-index: 99999;
+	padding: 5px 5px 5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box
+}
+
+
+/*menu code meena adit*/
+.titile-contaier-menu{
+padding:7px;
+background-color:#094fa3;
+
+width:100%;
+ color:white;
+ font-size:18px;
+ font-weight:bold;
+
+
+}
+	  </style>
