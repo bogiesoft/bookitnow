@@ -1,43 +1,4 @@
 
-#menus {
-	background-color: #ff9e16;
-	width: 100%;
-}
-
-.menu_bar {
-	width: 100%;
-	background: #ff9e16;
-}
-.h_nav h4 {
-	border-bottom: 1px solid rgb(236, 236, 236);
-	font-size: 1.1em;
-	color: #000;
-	line-height: 1.8em;
-	text-transform: capitalize;
-	margin-bottom: 4%;
-}
-.h_nav h4.top {
-	margin-top: 12%;
-}
-.h_nav ul li {
-	display: block;
-}
-.h_nav ul li a {
-	display: block;
-	font-size: 0.8125em;
-	color: #777;
-	text-transform: capitalize;
-	line-height: 2em;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-.h_nav ul li a:hover {
-	color: #00405d;
-	text-decoration: underline;
-}
-
 
 
 body {
@@ -193,7 +154,7 @@ small {
 }
 #content>div {
 	clear: both;
-	display: none
+	/*display: none*/
 }
 #content .current {
 	display: block
@@ -1653,11 +1614,6 @@ h6 {
 body {
 	font-size: 100%
 }
-
-.megamenu > li > .megapanel { 
-    background: #f29e13 none repeat scroll 0% 0%;  
-}
-
 .search label {
 	padding-bottom: 2px;
 	font-size: 90%;
@@ -1740,9 +1696,6 @@ body {
 	line-height: 1.2;
 	font-size: 100%;
 	min-width: 960px
-}
-.megamenu > li > .megapanel { 
-    background: #f29e13 none repeat scroll 0% 0%;  
 }
 .row {
 	padding-top: 20px;
@@ -2974,64 +2927,3 @@ p.call {
 	color: #089de3;
 	font-size: 15px;
 }
-
-
-/*--meena edit menu --*/
-
-.h_nav ul li a:hover {
-    display: block;
-
-	  color: #094fa3;
-
-    font-size: 16px; 
- 
-	text-decoration:none;
-}
-
-.h_nav ul li a {
-    display: block;
-   color: #8A8787;
-    text-transform: capitalize;
-    line-height: 22px;
-    transition: all 0.3s ease-in-out 0s;
-    font-size: 16px;
-    margin: 9px;
-  
-}
-.menu-title-one{
-font-size:17px;
- color: #e87301;
- font-weight:bold;
-
-
-}
-
-.megamenu>li>.megapanel {
-	position: absolute;
-	display: none;
-	background: #fff;
-
-
-	top: 45px;
-	left:70px;
-	z-index: 99999;
-	padding: 5px 5px 5px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box
-}
-
-
-/*menu code meena adit*/
-.titile-contaier-menu{
-padding:7px;
-background-color:#094fa3;
-
-width:100%;
- color:white;
- font-size:18px;
- font-weight:bold;
-
-
-}
-

@@ -279,6 +279,7 @@
 			});
         	if(count)return false;
         	$.post( "/welcome/extras/saveForLater_fun",req_data, function( data ) {
+        		
         		if(data.status == 'success'){
         			
         			//alert("Thank you for the search");

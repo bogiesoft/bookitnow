@@ -477,8 +477,10 @@ class Welcome extends CI_Controller {
 		$this->cache->delete($service_url);
 		
 			$count = 0;$flex = 3;
-			$results['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-			$results['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+			//$results['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
+			//$results['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+			$results['departures'] = $this->fetch_departures();
+			$results['arrivals'] = $this->fetch_arrivals();
 			// Future To-do :  Here Please check weather "selected_date" should more than current date otherwise 404 page
 		
 			$req_url = $service_url;
@@ -602,6 +604,7 @@ class Welcome extends CI_Controller {
 					$results['filtered_departures'] = $this->seperatorFlights($code[0],$name[0]);
 					$results['departures'][$code[0]] = $name[0];
 				}
+				//echo '<pre>';print_r();exit;
 				$this->layouts->view('available_flights_view1',$results);
 			}
 			else

@@ -217,6 +217,7 @@ class Extras extends CI_Controller {
 			Do not just travel, well travel!
 <img src="https://ci6.googleusercontent.com/proxy/FDg_fZ9IpYz-JP1QS-2FSmydrrO9Eq070M1SxzevBI5jFRZPzdiKBU9g-M2micrw8ctujkHcpQtlob_l-GoSptZElxAIVcira05itPuM5bkmq14h7x5bppNyr_LICjbpd27g4QscIQ4TvQ=s0-d-e1-ft#http://mandrillapp.com/track/open.php?u=30475359&amp;id=4c7542725e3540b49402a5bf768304d9" height="1" width="1" class="CToWUd"><div class="yj6qo"></div><div class="adL">
 </div>';
+			
 				$list =  array($this->input->post('email'));
 				$sub = 'Quick Quote By BookItNow';
 // 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))

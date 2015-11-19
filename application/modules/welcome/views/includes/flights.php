@@ -31,8 +31,10 @@
             		<?php   			
             			$count = 0;
             			echo ' <div id="DateMinus3" class="clearfix "> ';
+            			
             			foreach($flights_list['offers_list'] as $flight_obj)
-            			{          			
+            			{      
+            			
             				$plain_txt = json_encode($flight_obj);   				
             				$encrypted_txt = $controller->encrypt_decrypt('encrypt', $plain_txt); 
             				$dscode = $flight_obj['@attributes']['depapt'];
@@ -46,7 +48,7 @@
             				$return_start_time = substr(explode(' ',$flight_obj['@attributes']['indep'])[1],0,-3);
             				$return_arr_time = substr(explode(' ',$flight_obj['@attributes']['inarr'])[1],0,-3);
             		
-            			         				        
+            				
                 	echo '<div id="divShowWhenSelect_1" class="flightresult">
                       <div class="clearfix">
                     	<div class="flight_info clearfix"> 
@@ -88,6 +90,7 @@
             				if($count == 10)break;
             			}
             			echo '</div>';
+            			
             		?>
             		
             		</div>	             
@@ -138,4 +141,5 @@
 		span.ui-corner-all{
 		background : #f6b817 !important;
 		}</style>
-        
+		
+       
