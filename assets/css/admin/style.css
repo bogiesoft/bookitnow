@@ -1163,7 +1163,7 @@ h2.modal-title {
 	margin:1em 0;
 }
 .form-horizontal .control-label {
-  text-align: right;
+  text-align: left;
   color: #000;
   font-weight: 300;
   font-size: 0.85em;

@@ -230,6 +230,70 @@ class Admin extends CI_Controller {
 		
 	}
 	
+	public  function booking_info()
+	{
+		$data = array ();
+		$this->layouts->add_include ( array (
+				'css/admin/style.css',
+				'css/admin/lines.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/admin/custom.css',
+				'js/admin/metisMenu.min.js',
+				'js/admin/custom.js',
+				'js/admin/d3.v3.js',
+				'js/admin/rickshaw.js'
+		) );
+		$this->load->model ( 'Bookinginfo' );
+		$data['rows'] = $this->Bookinginfo->fetch_a_search(array(),'ALL');
+		$adult_raw_info = json_decode($data['rows'][0]['adults_info']);
+		
+		//echo $adult_raw_info->fname[0];
+		//echo '<pre>';print_r();
+		//exit;
+		$this->layouts->set_title ( 'Booking Information' );
+		$this->layouts->view ( 'booking_info.php', $data, 'admin' );
+	}
+	
+	public function view_booking($id=null)
+	{
+		if ((int)$id)
+		{
+			$data = array ();
+			$this->layouts->add_include ( array (
+					'css/admin/style.css',
+					'css/admin/lines.css',
+					'css/font-awesome.min.css',
+					'css/google_font.css',
+					'css/admin/custom.css',
+					'js/admin/metisMenu.min.js',
+					'js/admin/custom.js',
+					'js/admin/d3.v3.js',
+					'js/admin/rickshaw.js'
+			) );
+				
+			$this->load->model ( 'Bookinginfo' );
+			$data['row'] = $this->Bookinginfo->fetch_a_search(array('id'=>$id));
+			
+			if ($this->input->post ()) {
+				$this->form_validation->set_rules ( 'adult_fname');
+				$this->form_validation->set_rules ( 'adult_lname');
+				$this->form_validation->set_rules ( 'email');
+				$this->form_validation->set_rules ( 'mobile');
+				
+			}
+				
+				
+			$this->layouts->set_title ( 'Admin Dashboard' );
+			$this->layouts->view ( 'view_booking.php', $data, 'admin' );
+		}
+		else
+		{
+			abort('404');
+		}
+	
+	}
+	
 	
 	public function saveListingFun() {
 		if ($this->input->post ()) {			
