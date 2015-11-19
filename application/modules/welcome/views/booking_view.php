@@ -48,7 +48,15 @@
 					</div>
 				  
 				</div>	
+				<div class="col-sm-6 col-md-3">
+				  
+					<div class="form-group">   
+					<input title="Date of Birth	" class="form-control datepicker_book" name="adult_dob_<?php echo $i;?>" placeholder="Date of Birth">
+					</div>
+				  
+				</div>
 				<?php } ?>
+				
 		<?php for($i=1;$i<=$seg[0]['num_children'];$i++){ ?>
 		<div class="col-sm-6 col-md-12">		
 				<h5> Child (<?php echo $i;?>) </h5>
@@ -75,26 +83,14 @@
 					</div>
 				  
 				</div>	
-				<!-- <div class="col-sm-6 col-md-2">
+				<div class="col-sm-6 col-md-3">
 				  
-					<div class="form-group">   
-					<input type="Last Name" class="form-control" name="child_lname_<?php echo $i;?>" placeholder="Last Name">
+					<div class="form-group">
+					<input title="Date of Birth" class="form-control datepicker_book"  name="child_dob_<?php echo $i;?>" placeholder="Date of Birth">   
+					
 					</div>
 				  
 				</div>	
-				<div class="col-sm-6 col-md-2">				  
-					<div class="form-group">   
-					<input type="Last Name" class="form-control" name="child_lname_<?php echo $i;?>" placeholder="Last Name">
-					</div>
-				  
-				</div>	
-				<div class="col-sm-6 col-md-2">
-				  
-					<div class="form-group">   
-					<input type="Last Name" class="form-control" name="child_lname_<?php echo $i;?>" placeholder="Last Name">
-					</div>
-				  
-				</div>	-->
 				<?php } ?>
 		
 	</div><br>
@@ -144,6 +140,137 @@
 					
 					</div>					
 				</div>
+				
+</div>	
+
+
+<div class="orderhotels-one">
+		<div  class="row">
+			<div class="col-sm-6 col-md-12">
+				<h4 class="booknow-font"><b>Select a Payment Method</b></h4>			
+			</div>	
+			
+		<div class="col-md-4 col-sm-3 col-xs-12">		
+				<h5>Card Type</h5>	
+
+						<select name="card_type" title="Card Type">
+							<option value="-1">Select Card</option>
+							<option value="visacreditcard">Visa Credit Card 2.5%</option>
+							<option value="visadebitcard">Visa Debit Card</option>
+							<option value="mastercardprepaid">Mastercard Prepaid</option>
+							<option value="visadebitcard">Master Card Credit 2.5%</option>
+							<option value="mastercardprepaid">Mastercard Debit</option>
+							<option value="visadebitcard">Maestro Debit</option>
+							<option value="mastercardprepaid">American Express</option>										
+						</select>
+				</div>
+			
+		</div>
+			
+				<div  class="row">
+				
+					<div class="col-md-5 col-sm-3 col-xs-12">					
+					<h5>Name on Card</h5>
+					<input class="form-control" title=" Name on Card" name="name_card">
+					</div>
+					<div class="col-md-5 col-sm-3 col-xs-12">				
+					<h5>Card Number</h5>
+					<input type="tel" min="2" max="5" class="form-control" title="Card Number" name="card_number">
+					</div>				
+				</div>
+				<div  class="row">		
+		<div class="col-md-5 col-sm-3 col-xs-12">		
+				<h5> Valid From Date</h5>
+				<div class="col-sm-6 col-md-4" style="margin-left: -15px;">	
+					<div class="form-group">
+						<select name="valid_from" title="Valid from">
+							<option value="-1">Month	</option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>								
+						</select>
+						</div>
+						</div>
+						<div class="col-sm-6 col-md-4">	
+					<div class="form-group">
+						<select name="valid_from" title="Valid from">
+							<option value="-1">Year</option>
+							<option value="2001">2001</option>
+							<option value="2002">2002</option>
+							<option value="2003">2003</option>
+							<option value="2004">2004</option>
+							<option value="2005">2005</option>
+							<option value="2006">2006</option>
+							<option value="2007">2007</option>
+							<option value="2008">2008</option>
+							<option value="2009">2009</option>
+							<option value="2010">2010</option>
+							<option value="2011">2011</option>
+							<option value="2012">2012</option>
+							<option value="2013">2013</option>
+							<option value="2014">2014</option>
+							<option value="2015">2015</option>								
+						</select>
+					</div>	
+					</div>
+					</div>
+		<div class="col-md-5 col-sm-3 col-xs-12">		
+				<h5> Valid To Date</h5>	
+				<div class="col-sm-6 col-md-4" style="margin-left: -15px;">	
+					<div class="form-group">
+						<select name="valid_to" title="Valid to">
+							<option value="-1">Month</option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>								
+						</select>
+						</div>
+						</div>
+						<div class="col-sm-6 col-md-4">	
+					<div class="form-group">
+						<select name="valid_to" title="valid to">
+							<option value="-1">Year</option>
+							<option value="2015">2015</option>
+							<option value="2016">2016</option>
+							<option value="2017">2017</option>
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020">2020</option>
+							<option value="2021">2021</option>
+							<option value="2022">2022</option>
+							<option value="2023">2023</option>
+							<option value="2024">2024</option>								
+						</select>
+					</div>	
+			
+		</div>
+		</div>
+		</div>
+		<div  class="row">
+					<div class="col-md-5 col-sm-3 col-xs-12">					
+					<h5>Security Number<br></h5>
+<h6>Last 3 numbers on the back of your card</h6>
+					<input class="form-control" title=" Security Number">
+					</div>					
+				</div>
 				<div  class="row">
 					<div class="col-md-4 col-sm-3 col-xs-12">					
 					
@@ -151,6 +278,7 @@
 					</div>
 									
 				</div>
+				
 </div>	
 
 <?php echo form_close();?>

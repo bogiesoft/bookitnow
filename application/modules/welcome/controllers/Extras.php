@@ -449,6 +449,7 @@ class Extras extends CI_Controller {
 			//Future  - Region should be dynamic
 			$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
 			$arr1 = array();
+			
  			foreach ($data['ext_fields'] as $ext_fields)
  			{
  				$arr1[$ext_fields['category']][] = $ext_fields;
@@ -464,9 +465,10 @@ class Extras extends CI_Controller {
 			/*
 			 * Selection block
 			 */
+			
 			$data['sel_info'] = $this->selctionBlock_fun($this->uri->segment(2));
 			
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
 			$this->layouts->set_title('Book');
 			$this->layouts->view('booking_view',$data);
 		}
@@ -474,7 +476,6 @@ class Extras extends CI_Controller {
 		{
 			redirect(base_url());
 		}
-			
 	}
 	
 	function booking_submition()
@@ -518,9 +519,17 @@ class Extras extends CI_Controller {
 			$data['home_tel'] = $post_data['home_tel'];
 			$data['email'] =	$post_data['email'];		
 			$data['postal_code'] = $post_data['post_code'];
-			$data['city_country'] = $post_data['city'];	
+			$data['city_country'] = $post_data['city'];
+			$data['card_type'] = $post_data['card_type'];
+			$data['name_card'] = $post_data['name_card'];
+			$data['card_number'] = $post_data['card_number'];
 			$this->load->model('BookingInfo');
 		
+			/*if(strtotime(str_replace('/', '-', $this->input->post('dob'))) < strtotime(date('d-m-Y')))
+			{
+				echo '<span class="status expired">Expired</span>';exit;
+			}*/
+			
 			if($this->BookingInfo->createRecord($data))
 			{
 				$list = array($post_data['email']);
@@ -567,6 +576,6 @@ class Extras extends CI_Controller {
 			
 		}
 		
-		
+		exit;
 	}
 }
