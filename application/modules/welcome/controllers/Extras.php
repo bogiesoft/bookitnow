@@ -556,7 +556,7 @@ class Extras extends CI_Controller {
 			 */
 			$data['sel_info'] = $this->selctionBlock_fun($this->uri->segment(2));
 			
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
 			$this->layouts->set_title('Book');
 			$this->layouts->view('booking_view',$data);
 		}
