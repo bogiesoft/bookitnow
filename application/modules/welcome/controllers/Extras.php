@@ -678,8 +678,7 @@ class Extras extends CI_Controller {
 		return $body;
 	}
 	function booking_submition()
-	{	
-		
+	{			
 		if($this->input->post())
 		{
 			$post_data = $this->input->post();
@@ -736,11 +735,9 @@ class Extras extends CI_Controller {
 				$list = array($post_data['email']);
 				$sub = "Booking Information";
 				
-// 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
-// 				{}
-				
-
-				echo json_encode(array('success' => 1));
+ 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
+ 				{}
+ 				echo json_encode(array('success' => 1));
 			}
 			else
 			{

@@ -74,7 +74,11 @@
     	//filterFlightsNHotels(flight_crypt,type,page);     
     })
     
-    $('.datepicker_book').datepicker();
+    $('.datepicker_book').datepicker({
+    	 changeMonth: true,
+         changeYear: true,
+         yearRange: "-100:+0",
+    });
  });
 	 function getpackinfo(e)
 	 {	
