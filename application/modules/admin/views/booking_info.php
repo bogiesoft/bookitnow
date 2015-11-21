@@ -17,6 +17,7 @@
         </thead>
         <tbody>
           <?php 
+          $count=0;
           	foreach ($rows as $sno => $row)
           	{
           		$adult_raw_info = json_decode($row['adults_info']);      
@@ -26,9 +27,16 @@
           		echo  '<th scope="row">'.$adult_raw_info->lname[0].'</th>';
           		echo  '<th scope="row">'.$row['email'].'</th>';
           		echo  '<th scope="row">'.$row['mobile'].'</th>';
-          		echo  '<th scope="row"><a href="'.base_url().'admin/view_booking/'.$row['id'].'"><i class="fa fa-eye" title="view"></i></a></th>';
+          		echo  '<th scope="row"><a href="'.base_url().'admin/view_booking/'.$row['reference_id'].'"><i class="fa fa-eye" title="view"></i></a></th>';
+          		echo '</tr>';
+          		$count++;
+          	}
+          	if(!$count){
+          		echo '<tr>';
+          		echo '<th colspan=6> No records</th>';
           		echo '</tr>';
           	}
+          		
           ?>          
         </tbody>
       </table>

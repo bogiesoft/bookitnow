@@ -133,7 +133,7 @@ class Hotel extends CI_Controller {
 			/*****************end*****************************/			
 			//echo '<pre>';print_r($data['offers']);exit;
 			//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
 			$this->layouts->set_title('Available Hotels');
 			$this->layouts->view('available_hotels_view',$data);
 		}
@@ -237,6 +237,7 @@ class Hotel extends CI_Controller {
 	
 	public function filtering_hotels_fun($filters_opt_array,$data)
 	{
+		echo '<pre>';print_r($filters_opt_array);print_r($data);exit;
 		$filters_opt_array['stars'] = array(2,3);
 		$filters_opt_array['resorts'] = array('Albufeira','Vilamoura');
 		$results = array();
@@ -269,8 +270,7 @@ class Hotel extends CI_Controller {
 		}
 		$results1 =array();
 		foreach ($results as $key_res => $records_res)
-		{			
-			
+		{		
 			foreach ($records_res as  $record_res)
 			{				
 				foreach ($filters_opt_array['resorts'] as $resort)
@@ -339,7 +339,9 @@ class Hotel extends CI_Controller {
 					$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=6&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&depdate=".$flight_row[0]['flight_selected_date']."&flex=0&countryid=".$query['countryid']."&regionid=".$query['regionid']."&areaid=".$query['areaid']."&resortid=&boards=&rating=&pax=".$query['pax']."&offersperday=200";
 					if($results = $this->loadHotelDataFun($url,$flight_row[0]['flight_selected_date']))
 					{
+						
 						$this->format_array_fun($results['offer'],count($results['offer']),$data['offers']);
+						//echo "<pre>";print_r($data['offers']);exit;
 						$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
 					}
 					
@@ -351,16 +353,16 @@ class Hotel extends CI_Controller {
 				/*********************Recommended hotels**************
 				 * just fetch the results which have 3 ratting and avg range hotels
 				 */
-				//$filter_options_arr = array();
-				//$filter_options_arr['price'] = array('recommended');
+				$filter_options_arr = array();
+				$filter_options_arr['price'] = array('recommended');
 				//$this->filtering_hotels_fun($filter_options_arr,$data['offers']['filter_data']);
 				
 				
 				/*end***/
 				/*********previous Selectd information************/
 				
-				$departures = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-				$arrivals = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+				$departures = $this->fetch_departures();
+				$arrivals = $this->fetch_arrivals();
 			
 				
 				$this->load->model('PhaseFlightOrHotel');
@@ -369,6 +371,8 @@ class Hotel extends CI_Controller {
 			
 				
 				$dscode = $flight_obj['@attributes']['depapt'];
+				
+				//echo $dscode;exit;
 				$ascode = $flight_obj['@attributes']['arrapt'];
 				$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
 				$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',$arrivals[(string)$ascode])[0]);

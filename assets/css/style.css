@@ -300,7 +300,7 @@ small {
 	display: inline-block;
 	float: none
 }
-.wait_page {
+/*.wait_page {
 	float: none;
 	max-width: 640px;
 	padding: 20px 40px;
@@ -324,7 +324,7 @@ small {
 	padding-bottom: 10px;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #A0CCDD
-}
+}*/
 .result {
 	margin: 20px 0;
 	background: #fff

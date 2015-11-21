@@ -500,7 +500,7 @@ class Extras extends CI_Controller {
 				$tot_sel += $hobj['@attributes']['sellpricepp'];
 			}
 			$data['res_sel_price'] = $tot_sel / count($data['hobjs']);	
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
 			$this->layouts->set_title('Book Hotel');
 			$this->layouts->view('book_hotel_view',$data);
 		}
@@ -566,24 +566,139 @@ class Extras extends CI_Controller {
 		}
 			
 	}
-	
+	function email_body_full($postdata,$rows = array())
+	{
+		$this->load->model('PhaseFlightOrHotel');
+					$this->load->model('AlLugagePrice');
+					$this->load->model('SavingsNExtFields');
+			
+					$flit = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$rows[0]['id']));
+					$hotel = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'pack_hotel','full_pack_id'=>$rows[0]['id']));
+			
+		
+					$fobj= json_decode($flit[0]['pack_info'],true);
+					$lug_row = $this->AlLugagePrice->fetch_a_search(array('airline_code'=>$fobj['@attributes']['suppcode']));
+					$hobjs = json_decode($hotel[0]['pack_info'],true);
+					//Body Preparation
+					$tot_sel = 0;$ppr = '';$pprp = '';
+					if($rows[0]['pax'] != '')
+						{
+							$ser_arr = explode(',',$rows[0]['pax']);
+							$rc = 1;
+							foreach ($ser_arr as $key => $ser)
+								{
+									$ser_arr_sub = explode('-',$ser);
+									$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+									$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+									$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+									$rc++;
+								}
+						}
+					else
+						{
+							$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
+							$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
+							$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+						}
+					
+					$dscode = $fobj['@attributes']['depapt'];
+					$ascode = $fobj['@attributes']['arrapt'];
+					$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
+					$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',@$arrivals[(string)$ascode])[0]);
+					$dscode = trim(explode('-',@$departures[(string)$dscode])[0]);
+					$sel_info = $this->selctionBlock_fun($postdata['segment']);
+		
+					$body = '';
+					$body .= '<b>Dear '.$postdata['adult_title_1'].' '.ucfirst($postdata['adult_fname_1']).'</b>
+							<br>Please find details of your recent search on <a href="'.base_url().'">bookitnow.com</a><br>
+							<br><b>YOUR PARTY:</b><br>'.$ppr.'<b><br>FLIGHTS:</b><br>'.
+										$dscode.' To '.$ascode.'<br>Departure Date :
+							<span class="aBn" data-term="goog_1032159087" tabindex="0">
+									<span class="aQJ">'.date('d M Y',$this->cvtDt(str_date($flit[0]['flight_selected_date']))).'</span>
+							</span>
+							<br>'.$hobjs[0]['@attributes']['nights'].' Nights duration<br>
+							Depart at <span class="aBn" data-term="goog_1032159088" tabindex="0"><span class="aQJ">'.
+										substr(explode(' ',$fobj['@attributes']['outdep'])[1],0,-3).'</span></span><br>
+							Flights Per Person: &#163;'.$fobj['@attributes']['sellpricepp'].' x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+							Flights Total: &#163;'.$fobj['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+							<b><br>HOTEL:</b><br>'.urldecode($hobjs[0]['@attributes']['hotelname']).' in '.urldecode($hobjs[0]['@attributes']['resort']).
+										'<br>'.(int)$hobjs[0]['@attributes']['starrating'].' Star, '.boardbasis($hobjs[0]['@attributes']['boardbasis']).'<br>
+							Selected Room(s): <br>'.$pprp.'Total Room(s): &#163;'.$tot_sel.'<br><br><b> ATOL Admin Charge </b><br>
+							This is an ATOL charged : 2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+							Total ATOL : &#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50).'<br>'.
+										$sel_info['sel_block']['segment'].'<br><b> HOLIDAY TOTAL:</b>
+							<br>&#163;'. $sel_info['whole'] .'<br><br>
+					
+					Want to know more? Need help or advice? Call us on 0208 548 2658 <br><br>
+					Do not just travel, well travel!
+		<img src="https://ci6.googleusercontent.com/proxy/FDg_fZ9IpYz-JP1QS-2FSmydrrO9Eq070M1SxzevBI5jFRZPzdiKBU9g-M2micrw8ctujkHcpQtlob_l-GoSptZElxAIVcira05itPuM5bkmq14h7x5bppNyr_LICjbpd27g4QscIQ4TvQ=s0-d-e1-ft#http://mandrillapp.com/track/open.php?u=30475359&amp;id=4c7542725e3540b49402a5bf768304d9" height="1" width="1" class="CToWUd"><div class="yj6qo"></div><div class="adL">
+		</div>';
+			
+										return $body;
+				
+	}
+	function email_body_hotel($postdata,$rows = array())
+	{
+		$tot_sel = 0;
+		$hobjs = json_decode($rows[0]['pack_info'],true);
+		if($rows[0]['pax'] != '')
+		{
+			$ser_arr = explode(',',$rows[0]['pax']);
+			$rc = 1;
+			$ppr = '';$pprp='';
+			foreach ($ser_arr as $key => $ser)
+			{
+				$ser_arr_sub = explode('-',$ser);
+				$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+				$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+				$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+				$rc++;
+			}
+		}
+		else
+		{
+			$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
+			$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
+			$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+		}
+		
+		$body = '';
+		$body .= '<b>Dear '.$postdata['adult_title_1'].' '.ucfirst($postdata['adult_fname_1']).'</b>
+							<br>Please find details of your recent search on <a href="'.base_url().'">bookitnow.com</a><br>
+							<br><b>YOUR PARTY:</b><br>'.$ppr.'<b><br>HOTEL:</b><br>'.urldecode($hobjs[0]['@attributes']['hotelname']).' in '.urldecode($hobjs[0]['@attributes']['resort']).
+									'<br>'.(int)$hobjs[0]['@attributes']['starrating'].' Star, '.boardbasis($hobjs[0]['@attributes']['boardbasis']).'<br>
+							Selected Room(s): <br>'.$pprp.'Total Room(s): &#163;'.$tot_sel.'<br><br><b> ATOL Admin Charge </b><br>
+							This is an ATOL charged : 2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>
+							Total ATOL : &#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50).'<br><br><b> HOLIDAY TOTAL:</b>
+							<br>&#163;'. ($tot_sel + (($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50)) .'<br><br>Want to know more? Need help or advice? Call us on 0208 548 2658 <br><br>
+					Do not just travel, well travel!
+		<img src="https://ci6.googleusercontent.com/proxy/FDg_fZ9IpYz-JP1QS-2FSmydrrO9Eq070M1SxzevBI5jFRZPzdiKBU9g-M2micrw8ctujkHcpQtlob_l-GoSptZElxAIVcira05itPuM5bkmq14h7x5bppNyr_LICjbpd27g4QscIQ4TvQ=s0-d-e1-ft#http://mandrillapp.com/track/open.php?u=30475359&amp;id=4c7542725e3540b49402a5bf768304d9" height="1" width="1" class="CToWUd"><div class="yj6qo"></div><div class="adL">
+		</div>';
+										
+		return $body;
+	}
 	function booking_submition()
 	{	
 		
 		if($this->input->post())
 		{
 			$post_data = $this->input->post();
+			
 			$this->load->model('FullSearch');
 			$data = array();
 			if(!$this->input->post('type_search'))
 			{
 				$rows = $this->FullSearch->fetch_a_search(array('url_hash' => $post_data['segment']));
 				$data['base_id'] = $rows[0]['id'];
+				$body = $this->email_body_full($post_data,$rows);
 			}
 			else{
 				$data['type_search'] = $post_data['type_search'];
-			}
-			
+				$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $post_data['segment']));
+				$data['base_id'] = $rows[0]['id'];
+				$body = $this->email_body_hotel($post_data,$rows);
+				
+			}	
 		
 			$adults_info = array();$children_info = array();
 			foreach ($post_data as $key => $value)
@@ -609,45 +724,22 @@ class Extras extends CI_Controller {
 			$data['email'] =	$post_data['email'];		
 			$data['postal_code'] = $post_data['post_code'];
 			$data['city_country'] = $post_data['city'];	
+			$data['card_type'] = $post_data['card_type'];
+			$data['name_card'] = $post_data['name_card'];
+			$data['card_number'] = $post_data['card_number'];
+			
 			$this->load->model('BookingInfo');
+			
 		
 			if($this->BookingInfo->createRecord($data))
 			{
 				$list = array($post_data['email']);
 				$sub = "Booking Information";
-				$body ="<div>
-							<div>
-								<div>Dear ".$adults_info['fname'][0].",&nbsp;</div>
-								<div>&nbsp;</div>
-								<div>Greetings!</div>
-								<div>&nbsp;</div>
-								<div>We will contact you soon under your trip request.</div>
-								<div>&nbsp;</div>
-								<div>Booking information goes here.</div>
-								<div>&nbsp;</div>
-								<div>Regards,</div>
-								<div>Team BookItNow</div>
-								<div>&nbsp;</div>
-							</div>
-						</div>";
+				
 // 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
 // 				{}
-				$list =  array(BOOKINGADMINEMAIL);
-				$body ="<div>
-							<div>
-								<div>Dear Admin,&nbsp;</div>
-								<div>&nbsp;</div>
-								<div>Mr ".$adults_info['fname'][0]." , booked ticket.Bellow is the information</div>
-								<div>&nbsp;</div>							
-								<div>Booking information goes here.</div>
-								<div>&nbsp;</div>
-								<div>Regards,</div>
-								<div>Team BookItNow</div>
-								<div>&nbsp;</div>
-							</div>
-						</div>";
-// 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
-// 				{}
+				
+
 				echo json_encode(array('success' => 1));
 			}
 			else

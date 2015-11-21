@@ -521,5 +521,5 @@ $config['proxy_ips'] = '';
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 
-$config['header_css'] = array('css/bootstrap.min.css','css/megamenu.css');
-$config['header_js']  = array('js/jquery.min.js','js/bootstrap.min.js','js/jquery.cookie.js','js/megamenu.js');
+$config['header_css'] = array('css/bootstrap.min.css');
+$config['header_js']  = array('js/jquery.min.js','js/bootstrap.min.js','js/jquery.cookie.js');

@@ -1,6 +1,6 @@
  $(function() {
  
-	 $('.datepicker_book').datepicker();
+	
 	 $('.bxslider1').bxSlider({
          minSlides: 4,
          maxSlides: 8,
@@ -48,7 +48,33 @@
     $( "#datepicker2" ).datepicker(); 
     
     
-    	
+    
+    $('.filtercheckbox input[type="checkbox"]').click(function(){
+    	var f_name = $(this).attr('id');
+    	if(f_name.indexOf("chkFlightFilter") > -1 && $(this).prop("checked") == true)
+    	{
+    		$('[mandatory="price"]').not(this).attr('checked',false);
+    	}
+    	if(f_name.indexOf("chkStar") > -1 && $(this).prop("checked") == true)
+    	{
+    		if(f_name != 'chkStar_all')$('#chkStar_all').attr('checked',false);
+    		else $('[mandatory="star"]').not(this).attr('checked',false);
+    	}
+    	if(f_name.indexOf("chkBoardbasisFilter") > -1 && $(this).prop("checked") == true)
+    	{
+    		if(f_name != 'chkBoardbasisFilter_all')$('#chkBoardbasisFilter_all').attr('checked',false);
+    		else $('[mandatory="boardbasis"]').not(this).attr('checked',false);
+    	}
+    	if(f_name.indexOf("chkResortsFilter") > -1 && $(this).prop("checked") == true)
+    	{
+    		if(f_name != 'chkResortsFilter_all')$('#chkResortsFilter_all').attr('checked',false);
+    		else $('[mandatory="resorts"]').not(this).attr('checked',false);
+    	}
+    	var date = $('li.current').find('.current_date').attr('dt');
+    	//filterFlightsNHotels(flight_crypt,type,page);     
+    })
+    
+    $('.datepicker_book').datepicker();
  });
 	 function getpackinfo(e)
 	 {	
@@ -75,7 +101,46 @@
         }
         
         function Addhotel(type,info,segment)
-        {      	
+        {  
+        	
+        	if(type == 'pack_hotel')
+        	{
+        		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
+        				   +'</div><div class="wait_page_section">'
+        				   +'<h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;text-align:center;">Hotel & Room Selections Added.</h2></div>'
+        				   +'<div class="center wait_page" style="text-align:center;"><br>'
+        				   +'<h3 class="txt_color_1">Calculating Savings &amp; Checking Available Extras</h3>'
+        				   +'<h4>Enhance Your Trip For the Best Holiday Experience.</h4>'
+        				   +'<h6>Hold Luggage, Transfers, Parking &amp; Car Hire.</h6>'        				   
+        				   +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
+        				   +'<img src="/images/loader-bar.gif"></div><br>'
+        				   +'<h3 class="txt_color_1"> Please Wait a Moment Whilst We Get you The Best Rates...</h3></div><div><h4><strong>Book With Confidence</strong>'
+        				   +'</h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> '
+        				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> '
+        				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent">'
+        				   +'<img src="/images/abta.png"/></div></div></div>';
+        	}
+        	else
+        	{
+        		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Selected Rooms Have Been Saved.</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br><h3 class="txt_color_1">Continuing To The Final Step</h3></div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        	}
+        	
+            $.fancybox({
+            	content : html,
+            	'width':'500',
+            	'height' : '400',
+                'autoDimensions':false,
+                'type':'iframe',
+                'autoSize':false,
+                'showCloseButton': false,
+                'helpers'   : { 
+                    overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+                   },
+    			});
+            $('.fancybox-overlay').css('background','#fff');      
+            $('.fancybox-close').hide();
+            $('.fancybox-close').css('display','none');
+           
         	$.post("/welcome/hotel/savehotel_fun",{'searchType':type,'crypt_text':info,'crypt':segment},function(data){  
         		
         	//	console.log(data);return false;
@@ -165,18 +230,40 @@
         }
         
         function callWaitPageForextra()
-        {
-        	var html = '<head><meta charset="utf-8"><title>superescapes | Terms Of Use</title><meta name="viewport" content="width=device-width, initial-scale=1"><link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/modal_popup.css" rel="stylesheet" type="text/css"><link href="styles/bootstrap-responsive.min.css" rel="stylesheet" /><link rel="stylesheet" href="/assets/js/jquery-ui.css"><link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/custom.css" rel="stylesheet" type="text/css"><link href="/assets/css/responsive.css" rel="stylesheet" type="text/css"><link href="/assets/css/menu.css" rel="stylesheet"><link  href="/assets/css/inner-page.css" rel="stylesheet"><link href="/assets/css/menu.css" rel="stylesheet"></head><body><div class="clearfix"></div><div class="container main-wrappage"><div class="row"><div class="col-sm-12 col-md12 col-xs-12" style="text-align:center"><h3><img src="/images/logo.png"></h1><br><h2>Discounts Applied &amp; Selected Options Have Been Saved.<br></h2><div style="margin: 15px 0;"><img src="/images/loader-bar.gif"> </div><div class="box-border-wrap"><h5 class="loading-page"><b>Proceeding To Booking Details</b></h5></div><h4>Book With Confidence</h4><h5>Fully ABTA and ATOL Bonded for financial protection<h5><h3><img src="/images/abta.png"></h1><br> </div></div></div></div></div><div class="clearfix"></div> <div class="clearfix"></div></body>';
-        	$('html').html(html);
-        	return true;
-        	/*$.post('/welcome/extras/save_extras_fun',{lug:id,crypt:crypt},function(data){
-        		
-        		
-        	},'json');*/
+        { 
+        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
+				   +'</div><div class="wait_page_section">'
+				   +'<h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;text-align:center;">Discounts Applied & Selected Options Have Been Saved.</h2></div>'
+				   +'<div class="center wait_page" style="text-align:center;"><br>'			          				   
+				   +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
+				   +'<img src="/images/loader-bar.gif"></div><br>'
+				   +'<h3 class="txt_color_1"> Proceeding To Booking Details </h3></div><div><h4><strong>Book With Confidence</strong>'
+				   +'</h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> '
+				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> '
+				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent">'
+				   +'<img src="/images/abta.png"/></div></div></div>';
+	
+	
+ $.fancybox({
+ 	content : html,
+ 	'width':'500',
+ 	'height' : '400',
+     'autoDimensions':false,
+     'type':'iframe',
+     'autoSize':false,
+     'showCloseButton': false,
+     'helpers'   : { 
+         overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+        },
+		});
+ $('.fancybox-overlay').css('background','#fff');      
+ $('.fancybox-close').hide();
+ $('.fancybox-close').css('display','none');
         }
         
         function basket(seg,e)
         {
+        	
         	var request_data = $(e).serializeArray(); 
         
 			var count = 0;
@@ -197,7 +284,7 @@
                 $('[name="email"]').focus();
                 return false;
             }
-			if(count)return false;
+		    if(count)return false;
 			var t = {};
 			t['name'] = 'segment';
 			t['value'] = seg;
@@ -205,6 +292,10 @@
 			
 			$.post( "/welcome/extras/booking_submition",request_data, function( data ) {
 				
+				if(data.success == 1)
+				{
+						alert("Thank you for booked");
+				}
 				window.location =  "/";
 				/*if(data.success)
 				{

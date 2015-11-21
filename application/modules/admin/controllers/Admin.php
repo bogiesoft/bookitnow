@@ -23,8 +23,8 @@ class Admin extends CI_Controller {
 		$this->load->library ( 'Layouts' );
 		$this->layouts->add_include ( $this->config->item ( 'header_css' ) );
 		$this->layouts->add_include ( $this->config->item ( 'header_js' ) );
-		$this->load->helper ( 'form', 'url', 'common' );
-		$this->load->helper ( 'common' );
+		$this->load->helper (array( 'form', 'url', 'common') );
+		
 		$this->load->model ( 'User' );
 		$this->load->library ( 'form_validation' );
 	}
@@ -246,7 +246,7 @@ class Admin extends CI_Controller {
 		) );
 		$this->load->model ( 'Bookinginfo' );
 		$data['rows'] = $this->Bookinginfo->fetch_a_search(array(),'ALL');
-		$adult_raw_info = json_decode($data['rows'][0]['adults_info']);
+		$adult_raw_info = json_decode(@$data['rows'][0]['adults_info']);
 		
 		//echo $adult_raw_info->fname[0];
 		//echo '<pre>';print_r();
@@ -257,9 +257,8 @@ class Admin extends CI_Controller {
 	
 	public function view_booking($id=null)
 	{
-		if ((int)$id)
-		{
 			$data = array ();
+			$data['controller'] = $this;
 			$this->layouts->add_include ( array (
 					'css/admin/style.css',
 					'css/admin/lines.css',
@@ -273,7 +272,69 @@ class Admin extends CI_Controller {
 			) );
 				
 			$this->load->model ( 'Bookinginfo' );
-			$data['row'] = $this->Bookinginfo->fetch_a_search(array('id'=>$id));
+			$this->load->model('UserSearch');
+			
+			$data['row'] = $this->Bookinginfo->fetch_a_search(array('reference_id'=>$id));
+			if(empty($data['row']))
+			{
+				redirect(base_url().'admin/booking_info');
+			}
+			if($data['row'][0]['type_search'] == 'hotel_only'){
+				
+				$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));				
+				$data['hobjs'] = json_decode($data['seg'][0]['pack_info'],true);					
+			}
+			else{
+				$this->load->model('FullSearch');
+			//	$this->serachInfo($data['row'][0]['base_id'])
+				$data['seg'] = $this->FullSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+				if(!empty($data['seg']))
+				{
+					$this->load->model('PhaseFlightOrHotel');
+					$this->load->model('AlLugagePrice');
+					$this->load->model('SavingsNExtFields');
+					$this->load->model('PhaseSavingsNExtras');
+					
+						
+					$data['flit'] = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$data['seg'][0]['id']));
+					$data['hotel'] = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'pack_hotel','full_pack_id'=>$data['seg'][0]['id']));
+						
+					if(empty($data['flit']) || empty($data['hotel']))
+					{
+						redirect(base_url());
+					}
+						
+					$data['fobj'] = json_decode($data['flit'][0]['pack_info'],true);
+					$data['lug_row'] = $this->AlLugagePrice->fetch_a_search(array('airline_code'=>$data['fobj']['@attributes']['suppcode']));
+					$data['hobjs'] = json_decode($data['hotel'][0]['pack_info'],true);
+						
+					$tot_sel = 0;
+					
+					//modules::load('module/controller/method');
+					$data['departures'] = fetch_departures();
+					$data['arrivals'] = fetch_arrivals();
+					$data['ext_row'] = $this->PhaseSavingsNExtras->fetch_a_search(array('full_pack_id' => $data['seg'][0]['id']));
+					//echo '<pre>';print_r($data['ext_row']);exit;
+					//Future  - Region should be dynamic
+					/*$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
+					$arr1 = array();
+					foreach ($data['ext_fields'] as $ext_fields)
+					{
+						$arr1[$ext_fields['category']][] = $ext_fields;
+					}
+					$data['ext_fields'] = $arr1;
+					//echo '<pre>';print_r($data['ext_fields']);exit;
+					foreach ($data['hobjs'] as $hobj)
+					{
+						$tot_sel += $hobj['@attributes']['sellpricepp'];
+					}*/
+						
+				}
+				else
+				{redirect(base_url().'admin/booking_info');}
+				
+			}
+			
 			
 			if ($this->input->post ()) {
 				$this->form_validation->set_rules ( 'adult_fname');
@@ -281,19 +342,17 @@ class Admin extends CI_Controller {
 				$this->form_validation->set_rules ( 'email');
 				$this->form_validation->set_rules ( 'mobile');
 				
-			}
-				
+			}			
 				
 			$this->layouts->set_title ( 'Admin Dashboard' );
 			$this->layouts->view ( 'view_booking.php', $data, 'admin' );
-		}
-		else
-		{
-			abort('404');
-		}
+		
 	
 	}
-	
+	public function cvtDt($date)
+	{
+		return strtotime(str_replace('/','-',$date));
+	}
 	
 	public function saveListingFun() {
 		if ($this->input->post ()) {			

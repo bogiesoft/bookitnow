@@ -65,8 +65,8 @@
 					<div class="form-group">
 						<select name="child_title_<?php echo $i;?>" title="Select title">
 							<option value="-1">Select Title</option>
-							<option value="Mr">Mast</option>
-							<option value="Mrs">Miss</option>										
+							<option value="Miss">Miss</option>
+							<option value="Miss">Miss</option>										
 						</select>
 					</div>	
 				</div>
@@ -340,11 +340,11 @@
 	
 
 	<div class="conatiner-bg">	
-	<div class="flight-wrap"><h5><b>&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * 1.50);?> </b></h5></div>	
+	<div class="flight-wrap"><h5><b>&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * 2.50);?> </b></h5></div>	
 	<h5><b>Atol Protection</b></h5>	
 	<div class="flight-wrap"><a class="toggle_atol">What's this?</a></div>	
 	<?php include 'includes/atol_tooltip.php';?>
-	<h5> <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']) ?> x &#163;1.50</h5><br>	
+	<h5> <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']) ?> x &#163;2.50</h5><br>	
 	</div>
 	
 	<div class="conatiner-bg">	

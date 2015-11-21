@@ -346,11 +346,44 @@
         					return false;
         				}
         			});
-        			if(count)return false;		
+        			if(count)return false;	
+        			
+        			var str = '';       	
+                	
+                	str += $('select[name="departure_airports"] option:selected').text() +' to '
+                				+ $('select[name="arrival_airports"] option:selected').text() +'. '
+                				+ $('input[name="departure_date"]').val() +'. '
+                				+ $('select[name="nights"] option:selected').text() + ' nights.';
+                				
+                	
+                	
+                	
+                		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Flights Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+                        $.fancybox({
+                        	content : html,
+                        	'width':'500',
+                        	'height' : '400',
+                            'autoDimensions':false,
+                            'type':'iframe',
+                            'autoSize':false,
+                            'showCloseButton': false,
+                            'helpers'   : { 
+                                overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+                               },
+                			});
+                        $('.fancybox-overlay').css('background','#fff');      
+                        $('.fancybox-close').hide();
+                        $('.fancybox-close').css('display','none');
+
+        			
+        			
         			$.post( "welcome/fetch_filtered_flights",request_data, function( data ) {
         				
         				if(data == 'notavailable')
         				{
+        					var date = new Date();
+    			        	date.setTime(date.getTime() + (60 * 1000));
+    			        	$.cookie('notavailable_info', str, { expires: date });	
         					window.location = "notavailable";
         				}
         				else
@@ -405,6 +438,9 @@
         		
         		if($.cookie('selected_dept_cookie') != -1 && $.cookie('selected_dept_cookie') != '' && $.cookie('selected_dept_cookie') != undefined)
         		{
+        			
+        			
+        			
         			
         			$('select[name="departure_airports"] option[value="'+$.cookie('selected_dept_cookie')+'"]').attr('selected','selected');
         			
@@ -656,36 +692,38 @@
         
         function submit_fnh_fun(request_data)
         {        
-        	var str = '';
-        	
-        	/*var str_load = '';
+        	var str = '';       	
         	if(isNaN(Number($('select[name="full_children"] option:selected').text())))var t = 0;
     		else t = $('select[name="full_children"] option:selected').text();
-        	str_load += $('select[name="full_departure_airports"] option:selected').text() +' to '
+        	str += $('select[name="full_departure_airports"] option:selected').text() +' to '
         				+ $('select[name="full_arrival_airports"] option:selected').text() +'. '
         				+ $('input[name="full_departure_date"]').val() +'. '
         				+ $('select[name="full_nights"] option:selected').text() + ' nights.'
-        				$('select[name="full_adults"] option:selected').text() + ' Adult(s) ';
-        				+ t + ' Child(ren)  ';
-        	*/
+        				+ $('select[name="full_adults"] option:selected').text() + ' Adult(s) '
+        				+ t + ' Child(ren). '
+        				+ $('select[name="full_rooms"] option:selected').text() + ' Room(s)';
         	
-        	$.each(request_data, function(index, value){
-        		if(value.name == 'full_departure_airports')str += $('select[name="full_departure_airports"] option:selected').text() + ' - ';
-        		if(value.name == 'full_arrival_airports')str += $('select[name="full_arrival_airports"] option:selected').text() + ' | ';
-        		if(value.name == 'full_nights')str += $('select[name="full_nights"] option:selected').text() + ' nights | ';
-        		if(value.name == 'full_departure_date')str += $('input[name="full_departure_date"]').val() + ' | ';
-        		if(value.name == 'full_adults')str += $('select[name="full_adults"] option:selected').text() + ' Adults,';
-        		if(isNaN(Number($('select[name="full_children"] option:selected').text())))var t = 0;
-        		else t = $('select[name="full_children"] option:selected').text();
-        		if(value.name == 'full_children')str += t + ' Children | ';
-        		if(value.name == 'full_rooms')str += $('select[name="full_rooms"] option:selected').text() + ' Room(s) | ';
-        		
-        	});
         	
-        		$
-            	var html = '<head><meta charset="utf-8"><title>superescapes | Terms Of Use</title><meta name="viewport" content="width=device-width, initial-scale=1"><link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/modal_popup.css" rel="stylesheet" type="text/css"><link href="styles/bootstrap-responsive.min.css" rel="stylesheet" /><link rel="stylesheet" href="/assets/js/jquery-ui.css"><link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/custom.css" rel="stylesheet" type="text/css"><link href="/assets/css/responsive.css" rel="stylesheet" type="text/css"><link href="/assets/css/menu.css" rel="stylesheet"><link  href="/assets/css/inner-page.css" rel="stylesheet"><link href="/assets/css/menu.css" rel="stylesheet"></head><body><div class="clearfix"></div><div class="container main-wrappage"><div class="row"><div class="col-sm-12 col-md12 col-xs-12" style="text-align:center"><h3><img src="/images/logo.png"></h1><br><h2>Discounts Applied &amp; Selected Options Have Been Saved.<br></h2><div style="margin: 15px 0;"><img src="/images/loader-bar.gif"> </div><div class="box-border-wrap"><h5 class="loading-page"><b>Proceeding To Booking Details</b></h5></div><h4>Book With Confidence</h4><h5>Fully ABTA and ATOL Bonded for financial protection<h5><h3><img src="/images/abta.png"></h1><br> </div></div></div></div></div><div class="clearfix"></div> <div class="clearfix"></div></body>';
-            	$('html').html(html);
-            	return true;
+        	
+        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Hotels</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Hotels Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+            $.fancybox({
+            	content : html,
+            	'width':'500',
+            	'height' : '400',
+                'autoDimensions':false,
+                'type':'iframe',
+                'autoSize':false,
+                'showCloseButton': false,
+                'helpers'   : { 
+                    overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+                   },
+    			});
+            $('.fancybox-overlay').css('background','#fff');      
+            $('.fancybox-close').hide();
+            $('.fancybox-close').css('display','none');
+            	//var html = '<head><meta charset="utf-8"><title>superescapes | Terms Of Use</title><meta name="viewport" content="width=device-width, initial-scale=1"><link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/modal_popup.css" rel="stylesheet" type="text/css"><link href="styles/bootstrap-responsive.min.css" rel="stylesheet" /><link rel="stylesheet" href="/assets/js/jquery-ui.css"><link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"><link href="/assets/css/custom.css" rel="stylesheet" type="text/css"><link href="/assets/css/responsive.css" rel="stylesheet" type="text/css"><link href="/assets/css/menu.css" rel="stylesheet"><link  href="/assets/css/inner-page.css" rel="stylesheet"><link href="/assets/css/menu.css" rel="stylesheet"></head><body><div class="clearfix"></div><div class="container main-wrappage"><div class="row"><div class="col-sm-12 col-md12 col-xs-12" style="text-align:center"><h3><img src="/images/logo.png"></h1><br><h2>Discounts Applied &amp; Selected Options Have Been Saved.<br></h2><div style="margin: 15px 0;"><img src="/images/loader-bar.gif"> </div><div class="box-border-wrap"><h5 class="loading-page"><b>Proceeding To Booking Details</b></h5></div><h4>Book With Confidence</h4><h5>Fully ABTA and ATOL Bonded for financial protection<h5><h3><img src="/images/abta.png"></h1><br> </div></div></div></div></div><div class="clearfix"></div> <div class="clearfix"></div></body>';
+            	//$('html').html(html);
+            	
             	
             
         	
@@ -717,22 +755,51 @@
         
         function submit_fnh_hotel_fun(request_data)
         {
-        	blockSearchingTabs();
-        	//if($.cookie('mul_submition_prevent') == 1)
-        	//{   	
-        	//	$.cookie('mul_submition_prevent',0);
+        	
+        		var str = '';       	
+            	if(isNaN(Number($('select[name="hotel_childrens"] option:selected').text())))var t = 0;
+        		else t = $('select[name="hotel_childrens"] option:selected').text();
+            	str += 	$('select[name="full_arrival_airports"] option:selected').text() +', '
+            				+ $('input[name="hotel_check_in_date"]').val() +'. '
+            				+ $('select[name="hotel_nights"] option:selected').text() + ' nights.'
+            				+ $('select[name="hotel_adults"] option:selected').text() + ' Adult(s) '
+            				+ t + ' Child(ren). '
+            				+ $('select[name="hotel_rooms"] option:selected').text() + ' Room(s)';
+            	
+            	
+            	
+            	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Flights Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+                $.fancybox({
+                	content : html,
+                	'width':'500',
+                	'height' : '400',
+                    'autoDimensions':false,                    
+                    'type':'iframe',
+                    'autoSize':false,
+                    'showCloseButton': false,
+                    'helpers'   : { 
+                        overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+                       },
+        			});
+                $('.fancybox-overlay').css('background','#fff');      
+                $('.fancybox-close').hide();
+                $('.fancybox-close').css('display','none');
+        		
+            		
 	        	$.post( "/welcome/hotel/fetch_filtered_hotels",request_data, function( data ) {
-	        		//console.log(data);return false;
+	        		
 
 					if(data == 'notavailable')
 					{
-						unblockSearchingTabs();
 						
+						var date = new Date();
+			        	date.setTime(date.getTime() + (60 * 1000));
+			        	$.cookie('notavailable_info', str, { expires: date });	
 						window.location = "notavailable";
 					}
 					else
 					{
-						unblockSearchingTabs();
+						
 						window.location = data;
 					}				
 				}, "html");

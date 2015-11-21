@@ -603,7 +603,8 @@ p.privacy {
 }
 .txt_color_1 {
 	color: #06AAD1;
-	padding: 5px;
+	padding: 0px;
+	font-size: 15px;
 }
 small {
 	font-size: 75%;
@@ -634,12 +635,12 @@ small {
 	line-height: 25px;
 	text-decoration: none;
 	text-align: center;
-	color: #ff7;
+	color: #fff;
 	padding: 3px 6px;
 	overflow: hidden;
 	text-transform: uppercase;
 	transition: all 0.2s linear 0s;
-	background: #37c837;
+	background: #06AAD1;
 	cursor: pointer;
 }
 .columns_three {

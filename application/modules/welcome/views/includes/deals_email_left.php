@@ -1,4 +1,4 @@
-<div class="deals">
+<!-- <div class="deals">
 <h2>Deals By Email</h2>
 <ul>
 <li><i class="fa fa-chevron-right"></i> &nbsp;<a href="#">Exclusive Holiday Deals</a></li>
@@ -10,4 +10,4 @@
 <div class="register"><a href="#">REGISTER FREE</a></div>
 
 
-</div>
+</div>-->

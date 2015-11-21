@@ -147,5 +147,33 @@ if( !function_exists('boardbasis') ) {
   	}
   }
   
+  if( !function_exists('fetch_departures') ) {
+	  function fetch_departures()
+	  {
+	  	$depts_raw = new SimpleXMLElement(download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+	  	$departures = array();
+	  	foreach ($depts_raw as $departure)
+	  	{
+	  		$code = (array)$departure->attributes()->code;
+	  		$name = (array)$departure->attributes()->name;
+	  		$departures[$code[0]] = $name[0];
+	  	}
+	  	return $departures;
+	  }
+  }
+  if( !function_exists('fetch_arrivals') ) {
+	  function fetch_arrivals()
+	  {
+	  	$arrivals = array();
+	  	$results['arrivals'] = new SimpleXMLElement(download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=2&compid=1'));
+	  	foreach ($results['arrivals'] as $arrival)
+	  	{
+	  		$code = (array)$arrival->attributes()->code;
+	  		$name = (array)$arrival->attributes()->name;
+	  		$arrivals[$code[0]] = $name[0];
+	  	}
+	  	return $arrivals;
+	  }
+  }
   
   

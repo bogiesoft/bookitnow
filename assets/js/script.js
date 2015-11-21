@@ -17,7 +17,7 @@
          nextText: 'Onward →',
          prevText: '← Go back'
        });  
-	 $(".megamenu").megamenu();
+	
 	//Check to see if the window is top if not then display button
 		$(window).scroll(function(){
 			if ($(this).scrollTop() > 100) {
@@ -338,7 +338,25 @@
         
         
         function Addflight(type,info,segment)
-        {        	
+        {  
+        	
+        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Your Flights Have Been Added.</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h3 class="txt_color_1">Now Checking Hotel Availability</h3> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+            $.fancybox({
+            	content : html,
+            	'width':'500',
+            	'height' : '400',
+                'autoDimensions':false,
+                'type':'iframe',
+                'autoSize':false,
+                'showCloseButton': false,
+                'helpers'   : { 
+                    overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+                   },
+    			});
+            $('.fancybox-overlay').css('background','#fff');      
+            $('.fancybox-close').hide();
+            $('.fancybox-close').css('display','none');
+        	
         	$.post("/welcome/saveflight_fun",{'searchType':type,'crypt_text':info,'crypt':segment,'dt':$('li.current a div.current_date').attr('dt')},function(data){
         	
         		if(data == 'notavailable')

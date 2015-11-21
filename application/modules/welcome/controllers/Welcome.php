@@ -268,7 +268,7 @@ class Welcome extends CI_Controller {
 		$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
 		$data= array();$results=array();
 		$results['controller']=$this;		
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/style.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/style.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script.js'));
 		$this->layouts->set_title('Search Page');
 		$results['suppliers_list'] = array(
 				'AVRO' => '/images/AVROF.gif',
@@ -299,8 +299,10 @@ class Welcome extends CI_Controller {
 		if(!empty($rows))
 		{		
 			$count = 0;$flex = 3;
-			$results['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-			$results['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+		//	$results['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
+		//	$results['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+			$results['departures'] =  $this->fetch_departures();
+			$results['arrivals'] = $this->fetch_arrivals();
 			// Future To-do :  Here Please check weather "selected_date" should more than current date otherwise 404 page
 					
 			$req_url = $rows[0]['service_url'];
@@ -447,7 +449,7 @@ class Welcome extends CI_Controller {
 	{
 		$data= array();$results=array();
 		$results['controller']=$this;
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/style.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/jquery.fancybox.css','css/style.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script.js'));
 		$this->layouts->set_title('Search Page');
 		$results['suppliers_list'] = array(
 				'AVRO' => '/images/AVROF.gif',

@@ -1,3 +1,54 @@
+/*--meena css--*/
+
+@media screen and (max-width: 1366px) {	
+	.caption {
+	width:80%;
+	position: absolute;
+	top:32%;
+	left:8%;
+border-radius: 5px;
+	float: left;
+z-index:99!important;
+	
+}
+body .tabbable {
+	color: #fff !important;
+	width: 65%;
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	padding: 10px 20px;
+}
+}
+
+
+
+@media screen and (max-width: 1280px) {
+	
+	
+	
+.caption {
+	width:85%;
+	position: absolute;
+	top:25%;
+	left:8%;
+border-radius: 5px;
+	float: left;
+	z-index:99!important;
+	
+}
+body .tabbable {
+	color: #fff !important;
+	width: 65%;
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	padding: 10px 20px;
+}
+}
+
+/*--meena css--*/
+
+
+
 @media screen and (max-width: 320px) {
 .left {
 	text-align: center;

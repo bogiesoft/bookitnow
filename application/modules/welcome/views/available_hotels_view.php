@@ -6,21 +6,21 @@
             </div>
 			
             <div class="clearfix bg_white drop_light has_bottom_margin">                
-                <div id="cphContent_divFlightAvailabilityFilterOperatorCode" class=" clearfix">
+              <!--   <div id="cphContent_divFlightAvailabilityFilterOperatorCode" class=" clearfix">
 				   <div class="filtercheckbox"> <span>
                   <input id="chkFlightFilter_all" name="recommended" checked="checked" type="checkbox">
                   <label for="chkFlightFilter_all">Recommended</label></span> 
 				  </div>
-                </div>             
+                </div>   -->          
                 
                 <div class="filtercheckbox"> <span name="check">
-                    <input id="chkFlightFilter_0" name="lowest" type="checkbox">
+                    <input id="chkFlightFilter_0" mandatory="price" checked="checked" type="checkbox">
                     <label for="chkFlightFilter_0">Lowest Price</label>
                     </span>                    
                </div> 	
 
 				<div class="filtercheckbox"> <span name="check">
-                    <input id="chkFlightFilter_1" name="highest" type="checkbox">
+                    <input id="chkFlightFilter_1" mandatory="price" name="highest" type="checkbox">
                     <label for="chkFlightFilter_1">Highest Price</label>
                     </span>
               
@@ -67,7 +67,7 @@
 	
 	echo '<div class="filtercheckbox">
               <span name="check">
-            	<input id="chkStar_all" type="checkbox" name="chkStar_all" >
+            	<input id="chkStar_all" type="checkbox" checked="checked">
             	<label style="height:100px;" for="chkStar_all">All Rattings
 					<p>'.array_sum(array_map('count_hot_star',$offers['populators']['star_ratting']['price'])).' hotels from</p>
 	            	<p> &#163;'.min(array_map('min_price_star',$offers['populators']['star_ratting']['price'])).'</p>
@@ -78,8 +78,8 @@
 	{
 	
 		echo '<div class="filtercheckbox">
-                               <span name="check" groupname="filter">
-            						<input id="chkStar_'.$key.'" type="checkbox" name="chkStar_'.$key.'" >
+                               <span name="check">
+            						<input id="chkStar_'.$key.'" type="checkbox" mandatory="star" >
             						<label style="height:100px;" for="chkStar_'.$key.'">'.$val.'
 					                    <p>
 					                       '.count($offers['populators']['star_ratting']['price'][$key]).' hotels from
@@ -97,12 +97,19 @@
 					
 
 <?php 
+	echo '<div class="filtercheckbox">
+            <span name="check">
+            	<input id="chkBoardbasisFilter_all" checked="checked" type="checkbox" value="ALL" >
+            	<label for="chkBoardbasisFilter_all">All Board Basis</label>
+			</span>
+            <label for="chkBoardbasisFilter"></label>
+          </div>';
 
 foreach ($offers['populators']['boardbasis'] as $key => $val)
 {
 		echo '<div class="filtercheckbox">
-                               <span name="check" groupname="filter">
-            						<input id="chkBoardbasisFilter_'.$key.'" type="checkbox" name="chkBoardbasisFilter_'.$key.'" value="'.$key.'" >
+                               <span name="check">
+            						<input id="chkBoardbasisFilter_'.$key.'" mandatory="boardbasis" type="checkbox" value="'.$key.'" >
             						<label for="chkBoardbasisFilter_'.$key.'">'.$val.'</label>
 				   				</span>
                                <label for="chkBoardbasisFilter"></label>
@@ -115,12 +122,19 @@ foreach ($offers['populators']['boardbasis'] as $key => $val)
 <div class="clearfix filter_section">
 			<div class="title-left"><span class="h-title">Resorts</span></div>
 			<?php 
+			echo '<div class="filtercheckbox">
+                               <span name="check">
+            						<input id="chkResortsFilter_all" checked="checked" type="checkbox" value="ALL" >
+            						<label for="chkResortsFilter_all">All Resorts</label>
+				   				</span>
+                               <label for="chkResortsFilter"></label>
+                           </div>';
 				foreach ($offers['populators']['resorts'] as $key => $val)
 				{
 					//echo '<button type="button" class="btn btn-primary">'.$val.'</button>';
 					echo '<div class="filtercheckbox">
                                <span name="check" groupname="filter">
-            						<input id="chkResortsFilter_'.$key.'" type="checkbox" name="chkResortsFilter_'.$key.'" value="'.$key.'" >
+            						<input id="chkResortsFilter_'.$key.'" type="checkbox"  mandatory="resorts" value="'.$key.'" >
             						<label for="chkResortsFilter_'.$key.'">'.$val.'</label>
 				   				</span>
                                <label for="chkResortsFilter"></label>
