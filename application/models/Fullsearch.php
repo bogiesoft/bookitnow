@@ -20,7 +20,8 @@ class FullSearch extends CI_Model {
 				'map_root' => $raw_data['mapper'],
 				'arapts' => $raw_data['full_arrival_airports'],
 				'num_adults' => $raw_data['full_adults'],
-				'num_children' => $raw_data['full_children']				
+				'num_children' => $raw_data['full_children'],
+				'num_rooms' => $raw_data['full_rooms'],
 		);
 		if(isset($raw_data['pax']))
 		{

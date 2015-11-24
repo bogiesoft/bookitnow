@@ -176,4 +176,48 @@ if( !function_exists('boardbasis') ) {
 	  }
   }
   
+  if( !function_exists('distribute') ) {
+  function distribute($m,$n) {
+  		
+  	$div = floor($m / $n);
+  	$mod = fmod($m, $n);
+  	$result = array();
+  	for ($i = 1;$i <= $n;$i++) {
+  		$result[$i] = $div;
+  	}
+  		
+  	if ($mod > 0) {
+  		for ($i = 1;$i <= $mod;$i++) {
+  			$result[$i] = $result[$i] + 1;
+  		}
+  	}
+  	return $result;
+  }
+  }
+  
+  if( !function_exists('hotelsStr_fun') ) {
+  	function hotelsStr_fun($hotels,$tree = array())
+  	{
+  		
+  		$str = '';
+  		$cra = $tree[0] . '-' . $tree[1] . '-' . $tree[2] . '-'. $tree[3].'-';	//new
+  		$count_hotel = 0;
+  		foreach ($hotels as $key_hotel =>$hotel)
+  		{  	
+  			
+  			if ($key_hotel === '@attributes') {
+  				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['id']. "' onchange='checkMe(this)' /><span>". urldecode($hotel['name']) . '</span></li>';
+  				$count_hotel++;
+  			}
+  			if(!$count_hotel){
+  				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['@attributes']['id']. "' onchange='checkMe(this)' /><span>". urldecode($hotel['@attributes']['name']) . '</span></li>';
+  			}
+  			
+  		}
+  		
+  		return $str;
+  	}
+  };
+  
+  	
   

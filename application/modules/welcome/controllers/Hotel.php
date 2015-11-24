@@ -193,8 +193,10 @@ class Hotel extends CI_Controller {
 		
 		foreach ($current_offer_result as $current_key => $current_offer)
 		{
+ 			
+			//echo '<pre>';print_r($offers[$current_offer_pos+1]['filter_data']);exit;
 			foreach (@$offers[$current_offer_pos+1]['filter_data'] as $next_key => $next_offer)
-			{			
+			{		
 				if($current_key == $next_key)
 				{
 					foreach ($current_offer as $current_hotel_key => $current_hotel)
@@ -211,25 +213,32 @@ class Hotel extends CI_Controller {
 					/*
 					 * Just removing duplicate boardbasis wise
 					 */
-					usort($result['filter_data'][$current_key], function($a, $b) {
-						return $a['@attributes']['sellpricepp'] > $b['@attributes']['sellpricepp'] ? 1 : -1;
-					});
-					$result1 = array();
-					$result['filter_data'][$current_key] = array_filter($result['filter_data'][$current_key],function($val) use(&$result1){
-						
-						if(in_array($val['@attributes']['boardbasis'],$result1))
-						{
-							return false;
-						}
-						else
-						{
-							$result1[] = $val['@attributes']['boardbasis'];
-							return true;
-						}
-					});
+					if(!empty(@$result['filter_data'][$current_key])){
+						usort($result['filter_data'][$current_key], function($a, $b) {
+							
+							//echo "<pre>";print_r($a['@attributes']['sellpricepp']);
+							return $a['@attributes']['sellpricepp'] > $b['@attributes']['sellpricepp'] ? 1 : -1;
+						});
+							
+						$result1 = array();
+						$result['filter_data'][$current_key] = array_filter($result['filter_data'][$current_key],function($val) use(&$result1){
+							
+							if(in_array($val['@attributes']['boardbasis'],$result1))
+							{
+								return false;
+							}
+							else
+							{
+								$result1[] = $val['@attributes']['boardbasis'];
+								return true;
+							}
+						});
+					}
 				}
 			}	
+			
 		}
+		
 		return $this->filter_pax_based_fun($offers,$current_offer_pos+1,$count,$result['filter_data']);
 		
 	}	

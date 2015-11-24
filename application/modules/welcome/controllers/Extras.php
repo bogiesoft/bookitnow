@@ -68,6 +68,7 @@ class Extras extends CI_Controller {
 			//Future  - Region should be dynamic
 			//$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
 			$data['ext_fields'] = $this->SavingsNExtFields->fetchFilelsByCond(array('region'=>0));
+			
 			$arr1 = array();
  			foreach ($data['ext_fields'] as $ext_fields)
  			{
@@ -166,25 +167,69 @@ class Extras extends CI_Controller {
 			$hobjs = json_decode($hotel[0]['pack_info'],true);
 			//Body Preparation
 			$tot_sel = 0;$ppr = '';$pprp = '';
-			if($rows[0]['pax'] != '')
+			
+			
+			
+			$sep = array();
+			if($rows[0]['num_rooms'] > 1)
 			{
-				$ser_arr = explode(',',$rows[0]['pax']);
-				$rc = 1;
-				foreach ($ser_arr as $key => $ser)
+			
+				if($rows[0]['num_children'])
 				{
-					$ser_arr_sub = explode('-',$ser);
-					$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
-					$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
-					$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
-					$rc++;
+					$ser_arr = explode(',',$rows[0]['pax']);
+					$temp = $hobjs;
+					foreach ($ser_arr as $key => $ser)
+					{
+						$ser_arr_sub = explode('-',$ser);
+						if(in_array($ser,array_keys($sep)))
+						{
+							$tot_sel += $sep[$ser] * (array_sum($ser_arr_sub));
+							$ppr .= 'Room-'.($key+1).' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+							$pprp .= 'Room-'.($key+1).' => &#163;'.$sep[$ser].' per person x '.array_sum($ser_arr_sub).'<br>';
+						}
+						else{
+							$tot_sel += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+							$ppr .= 'Room-'.($key+1).' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+							$pprp .= 'Room-'.($key+1).' => &#163;'.$temp[0]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+							$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
+							unset($temp[0]);
+							$temp = array_values($temp);
+						}
+					}
+				}
+				else{
+					$n = distribute($rows[0]['num_adults'],$rows[0]['num_rooms']);
+					foreach ($n as $key => $val)
+					{
+						$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * $val;
+					}
 				}
 			}
-			else
-			{
-				$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
+			else if($rows[0]['num_rooms'] == 1){
 				$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
 				$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+				$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_children'] + $rows[0]['num_adults']);
 			}
+			
+// 			if($rows[0]['pax'] != '')
+// 			{
+// 				$ser_arr = explode(',',$rows[0]['pax']);
+// 				$rc = 1;
+// 				foreach ($ser_arr as $key => $ser)
+// 				{
+// 					$ser_arr_sub = explode('-',$ser);
+// 					$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+// 					$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+// 					$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+// 					$rc++;
+// 				}
+// 			}
+// 			else
+// 			{
+// 				$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
+// 				$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
+// 				$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+// 			}
 			$dscode = $fobj['@attributes']['depapt'];
 			$ascode = $fobj['@attributes']['arrapt'];
 			$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
@@ -220,9 +265,9 @@ class Extras extends CI_Controller {
 			
 				$list =  array($this->input->post('email'));
 				$sub = 'Quick Quote By BookItNow';
-// 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
-// 				{				
-// 				}
+ 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
+ 				{				
+ 				}
 						
 			
 			
@@ -258,24 +303,46 @@ class Extras extends CI_Controller {
 		
 		$fobj = json_decode($flits[0]['pack_info'],true);
 		$hobjs = json_decode($hotels[0]['pack_info'],true);
-		
+		//echo "<pre>";print_r($hobjs);exit;
 		$tot_sel = 0;$tco = 0;
 		
-		if($rows[0]['pax'] != '')
+		
+		$sep = array();
+		if($rows[0]['num_rooms'] > 1)
 		{
-			$ser_arr = explode(',',$rows[0]['pax']);		
-			foreach ($ser_arr as $key => $ser)
+		
+			if($rows[0]['num_children'])
 			{
-				$ser_arr_sub = explode('-',$ser);				
-				$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
-			}			
+				$ser_arr = explode(',',$rows[0]['pax']);
+				$temp = $hobjs;
+				foreach ($ser_arr as $key => $ser)
+				{
+					$ser_arr_sub = explode('-',$ser);
+					if(in_array($ser,array_keys($sep)))
+					{
+						$tot_sel += $sep[$ser] * (array_sum($ser_arr_sub));
+					}
+					else{
+						$tot_sel += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+						$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
+						unset($temp[0]);
+						$temp = array_values($temp);
+					}
+				}
+			}
+			else{
+				$n = distribute($rows[0]['num_adults'],$rows[0]['num_rooms']);
+				foreach ($n as $key => $val)
+				{
+					$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * $val;
+				}
+			}
 		}
-		else
-		{			
-			$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
+		else if($rows[0]['num_rooms'] == 1){
+			
+			$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_children'] + $rows[0]['num_adults']);
 		}
 		
-		//$tot_sel += ($rows[0]['num_adults'] + $rows[0]['num_children']) * ($tco / count($hobjs));
 		
 		$tot_sel += ($rows[0]['num_adults'] + $rows[0]['num_children']) * $fobj['@attributes']['sellpricepp'];
 			
@@ -581,25 +648,46 @@ class Extras extends CI_Controller {
 					$hobjs = json_decode($hotel[0]['pack_info'],true);
 					//Body Preparation
 					$tot_sel = 0;$ppr = '';$pprp = '';
-					if($rows[0]['pax'] != '')
+					$sep = array();
+					if($rows[0]['num_rooms'] > 1)
+					{
+							
+						if($rows[0]['num_children'])
 						{
 							$ser_arr = explode(',',$rows[0]['pax']);
-							$rc = 1;
+							$temp = $hobjs;
 							foreach ($ser_arr as $key => $ser)
+							{
+								$ser_arr_sub = explode('-',$ser);
+								if(in_array($ser,array_keys($sep)))
 								{
-									$ser_arr_sub = explode('-',$ser);
-									$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
-									$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
-									$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
-									$rc++;
+									$tot_sel += $sep[$ser] * (array_sum($ser_arr_sub));
+									$ppr .= 'Room-'.($key+1).' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+									$pprp .= 'Room-'.($key+1).' => &#163;'.$sep[$ser].' per person x '.array_sum($ser_arr_sub).'<br>';
 								}
+								else{
+									$tot_sel += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+									$ppr .= 'Room-'.($key+1).' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+									$pprp .= 'Room-'.($key+1).' => &#163;'.$temp[0]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+									$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
+									unset($temp[0]);
+									$temp = array_values($temp);
+								}
+							}
 						}
-					else
-						{
-							$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
-							$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
-							$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+						else{
+							$n = distribute($rows[0]['num_adults'],$rows[0]['num_rooms']);
+							foreach ($n as $key => $val)
+							{
+								$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * $val;
+							}
 						}
+					}
+					else if($rows[0]['num_rooms'] == 1){
+						$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
+						$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+						$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_children'] + $rows[0]['num_adults']);
+					}					
 					
 					$dscode = $fobj['@attributes']['depapt'];
 					$ascode = $fobj['@attributes']['arrapt'];
@@ -639,28 +727,49 @@ class Extras extends CI_Controller {
 	}
 	function email_body_hotel($postdata,$rows = array())
 	{
-		$tot_sel = 0;
+		
 		$hobjs = json_decode($rows[0]['pack_info'],true);
-		if($rows[0]['pax'] != '')
-		{
-			$ser_arr = explode(',',$rows[0]['pax']);
-			$rc = 1;
-			$ppr = '';$pprp='';
-			foreach ($ser_arr as $key => $ser)
-			{
-				$ser_arr_sub = explode('-',$ser);
-				$tot_sel += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
-				$ppr .= 'Room-'.$rc.' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
-				$pprp .= 'Room-'.$rc.' => &#163;'.$hobjs[$key]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
-				$rc++;
-			}
-		}
-		else
-		{
-			$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_adults'] + $rows[0]['num_children']);
-			$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
-			$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
-		}
+			$tot_sel = 0;$ppr = '';$pprp = '';
+					$sep = array();
+					if($rows[0]['num_rooms'] > 1)
+					{
+							
+						if($rows[0]['num_children'])
+						{
+							$ser_arr = explode(',',$rows[0]['pax']);
+							$temp = $hobjs;
+							foreach ($ser_arr as $key => $ser)
+							{
+								$ser_arr_sub = explode('-',$ser);
+								if(in_array($ser,array_keys($sep)))
+								{
+									$tot_sel += $sep[$ser] * (array_sum($ser_arr_sub));
+									$ppr .= 'Room-'.($key+1).' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+									$pprp .= 'Room-'.($key+1).' => &#163;'.$sep[$ser].' per person x '.array_sum($ser_arr_sub).'<br>';
+								}
+								else{
+									$tot_sel += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+									$ppr .= 'Room-'.($key+1).' => '. $ser_arr_sub[0] .'Adult(s), '.$ser_arr_sub[1].' Child(ren)<br>';
+									$pprp .= 'Room-'.($key+1).' => &#163;'.$temp[0]['@attributes']['sellpricepp'].' per person x '.array_sum($ser_arr_sub).'<br>';
+									$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
+									unset($temp[0]);
+									$temp = array_values($temp);
+								}
+							}
+						}
+						else{
+							$n = distribute($rows[0]['num_adults'],$rows[0]['num_rooms']);
+							foreach ($n as $key => $val)
+							{
+								$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * $val;
+							}
+						}
+					}
+					else if($rows[0]['num_rooms'] == 1){
+						$ppr = $rows[0]['num_adults'] .'Adult(s), '.$rows[0]['num_children'].' Child(ren)<br>';
+						$pprp = '&#163;'.$hobjs[0]['@attributes']['sellpricepp'].' per person x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'<br>';
+						$tot_sel += $hobjs[0]['@attributes']['sellpricepp'] * ($rows[0]['num_children'] + $rows[0]['num_adults']);
+					}	
 		
 		$body = '';
 		$body .= '<b>Dear '.$postdata['adult_title_1'].' '.ucfirst($postdata['adult_fname_1']).'</b>

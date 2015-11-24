@@ -670,8 +670,9 @@
 	    				
 	    				$divi =  Math.floor(Number($('select[name="full_adults"]').val()) / Number($('select[name="full_rooms"]').val()));
 	    				$rem = Number($('select[name="full_adults"]').val()) % Number($('select[name="full_rooms"]').val());
+	    				if($rem > 0)$rem = 1;
 	    				str += $divi + '-' + 0 + ',';
-	    				str += ($divi + $rem) + '-' + 0 + ',';   
+	    				str += ($divi + $rem) + '-' + 0 + ',';   	    				
 	    				var t = {};
 						t['name'] = 'pax';
 						t['value'] = str;

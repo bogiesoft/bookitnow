@@ -200,6 +200,7 @@ class Welcome extends CI_Controller {
 			{
 				$paxes_str = explode(',',substr($post_data['pax'],0,-1));
 				$paxes = array_unique($paxes_str);
+				
 				$count = 0;
 				$service_url = '';
 				foreach ($paxes as $pax)
@@ -214,11 +215,16 @@ class Welcome extends CI_Controller {
 						$service_url .= $service_url_str.',';
 					}
 				}
-				if($count == count($paxes))
-				{
-					$post_data['pax'] = substr($post_data['pax'],0,-1);
-					$allow = 1;
-				}
+				if($count == count($paxes) && count($paxes) > 1)
+					{
+						$post_data['pax'] = substr($post_data['pax'],0,-1);					
+						$allow = 1;
+					}
+					else if($count == count($paxes))
+					{
+						$allow = 1;
+						unset($post_data['pax']);
+					}
 			}
 			else
 			{

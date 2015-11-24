@@ -103,25 +103,53 @@
 			<tr>
 				<td>Hotel Info</td>
         		<td>
-        			<?php 
-						$det_pax_prices = '';$res_sel_price = 0;
-						if($seg[0]['pax'] != '' )
-						{
-							$ser_arr = explode(',',$seg[0]['pax']);				
-							foreach ($ser_arr as $key => $ser)
-							{
-								$ser_arr_sub = explode('-',$ser);					
-								$det_pax_prices .=  '<span>'.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub)).'</span></span><br>';
-								$res_sel_price += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
-							}				
+        				<?php 
+			$det_pax_prices = '';$res_sel_price = 0;
+						
+			$sep = array();
+			if($seg[0]['num_rooms'] > 1)
+			{
+				
+				if($seg[0]['num_children'])
+				{
+					$ser_arr = explode(',',$seg[0]['pax']);	
+					$temp = $hobjs;
+					
+					
+						foreach ($ser_arr as $key => $ser)
+						{							
+							$ser_arr_sub = explode('-',$ser);
+							if(in_array($ser,array_keys($sep)))
+							{							
+								$det_pax_prices .=  '<small>Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$sep[$ser] * (array_sum($ser_arr_sub)).'</span></small><br>';
+								$res_sel_price += $sep[$ser] * (array_sum($ser_arr_sub));								
+							}
+							else{									
+								$det_pax_prices .=  '<small>Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub)).'</span></small><br>';
+								$res_sel_price += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+								$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
+								unset($temp[0]);
+								$temp = array_values($temp);								
+							}					
 						}
-						else
-						{
-							
-							$det_pax_prices .= '<span>'.$seg[0]['num_adults'].' Adult(s), '.$seg[0]['num_children'].' children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_adults'] + $seg[0]['num_children']).'</span></span><br>'; 
-							$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_adults'] + $seg[0]['num_children']);
-						}					
-					?>
+			
+				}
+				else{					
+					$n = distribute($seg[0]['num_adults'],$seg[0]['num_rooms']);
+					foreach ($n as $key => $val)
+					{
+						$det_pax_prices .=  '<small>Room '.$key.' -> '.$val.' Adult(s), 0 Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * $val .'</span></small><br>';
+						$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * $val;
+					}					
+				}
+			}
+			else if($seg[0]['num_rooms'] == 1){
+				$det_pax_prices .=  '<small>Room 1 -> '.$seg[0]['num_adults'].' Adult(s), '.$seg[0]['num_children'].' Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']) .'</span></small><br>';
+				$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']);
+			}		
+
+			
+		?>
 						<div class="flight-wrap"><h5></div>		
 						<h5><b><?php echo $hobjs[0]['@attributes']['nights'];?> Nights</b>	</h5>		
 						<h5><?php echo urldecode($hobjs[0]['@attributes']['hotelname']);?></h5>
@@ -178,7 +206,7 @@
 								</span>
 							</div>';
 						}
-						$total += ($ext_row[0]['bags_count'] * (int)@$lug_row[0]['price']);
+						$total += (@$ext_row[0]['bags_count'] * (int)@$lug_row[0]['price']);
 						?>
         		</td>
         		<td><?php echo $total;

@@ -98,6 +98,29 @@ class Admin extends CI_Controller {
 		$this->layouts->set_title ( 'Listings page' );
 		$this->layouts->view ( 'listings', $data, 'admin' );
 	}
+	
+	
+	public function deals() {
+		$data = array ();
+		$this->load->model ( 'Categories' );	
+		$this->layouts->add_include(array('js/jquery.blockUI.js'));
+		$depts_raw = new SimpleXMLElement ( download_page ( 'http://87.102.127.86:8005/search/websearch.exe?pageid=4&compid=1' ) );
+		$data ['countries'] = json_decode ( json_encode ( $depts_raw ), true );
+		$this->layouts->add_include ( array (
+				'css/admin/style.css',
+				'css/admin/lines.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/admin/custom.css',
+				'css/admin/accordion.css',
+				'js/admin/metisMenu.min.js',
+				'js/admin/custom.js',
+				'js/admin/d3.v3.js',
+				'js/admin/rickshaw.js'
+		) );
+		$this->layouts->set_title ( 'Deals page' );
+		$this->layouts->view ( 'deals', $data, 'admin' );
+	}
 	public function add_luggage() {
 		$data = array ();
 		$this->layouts->add_include ( array (
@@ -438,6 +461,434 @@ class Admin extends CI_Controller {
 		
 		$this->layouts->set_title ( 'Exytra category management' );
 		$this->layouts->view ( 'ext_fld_mng.php', $data, 'admin' );
+	}
+	
+	public function regionsByCountry()
+	{		
+		$str = '';
+		$depts_raw = new SimpleXMLElement ( download_page ( "http://87.102.127.86:8005/search/websearch.exe?pageid=5&compid=1&countryid=" . $this->input->post ( 'com_id' ) ) );
+		$depts_raw = json_decode ( json_encode ( $depts_raw ), true );
+		foreach ( $depts_raw ['country'] as $key_country => $regions ) {
+			if ($key_country == 'region') {
+				$count = 0;
+			
+				foreach ( $regions as $key_region => $region ) {					
+					if ($key_region === '@attributes')
+					{
+						$t_tmp = $this->input->post ( 'com_id' ) . '-' . $regions ['@attributes'] ['Id'];
+						$str .= "<li onclick=region(this,'".$t_tmp."')><span class='parets_cus'>". urldecode($regions ['@attributes'] ['name']) . '</span></li>';
+						$count++;
+					}
+					if(!$count)
+					{
+						$t_tmp = $this->input->post ( 'com_id' ) . '-' . $region ['@attributes'] ['Id'];
+						$str .= "<li onclick=region(this,'".$t_tmp."')><span class='parets_cus'>" .urldecode($region ['@attributes'] ['name']).'</span></li>';
+					}					
+				}
+			}
+		}	
+		echo $str;exit;
+	}
+	
+	public function areassByregions()
+	{
+		$str = '<ul>';
+		$tree = explode('-',$this->input->post ( 'mapng' ));	
+		$depts_raw = new SimpleXMLElement ( download_page ( "http://87.102.127.86:8005/search/websearch.exe?pageid=5&compid=1&countryid=" . $tree[0] ) );
+		$depts_raw = json_decode ( json_encode ( $depts_raw ), true );
+		$exist = 0;
+		foreach ( $depts_raw ['country'] as $key_country => $regions ) {
+			
+			if ($key_country == 'region') {
+				$count = 0;					
+				foreach ( $regions as $key_region => $region ) {					
+					if ($key_region === '@attributes')
+					{						
+						$count_area = 0;
+						foreach ( $regions ['area'] as $key_area => $area ) {
+							if ($key_area === '@attributes') {
+							  if($tree[1] == $regions ['@attributes'] ['Id'])
+							  {
+							  	$cra = $tree[0] . '-' . $tree[1] . '-' . $regions ['area'] ['@attributes'] ['id'];	//new
+							  	$str .= "<li onclick=area(this,'".$cra."')><span class='parets_cus'>". urldecode($regions ['area'] ['@attributes'] ['name']) . '</span></li>';
+							  	$count_area ++;
+							  	$exist++;
+							  }								
+							}
+							if (! $count_area) {
+								
+								if($regions ['@attributes'] ['Id'] == $tree[1])
+								{
+									
+									$cra = $tree[0] . '-' . $regions ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'];	//new
+									$str .= "<li onclick=area(this,'".$cra."')><span class='parets_cus'>". urldecode($area ['@attributes'] ['name']) . '</span></li>';
+									
+									$exist++;
+								}								
+							}
+						}
+						$count++;
+					}
+					
+					if(!$count)
+					{
+						
+						$count_area = 0;						
+						foreach ( $region['area'] as $key_area => $area ) {
+							
+							if ($key_area === '@attributes') {							
+								if($region ['@attributes'] ['Id'] == $tree[1])
+								{
+									$cra = $tree[0] . '-' . $tree[1] . '-' . $region ['area'] ['@attributes'] ['id'];	//new
+									$str .= "<li onclick=area(this,'".$cra."')><span class='parets_cus'>". urldecode($region ['area'] ['@attributes'] ['name']) . '</span></li>';
+								
+									$count_area ++;
+									$exist++;
+								}					
+							}
+							if (! $count_area) {
+								
+								if($region ['@attributes'] ['Id'] == $tree[1])
+								{
+									$cra = $tree[0] . '-' . $region ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'] ;	//new
+									$str .= "<li onclick=area(this,'".$cra."')><span class='parets_cus'>". urldecode($area ['@attributes'] ['name']) . '</span></li>';
+									$exist++;
+								}
+							}
+						}						
+					}					
+				}
+			}
+			if($exist)break;
+		}	
+		$str .= '</ul>';
+			echo $str;exit;
+	}
+	
+	public function hotelsByresort()
+	{
+		
+		$str = '<ul>';
+		$tree = explode('-',$this->input->post ( 'mapng' ));
+		//$tree = array(5,9,20,75);
+		
+		$depts_raw = new SimpleXMLElement ( download_page ( "http://87.102.127.86:8005/search/websearch.exe?pageid=5&compid=1&countryid=" . $tree[0] ) );
+		$depts_raw = json_decode ( json_encode ( $depts_raw ), true );
+		$exist = 0;
+		foreach ( $depts_raw ['country'] as $key_country => $regions ) {
+	
+			if ($key_country == 'region') {
+				
+				$count = 0;
+				foreach ( $regions as $key_region => $region ) {
+					if ($key_region === '@attributes')
+					{
+						
+						$count_area = 0;
+						foreach ( $regions ['area'] as $key_area => $area ) {
+							if ($key_area === '@attributes') {
+								
+								if($tree[1] == $regions ['@attributes'] ['Id'])
+								{
+									if($tree[2] == $regions ['area'] ['@attributes'] ['id'])
+									{
+										
+										$cra = $tree[0] . '-' . $tree[1] . '-' . $regions ['area'] ['@attributes'] ['id']. '-';	//new
+											
+										$count_resort = 0;
+										foreach ( $regions ['area'] ['resort'] as $key_resort => $resort ) {
+											
+											if ($key_resort === '@attributes') {
+												$str .= hotelsStr_fun($regions['area']['resort']['hotel'],$tree);
+												$count_resort ++;
+													
+											}
+											if (! $count_resort) {
+												if($tree[3] == $resort ['@attributes'] ['id'])
+												{
+													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													break;
+												}
+												//$str .= hotelsStr_fun($regions['area']['resort']['hotel'],$tree);
+												
+											}
+										}
+										$count_area ++;
+										break;
+									}
+								}
+							}
+							if (! $count_area) {
+	
+								if($regions ['@attributes'] ['Id'] == $tree[1])
+								{
+									if($tree[2] == $area ['@attributes'] ['id'])
+									{
+										$cra = $tree[0] . '-' . $regions ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'];	//new
+											
+											
+											
+											
+										$count_resort = 0;
+										foreach ( $area ['resort'] as $key_resort => $resort ) {
+											if ($key_resort === '@attributes') {
+												echo "hello";exit;
+												$count_resort ++;
+	
+											}
+											if (! $count_resort) {
+												
+												
+												if($tree[3] == $resort ['@attributes'] ['id'])
+												{
+													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													break;
+												}
+												
+											}
+										}
+	
+	
+										//$exist++;
+										break;
+									}
+								}
+							}
+						}
+						$count++;
+					}
+	
+					if(!$count)
+					{
+	
+						$count_area = 0;
+						foreach ( $region['area'] as $key_area => $area ) {
+						
+							if ($key_area === '@attributes') {
+								
+								if($region ['@attributes'] ['Id'] == $tree[1])
+								{
+									if($tree[2] == $region ['area'] ['@attributes'] ['id'])
+									{
+										$cra = $tree[0] . '-' . $tree[1] . '-' . $region ['area'] ['@attributes'] ['id'];	//new
+											
+											
+											
+										$count_resort = 0;
+										foreach ( $region ['area'] ['resort'] as $key_resort => $resort ) {
+											if ($key_resort === '@attributes') {
+	
+												echo "hello";exit;
+												$count_resort ++;
+	
+											}
+											if (! $count_resort) {
+	
+												if($tree[3] == $resort ['@attributes'] ['id'])
+												{
+													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													break;
+												}
+											}
+										}
+										$count_area ++;
+										$exist++;
+									}
+								}
+							}
+							if (! $count_area) {
+	
+								if($region ['@attributes'] ['Id'] == $tree[1])
+								{
+									$cra = $tree[0] . '-' . $region ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'] ;	//new
+									if($tree[2] == $area ['@attributes'] ['id'])
+									{
+										$count_resort = 0;
+										foreach ( $area ['resort'] as $key_resort => $resort ) {
+											if ($key_resort === '@attributes') {
+													
+												$mixed_crar = $cra . $area ['resort'] ['@attributes'] ['id'];
+												$str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($area ['resort'] ['@attributes'] ['name']) . '</span></li>';
+												$count_resort ++;
+	
+											}
+											if (! $count_resort) {
+												
+												if($tree[3] == $resort ['@attributes'] ['id'])
+												{
+													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													break;
+												}
+											}
+										}
+										//$exist++;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			//if($exist)break;
+		}
+		$str .= '</ul>';
+		echo $str;exit;
+	}
+	
+	public function resortsByAreas()
+	{
+		$str = '<ul>';
+		$tree = explode('-',$this->input->post ( 'mapng' ));		
+		$depts_raw = new SimpleXMLElement ( download_page ( "http://87.102.127.86:8005/search/websearch.exe?pageid=5&compid=1&countryid=" . $tree[0] ) );
+		$depts_raw = json_decode ( json_encode ( $depts_raw ), true );
+		$exist = 0;
+		foreach ( $depts_raw ['country'] as $key_country => $regions ) {
+	
+			if ($key_country == 'region') {
+				$count = 0;
+				foreach ( $regions as $key_region => $region ) {
+					if ($key_region === '@attributes')
+					{
+						$count_area = 0;
+						foreach ( $regions ['area'] as $key_area => $area ) {
+							if ($key_area === '@attributes') {
+								if($tree[1] == $regions ['@attributes'] ['Id'])
+								{
+									if($tree[2] == $regions ['area'] ['@attributes'] ['id'])
+									{
+									$cra = $tree[0] . '-' . $tree[1] . '-' . $regions ['area'] ['@attributes'] ['id']. '-';	//new
+									
+									$count_resort = 0;								
+									foreach ( $regions ['area'] ['resort'] as $key_resort => $resort ) {
+										if ($key_resort === '@attributes') {
+																						
+												$mixed_crar = $cra . $regions ['area'] ['resort'] ['@attributes'] ['id'];
+												$str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($regions ['area'] ['resort'] ['@attributes'] ['name']) . '</span></li>';
+												$count_resort ++;
+											
+										}
+										if (! $count_resort) {
+											
+												$mixed_crar = $cra . $resort ['@attributes'] ['id'];
+												$str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($resort ['@attributes'] ['name']) . '</span></li>';
+											
+										}
+									}								
+									$count_area ++;
+									$exist++;
+									}
+								}
+							}
+							if (! $count_area) {
+	
+								if($regions ['@attributes'] ['Id'] == $tree[1])
+								{
+									if($tree[2] == $area ['@attributes'] ['id'])
+									{
+									$cra = $tree[0] . '-' . $regions ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id']. '-';	//new
+									
+									
+									
+									
+									$count_resort = 0;
+									foreach ( $area ['resort'] as $key_resort => $resort ) {
+										 if ($key_resort === '@attributes') {
+										 	
+											 $mixed_crar = $cra . $area ['resort'] ['@attributes']['id'];
+											 $str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($area ['resort'] ['@attributes'] ['name']) . '</span></li>';																			
+											 $count_resort ++;
+										 	
+										 }
+										 if (! $count_resort) {
+										 	
+											 $mixed_crar = $cra . $resort ['@attributes'] ['id'];
+											 $str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($resort ['@attributes'] ['name']) . '</span></li>';
+										 	 
+										 }
+									 }
+									 
+									 
+									$exist++;
+									}
+								}
+							}
+						}
+						$count++;
+					}
+	
+					if(!$count)
+					{
+	
+						$count_area = 0;
+						foreach ( $region['area'] as $key_area => $area ) {
+	
+							if ($key_area === '@attributes') {
+								if($region ['@attributes'] ['Id'] == $tree[1])
+								{
+									if($tree[2] == $region ['area'] ['@attributes'] ['id'])
+									{
+									$cra = $tree[0] . '-' . $tree[1] . '-' . $region ['area'] ['@attributes'] ['id']. '-';	//new
+									
+									
+									
+									$count_resort = 0;									
+									foreach ( $region ['area'] ['resort'] as $key_resort => $resort ) {
+										 if ($key_resort === '@attributes') {
+										 	
+											 $mixed_crar = $cra . $region ['area'] ['resort'] ['@attributes'] ['id'];
+											 $str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($region ['area'] ['resort'] ['@attributes'] ['name']) . '</span></li>';
+											 $count_resort ++;
+										 	
+										 }
+										 if (! $count_resort) {
+										 	
+											 $mixed_crar = $cra . $resort ['@attributes'] ['id'];
+											 $str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($resort ['@attributes'] ['name']) . '</span></li>';
+										 	
+										 }
+								   }	
+									$count_area ++;
+									$exist++;
+									}
+								}
+							}
+							if (! $count_area) {
+	
+								if($region ['@attributes'] ['Id'] == $tree[1])
+								{
+									$cra = $tree[0] . '-' . $region ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id']. '-' ;	//new
+									if($tree[2] == $area ['@attributes'] ['id'])
+									{
+									$count_resort = 0;
+									foreach ( $area ['resort'] as $key_resort => $resort ) {
+										if ($key_resort === '@attributes') {
+											
+											$mixed_crar = $cra . $area ['resort'] ['@attributes'] ['id'];
+											$str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($area ['resort'] ['@attributes'] ['name']) . '</span></li>';
+											$count_resort ++;
+										
+										}
+										if (! $count_resort) {
+											//if($tree[2] == $resort ['@attributes']['id'])
+											//{echo "sdf";
+											$mixed_crar = $cra . $resort ['@attributes']['id'];
+											$str .= "<li onclick=resort(this,'".$mixed_crar."')><span class='parets_cus'>". urldecode($resort ['@attributes'] ['name']) . '</span></li>';
+											//}
+										}
+									}
+									$exist++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if($exist)break;
+		}
+		$str .= '</ul>';
+		echo $str;exit;
 	}
 	
 	public function readMappingsFun() {

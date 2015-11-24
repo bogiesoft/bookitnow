@@ -52,11 +52,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="collapse navbar-collapse js-navbar-collapse">
 		<ul class="nav navbar-nav">
 			<li class="dropdown mega-dropdown">
-			 <li><a href="#">HOME</a></li>	
+			 <li><a href="<?php echo base_url();?>">HOME</a></li>	
 								
 			</li>
             <li class="dropdown mega-dropdown">
-    			<a href="#" class="dropdown-toggle"> DESTINATIONS <span class="caret"></span></a>				
+    			<a href="#" class="dropdown-toggle"  data-toggle="dropdown"> DESTINATIONS <span class="caret"></span></a>				
 				<ul class="dropdown-menu mega-dropdown-menu">
 						<li class="col-sm-3">
 						<ul>
@@ -414,11 +414,4 @@ We assure you that your holidays are fully protected, as we are members of ABTA 
 <?php echo @$this->layouts->print_includes()['js']; ?> 
 
 </html>
-<<style>
-<!--
-.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0; // remove the gap so it doesn't close
- }
--->
-</style>
+

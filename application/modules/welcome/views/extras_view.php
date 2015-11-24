@@ -202,24 +202,49 @@
 	
 		<?php 
 			$det_pax_prices = '';$res_sel_price = 0;
-			if($seg[0]['pax'] != '' )
+						
+			$sep = array();
+			if($seg[0]['num_rooms'] > 1)
 			{
-				$ser_arr = explode(',',$seg[0]['pax']);
 				
-				foreach ($ser_arr as $key => $ser)
+				if($seg[0]['num_children'])
 				{
-					$ser_arr_sub = explode('-',$ser);					
-					$det_pax_prices .=  '<small>'.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub)).'</span></small><br>';
-					$res_sel_price += $hobjs[$key]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+					$ser_arr = explode(',',$seg[0]['pax']);	
+					$temp = $hobjs;
+					
+					
+						foreach ($ser_arr as $key => $ser)
+						{							
+							$ser_arr_sub = explode('-',$ser);
+							if(in_array($ser,array_keys($sep)))
+							{							
+								$det_pax_prices .=  '<small>Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$sep[$ser] * (array_sum($ser_arr_sub)).'</span></small><br>';
+								$res_sel_price += $sep[$ser] * (array_sum($ser_arr_sub));								
+							}
+							else{									
+								$det_pax_prices .=  '<small>Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub)).'</span></small><br>';
+								$res_sel_price += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
+								$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
+								unset($temp[0]);
+								$temp = array_values($temp);								
+							}					
+						}
+			
 				}
-				//echo '<pre>';print_r($hobjs);exit;
+				else{					
+					$n = distribute($seg[0]['num_adults'],$seg[0]['num_rooms']);
+					foreach ($n as $key => $val)
+					{
+						$det_pax_prices .=  '<small>Room '.$key.' -> '.$val.' Adult(s), 0 Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * $val .'</span></small><br>';
+						$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * $val;
+					}					
+				}
 			}
-			else
-			{
-				
-				$det_pax_prices .= '<small>'.$seg[0]['num_adults'].' Adult(s), '.$seg[0]['num_children'].' children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_adults'] + $seg[0]['num_children']).'</span></small><br>'; 
-				$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_adults'] + $seg[0]['num_children']);
-			}
+			else if($seg[0]['num_rooms'] == 1){
+				$det_pax_prices .=  '<small>Room 1 -> '.$seg[0]['num_adults'].' Adult(s), '.$seg[0]['num_children'].' Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']) .'</span></small><br>';
+				$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']);
+			}		
+
 			
 		?>
 		<div class="flight-wrap"><h5><b>&#163;<?php echo ($res_sel_price);?> </b></h5></div>	
@@ -228,7 +253,7 @@
 		<h6><?php echo urldecode($hobjs[0]['@attributes']['resort']);?>,</h6>
 		<h6><?php echo boardbasis($hobjs[0]['@attributes']['boardbasis']);?></h6>
 		<h6>Check in : <?php echo date('d M Y',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate'])));?></h6>
-		<h6>Check out : <?php echo date('d M Y',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate'])));?></h6>
+		<h6>Check out : <?php echo date('d M Y',strtotime('+'.$hobjs[0]['@attributes']['nights'].'days',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate']))));?></h6>
 		<div class="left">
 		
 		<?php 
