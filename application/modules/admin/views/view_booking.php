@@ -234,8 +234,7 @@
      
       <table class="table table-bordered">    
      	 <thead>
-     	  <tr><th colspan="3"><h4>Contact Information </h4></th></tr>
-        
+     	  <tr><th colspan="3"><h4>Contact Information </h4></th></tr>        
         </thead>   
         <tbody>
         	<?php 

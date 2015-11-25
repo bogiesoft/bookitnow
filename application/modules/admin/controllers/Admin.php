@@ -659,8 +659,7 @@ class Admin extends CI_Controller {
 					}
 	
 					if(!$count)
-					{
-	
+					{	
 						$count_area = 0;
 						foreach ( $region['area'] as $key_area => $area ) {
 						
