@@ -480,7 +480,7 @@
 					<div class="tener_nature">	
 					<div class="image"><img src="<?php echo base_url();?>images/Pool.jpg" class="img-responsive" alt="Pool">
 						<div class="star"><img src="<?php echo base_url();?>images/star.png" class="img-responsive" alt="star"></div>
-							<div class="mini_img"><img src="<?php echo base_url();?>images/tree.jpg" alt="tree"> 
+							<div class="mini_img"><img src="<?php echo base_url();?>images/tree-t.jpg" alt="tree"> 
 							<img src="<?php echo base_url();?>images/family-t.jpg" alt="family">
 							</div>
 					</div>
@@ -811,3 +811,4 @@
 </div>
 </div><!--contanier-->
 <div class="clearfix"></div>
+<link href='https://fonts.googleapis.com/css?family=Merienda' rel='stylesheet' type='text/css'>

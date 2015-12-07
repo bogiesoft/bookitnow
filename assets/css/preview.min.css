@@ -1131,3 +1131,10 @@ input.sea {
 	font-weight: 500;
 	padding: 2px !important;
 }
+
+
+label {
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    color: #000;
+}

@@ -999,4 +999,10 @@ class Extras extends CI_Controller {
 			$this->layouts->view ( 'view_booking', $data );
 					
 	}
+	
+	public function feefoXml()
+	{
+		//$download_page();
+		echo "hello";exit;
+	}
 }
