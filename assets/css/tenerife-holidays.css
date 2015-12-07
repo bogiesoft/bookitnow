@@ -1,0 +1,217 @@
+.left-img-wrap{
+color:#06AAD1;margin:0px auto;padding: 12px 0px 0px 0px !important;
+}
+body .tabbable-ht {  color: #FFF;width: 100%;padding: 5px 31px;margin: 20px;
+}
+.holiday-title{
+font-size:23px;
+color:#0198CD;
+margin-top:20px;
+margin-bottom:20px;
+font-family: 'Merienda', cursive;
+}
+.image-bg{
+background-color: #E6E1E1;
+padding: 30px;
+padding: 30px 30px 38px;
+}
+
+.form-bg-wrap{
+  background-color: #E6E1E1;
+padding: 24px 26px 53px 24px;
+margin: 2px 4px 8px 0px;
+}
+
+.form-bg-color{
+background-color: #E6E1E1;
+}
+.holiday-title{
+font-size:25px;
+color:#0198CD;
+margin-top:10px;
+}
+.book-title{
+font-size:14px;
+color:#646059;
+}
+
+.border-wrap{
+padding-bottom:1px;
+margin-bottom:20px;
+background-color:
+background: rgba(156,156,156,1);
+background: -moz-linear-gradient(left, rgba(156,156,156,1) 0%, rgba(156,156,156,1) 51%, rgba(254,182,69,1) 68%, rgba(254,182,69,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(156,156,156,1)), color-stop(51%, rgba(156,156,156,1)), color-stop(68%, rgba(254,182,69,1)), color-stop(100%, rgba(254,182,69,1)));
+background: -webkit-linear-gradient(left, rgba(156,156,156,1) 0%, rgba(156,156,156,1) 51%, rgba(254,182,69,1) 68%, rgba(254,182,69,1) 100%);
+background: -o-linear-gradient(left, rgba(156,156,156,1) 0%, rgba(156,156,156,1) 51%, rgba(254,182,69,1) 68%, rgba(254,182,69,1) 100%);
+background: -ms-linear-gradient(left, rgba(156,156,156,1) 0%, rgba(156,156,156,1) 51%, rgba(254,182,69,1) 68%, rgba(254,182,69,1) 100%);
+background: linear-gradient(to right, rgba(156,156,156,1) 0%, rgba(156,156,156,1) 51%, rgba(254,182,69,1) 68%, rgba(254,182,69,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c9c9c', endColorstr='#feb645', GradientType=1 );
+
+
+}
+.search-btn{
+    float: right;
+    width: 22%;
+    margin-top: 0.8em;
+}
+.sea-btn {
+    background-color: #F90;
+    padding: 4px 19px;
+    margin-top: 1em;
+    color: #FFF;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 5px;
+    text-align: center;
+    float: right;
+    cursor: pointer;
+	border: none;
+}
+body .tabbable-tab {
+    color: #FFF;
+    width: 100%;
+    background-color:none!important;
+    border-radius: 5px;
+   padding: 12px 24px;
+}
+.tabbable-tab.custom-tabs > .nav-tabs > li > a {
+    padding: 15px 25px;
+    margin-right: 3px;
+    background-color: #0198CD;
+    color: #FFF;
+    transition-duration: 0.15s;
+    font-size: 20px;
+    text-align: center;
+}	
+.travelto, .board_basis {
+    float: right;
+    padding-bottom: 10px;
+    width: 48%;
+}
+
+.tabbable-tab.custom-tabs > .nav-tabs > li > a {
+    padding: 15px 25px;
+    margin-right: 3px;
+    background-color: #0198CD;
+    color: #FFF;
+    transition-duration: 0.15s;
+    font-size: 20px;
+    text-align: center;
+}
+
+.tabbable-tab.custom-tabs > .nav-tabs > li.active > a {
+    background-color: #F90;
+    color: #FFF;
+    box-shadow: none;
+}
+
+.tabbable-tab.custom-tabs > .nav-tabs > li > a {
+       padding: 11px 11px;
+    margin-right: 3px;
+    background-color: #0198CD;
+    color: #FFF;
+    transition-duration: 0.15s;
+    font-size: 20px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+.holiday-bg{border-bottom:1px solied;
+
+
+}
+.line-bg{border-bottom: 1px solid #C6C4C1;height:1px;margin-top:5px;margin-top: -14px;
+}
+
+.flight-btn, .hotel-btn, .flight_hotel-btn {
+    width: 33.3%;
+}
+.tabbable-ht.custom-tabs > .nav-tabs > li > a {
+    padding: 6px 20px;    margin-right: 3px;    background-color: #0198CD;    color: #FFF;
+    transition-duration: 0.15s;    font-size: 20px;    text-align: center;
+}
+.tabbable-ht.custom-tabs > .nav-tabs > li.active > a {
+    background-color: #F90;    color: #FFF;    box-shadow: none;}
+.nav-tabs > li {    float: left;    margin-bottom:0px;}
+.row-fluid .span6 { width: 99.718%;}
+body .tabbable {    margin-top:0px!important;}
+.nav-tabs {    border-bottom:none!important;}
+.buttons-holiday li {float:left; margin: 6px 4px 0px 1px; padding: 8px; 
+color: #fff;    font-size: 13px;    outline:1px solid #f3a714;    border: none;	text-decoration:none;list-style-type:none;
+}
+
+
+
+.h-bg{background-color:#c6c5c2;padding-bottom:20px;margin-top: -14px;
+}
+.buttons-holiday li a{color: #000; font-size: 12px;
+}
+.buttons-holiday li a:hover{color:black;
+}
+.buttons-wrop {    float: left;    width: 100%;
+}
+.holiday-col{color:#716e6e;font-size:23px;
+}
+.txt_color {    color: #06AAD1;    padding:10px 0px 0px 0px!important;
+}
+.h-smfont{color:#716e6e;font-size:23px;font-size: 12px;}
+.text-in-color{padding: 0px;
+ color:#716E6E;}
+.label-text{ color: #716E6E;font-size: 14px;
+}
+.tener-font {    color: #716E6E;    font-size: 13px;  padding: 0px 0px 0px 5px;
+}
+.columns_go {    width: 23.7288%;    float: right;    position: absolute;    right: 2px;    bottom: 15px;
+}
+.tener_nature{float:left;border: 1px solid #E5E5E5;width: 100%;margin-bottom: 1em;
+}
+.tener_nature h2 {    font-size: 16px;    color: #1D5567;    font-family: "Open Sans",sans-serif;
+    padding: 5px;    font-weight: 500;
+}
+.tener_nature p {    font-size: 13px;    color: #F90;    font-family: "Open Sans",sans-serif;
+    padding: 5px;    font-weight: 500;
+}
+.tenerife {  width: 100%;}
+.tenerife p{color: #1D5567;font-size:13px;
+}
+.tenerife h2 {    background-color: #F90;    padding: 5px 5px;    color: #FFF;    font-size: 15px;    font-family: "Open Sans",sans-serif;
+ text-transform: uppercase; border-left: 3px solid #0198cd;
+}
+.tene-text-left{float:left;padding:5px;font-size:13px;width:100%;font-size: 12px;color: #626262;line-height:20px;
+}
+.txt_xxtra_large-1 { font-size: 20px;    font-weight: bold;    font-family: "Open Sans",sans-serif;}
+.side-heading{	font-size: 20px;	color:#1D5567;	margin-top:20px;	margin-bottom:20px;	padding-left:20px;
+}
+.reviews-text p{line-height:20px;color: #333;font-size: 13px;text-align:justify;padding: 11px 19px 0px 17px;
+}
+input[type="text"], input[type="search"], select { 
+    font-size: 12px;}
+.title-deal a{font-size: 16px;color: #1D5567;font-family: "Open Sans",sans-serif;text-transform:uppercase;margin-left: 3px;}	
+.ten_nature p {    font-size: 15px;    color: #F90;    font-family: "Open Sans",sans-serif;    padding: 5px 0px 0px 5px;    font-weight: 500;
+}
+.big-separator {    position: relative;    width: 100%;    height: 20px;    background-repeat: no-repeat;    background-position: center center;
+    background-image: url(../images/title-separator-big.png); background-repeat:no-repeat;
+}
+
+.option dealfilter_from-field{
+width:10px;
+}
+
+.image-wrap{
+background-color:#fff;
+
+}
+
+
+.img-wrap-bg {
+    background-color:#E6E1E1;
+}
