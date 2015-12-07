@@ -56,48 +56,179 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								
 			</li>
             <li class="dropdown mega-dropdown">
-    			<a href="#" class="dropdown-toggle"  data-toggle="dropdown"> DESTINATIONS <span class="caret"></span></a>				
+    			<a href="<?php echo base_url();?>welcome/deals" class="dropdown-toggle" > DESTINATIONS <span class="caret"></span></a>				
 				<ul class="dropdown-menu mega-dropdown-menu">
-						<li class="col-sm-3">
+				<div class="menu-title-wrap">Top Holiday Destinations</div>
+					<div class="menu-container-one">
+						<li class="col-sm-2 col-md-2">	
 						<ul>
-							<li class="dropdown-header">Much more</li>
-                            <li><a href="#">Easy to Customize</a></li>
-							<li><a href="#">Calls to action</a></li>
-							<li><a href="#">Custom Fonts</a></li>
-							<li><a href="#">Slide down on Hover</a></li>                         
+							<li class="dropdown-header">Canary Islands</li>
+                            <li><a href="#">Tenerife</a></li>
+							<li><a href="#">Las Americas</a></li>
+							<li><a href="#">Los Cristianos</a></li>
+							<li><a href="#">Costa Adeje</a></li>   
+							<li><a href="#">Lanzarote</a></li>  
+							<li><a href="#">Fuerteventura</a></li> 
+							<li><a href="#">Gran Canaria</a></li> 
+							
 						</ul>
 					</li>
-						<li class="col-sm-3">
+						<li class="col-sm-2 col-md-2">
 						<ul>
-							<li class="dropdown-header">Much more</li>
-                            <li><a href="#">Easy to Customize</a></li>
-							<li><a href="#">Calls to action</a></li>
-							<li><a href="#">Custom Fonts</a></li>
-							<li><a href="#">Slide down on Hover</a></li>                         
+							<li class="dropdown-header">Balearic Islands</li>
+                            <li><a href="#">Majorca (Mallorca)</a></li>
+							<li><a href="#">Magaluf</a></li>
+							<li><a href="#">Alcudia</a></li>
+							<li><a href="#">Ibiza</a></li> 
+							<li><a href="#">Menorca</a></li>  							
 						</ul>
 					</li>
-					<li class="col-sm-3">
+					<li class="col-sm-2 col-md-2">
 						<ul>
-							<li class="dropdown-header">Much more</li>
-                            <li><a href="#">Easy to Customize</a></li>
-							<li><a href="#">Calls to action</a></li>
-							<li><a href="#">Custom Fonts</a></li>
-							<li><a href="#">Slide down on Hover</a></li>                         
+							<li class="dropdown-header">Turkey</li>
+                            <li><a href="#">Dalaman</a></li>
+							<li><a href="#">Marmaris</a></li>
+							<li><a href="#">Olu Deniz</a></li>
+							<li><a href="#">Bodrum</a></li> 
+							<li><a href="#">Altinkum</a></li> 
+							<li><a href="#">Antalya</a></li> 
+							<li><a href="#">Alanya</a></li> 							
 						</ul>
 					</li>
-                 
-				</ul>				
+					
+					<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Turkey</li>
+                            <li><a href="#">Dalaman</a></li>
+							<li><a href="#">Marmaris</a></li>
+							<li><a href="#">Olu Deniz</a></li>
+							<li><a href="#">Bodrum</a></li> 
+							<li><a href="#">Altinkum</a></li> 
+							<li><a href="#">Antalya</a></li> 
+							<li><a href="#">Alanya</a></li> 							
+						</ul>
+					</li>
+					
+					
+					
+					<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Greece</li>
+                            <li><a href="#">Rhodes</a></li>
+							<li><a href="#">Crete</a></li>
+							<li><a href="#">Corfu</a></li>
+							<li><a href="#">Kos</a></li> 
+							<li><a href="#">Zante</a></li> 
+							<li><a href="#">Kefalonia</a></li> 
+							<li><a href="#">Skiathos</a></li>
+							<li><a href="#">Mykonos</a></li> 	
+							<li><a href="#">Halkidiki</a></li> 								
+							
+						</ul>
+					</li>
+					
+						<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Morocco</li>
+                            <li><a href="#">Agadir</a></li>
+							<li><a href="#">Marrakech City</a></li>
+							<li><a href="#">Amsterdam</a></li>
+							<li><a href="#">Prague</a></li> 
+							<li><a href="#">Berlin</a></li> 
+							<li><a href="#">Barcelona</a></li> 
+							<li><a href="#">Venice</a></li>												
+							
+						</ul>
+						
+					</li>
+                 </div>
+				 
+				 
+				 
+				 	<div class="menu-container-two">
+						<li class="col-sm-2 col-md-2">	
+						<ul>
+							<li class="dropdown-header">Mainland Spain</li>
+                            <li><a href="#"> Benidorm</a></li>
+							<li><a href="#">Costa Brava</a></li>
+							<li><a href="#"> Costa Del Sol</a></li>
+							<li><a href="#">Costa Dorada</a></li>   
+							
+							
+						</ul>
+					</li>
+						<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Balearic Islands</li>
+                            <li><a href="#">Majorca (Mallorca)</a></li>
+							<li><a href="#">Magaluf</a></li>
+							<li><a href="#">Alcudia</a></li>
+							<li><a href="#">Ibiza</a></li> 
+													
+						</ul>
+					</li>
+					<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Turkey</li>
+                            <li><a href="#">Dalaman</a></li>
+							<li><a href="#">Marmaris</a></li>
+							<li><a href="#">Olu Deniz</a></li>
+							<li><a href="#">Bodrum</a></li> 
+							 							
+						</ul>
+					</li>
+					
+					<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Turkey</li>
+                            <li><a href="#">Dalaman</a></li>
+							<li><a href="#">Marmaris</a></li>
+							<li><a href="#">Olu Deniz</a></li>
+							<li><a href="#">Bodrum</a></li> 
+							 							
+						</ul>
+					</li>
+					
+					
+					
+					<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Greece</li>
+                            <li><a href="#">Rhodes</a></li>
+							<li><a href="#">Crete</a></li>
+							<li><a href="#">Corfu</a></li>
+							<li><a href="#">Kos</a></li> 
+														
+							
+						</ul>
+					</li>
+					
+						<li class="col-sm-2 col-md-2">
+						<ul>
+							<li class="dropdown-header">Morocco</li>
+                            <li><a href="#">Agadir</a></li>
+							<li><a href="#">Marrakech City</a></li>
+							<li><a href="#">Amsterdam</a></li>
+							<li><a href="#">Prague</a></li> 
+																			
+							
+						</ul>
+						
+					</li>
+                 </div>
+				</ul>	
+
+
+				
 			</li>
             <li><a href="#">SPECIAL OFFERS</a></li>
 			 <li><a href="#">HOTEL ONLY</a></li>
 			  <li><a href="#">CITY BREAKS</a></li>
-			   <li><a href="#">CONTACT US</a></li>
-			
-			  
-		
+			   <li><a href="<?php echo base_url();?>contactUs">CONTACT US</a></li>
 		</ul>
    <div class="view"><a href="#" title="view my booking">View My Booking</a></div>
 	</div><!-- /.nav-collapse -->
+	
   </nav>
 </div>
 
@@ -234,9 +365,9 @@ Luton, LU1 1WE</p>
 <div  class="super">
 <p>Follow Us On</p>
 <ul>
-<li><i class="fa fa-facebook"></i></li>
-<li><i class="fa fa-twitter"></i></li>
-<li><i class="fa fa-youtube"></i>
+	<li><a href="https://www.facebook.com/BookitnowHolidays/?ref=hl" target="_blank"><i class="fa fa-facebook"></i></a></li>
+	<li><a href="https://twitter.com/bookitnowtravel" target="_blank"><i class="fa fa-twitter"></i></a></li>
+	<li><a href="https://plus.google.com/+BookitnowUkBookitNowHolidays/posts" target="_blank"><i class="fa fa-google-plus"></a></i>
 </li>
 
 </ul>
@@ -411,7 +542,53 @@ We assure you that your holidays are fully protected, as we are members of ABTA 
   
   <!-- ClickDesk Live Chat Service for websites--><!-- <script type='text/javascript'>var _glc =_glc || []; _glc.push('all_ag9zfmNsaWNrZGVza2NoYXRyDwsSBXVzZXJzGMupgogNDA');var glcpath = (('https:' == document.location.protocol) ? 'https://my.clickdesk.com/clickdesk-ui/browser/' : 'http://my.clickdesk.com/clickdesk-ui/browser/');var glcp = (('https:' == document.location.protocol) ? 'https://' : 'http://');var glcspt = document.createElement('script'); glcspt.type = 'text/javascript'; glcspt.async = true; glcspt.src = glcpath + 'livechat-new.js';var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(glcspt, s);</script>--><!-- End of ClickDesk -->
 </body> 
+
+<script type="text/javascript">
+	var baseUrl = window.location.origin + '/';
+</script>
 <?php echo @$this->layouts->print_includes()['js']; ?> 
 
 </html>
+<style>
+/*.sidebar-nav {
+    padding: 9px 0;
+}
 
+.dropdown-menu .sub-menu {
+    left: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    margin-top: -1px;
+}*/
+
+.dropdown-menu li:hover .sub-menu {
+    visibility: visible;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+/*
+.nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
+    margin-top: 0;
+}
+
+.navbar .sub-menu:before {
+    border-bottom: 7px solid transparent;
+    border-left: none;
+    border-right: 7px solid rgba(0, 0, 0, 0.2);
+    border-top: 7px solid transparent;
+    left: -7px;
+    top: 10px;
+}
+.navbar .sub-menu:after {
+    border-top: 6px solid transparent;
+    border-left: none;
+    border-right: 6px solid #fff;
+    border-bottom: 6px solid transparent;
+    left: 10px;
+    top: 11px;
+    left: -6px;
+}*/
+</style>

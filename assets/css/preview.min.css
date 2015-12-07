@@ -1,7 +1,7 @@
 body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
-	color: #f5f5f5;
+	/*color: #f5f5f5;*/
 	background-attachment: fixed;
 	-moz-transition-duration: .4s;
 	-o-transition-duration: .4s;
@@ -156,7 +156,7 @@ visibility:visible
 	text-align: center;
 }
 .flight,.hotel,.flight_hotel {
-	width: 33%;
+	width: 33.3%;
 }
 
  .tabbable.custom-tabs>.nav-tabs>li>a>[class*="icon"], .tabbable.custom-tabs>.nav-tabs>li>a>span {
@@ -980,7 +980,7 @@ label, input, button, select, textarea {
 	font-weight: normal;
 	line-height: 20px;
 	font-size: 12px;
-}
+}	
 p {
 	font-size: 9px;
 }
@@ -1020,6 +1020,14 @@ body .tabbable {
 	color: #454545;
 	width: 100%;
 }
+
+
+
+.travelto,.board_basis {
+	width: 100%;
+}
+
+
 }
 .flyform {
 	width: 48%;
