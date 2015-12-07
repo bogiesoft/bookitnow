@@ -20,13 +20,16 @@ class Admin extends CI_Controller {
 	 */
 	public function __construct() {
 		parent::__construct ();
+		//$hook =& load_class('Hooks', 'Authenticate');
+		//$hook->_call_hook('post_controller_constructor');
 		$this->load->library ( 'Layouts' );
 		$this->layouts->add_include ( $this->config->item ( 'header_css' ) );
 		$this->layouts->add_include ( $this->config->item ( 'header_js' ) );
 		$this->load->helper (array( 'form', 'url', 'common') );
-		
+	//	boookattach($this);
 		$this->load->model ( 'User' );
 		$this->load->library ( 'form_validation' );
+		
 	}
 	public function index() {
 		if ($this->input->post ()) {
@@ -914,26 +917,7 @@ class Admin extends CI_Controller {
 									$cra = $this->input->post ( 'com_id' ) . '-' . $regions ['@attributes'] ['Id'] . '-' . $regions ['area'] ['@attributes'] ['id'];	//new								
 									$attribute = in_array($cra,$arr_rows) ? 'checked' : '';								//new
 									$str .= "<ul><li><input $arrpts type='checkbox' $attribute value='" . $cra . "' onchange='checkMe(this)' /><span>". urldecode($regions ['area'] ['@attributes'] ['name']) . '</span><ul>';
-									//$cra = $this->input->post ( 'com_id' ) . '-' . $regions ['@attributes'] ['Id'] . '-' . $regions ['area'] ['@attributes'] ['id'] . '-';
-									//$count_resort = 0;
-									/*foreach ( $regions ['area'] ['resort'] as $key_resort => $resort ) {
-										if ($key_resort === '@attributes') {
-											$mixed_crar = $cra . $regions ['area'] ['resort'] ['@attributes'] ['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$regions ['area'] ['resort'] ['@attributes'] ['arrapts'];
-											
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $regions ['area'] ['resort'] ['@attributes'] ['name'] . "</span></li>";
-											// $t[] = $regions['area']['resort']['@attributes']['id'].'-'.$regions['area']['resort']['@attributes']['name'];
-											$count_resort ++;
-										}
-										if (! $count_resort) {
-											$mixed_crar = $cra . $resort ['@attributes'] ['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$resort ['@attributes']['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute  value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $resort ['@attributes'] ['name'] . '</span></li>';
-											// $t[] = $resort['@attributes']['id'].'-'.$resort['@attributes']['name'];
-										}
-									}*/
+									
 									$str .= '</ul></li></ul>';
 									$count_area ++;
 								}
@@ -942,25 +926,7 @@ class Admin extends CI_Controller {
 									$cra = $this->input->post ( 'com_id' ) . '-' . $regions ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'];	//new								
 									$attribute = in_array($cra,$arr_rows) ? 'checked' : '';			//new				
 									$str .= "<ul><li><input $arrpts type='checkbox' $attribute value='" . $cra . "' onchange='checkMe(this)' /><span>". urldecode($area ['@attributes'] ['name']) . ' </span><ul>';
-									//$cra = $this->input->post ( 'com_id' ) . '-' . $regions ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'] . '-';
-									//$count_resort = 0;
-									/*foreach ( $area ['resort'] as $key_resort => $resort ) {
-										if ($key_resort === '@attributes') {
-											$mixed_crar = $cra . $area ['resort'] ['@attributes']['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';	
-											$arrpts = 'arrivals='.$area ['resort'] ['@attributes']['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $area ['resort'] ['@attributes'] ['name'] . '</span></li>';
-											// $t[] = $area['resort']['@attributes']['id'].'-'.$area['resort']['@attributes']['name'];
-											$count_resort ++;
-										}
-										if (! $count_resort) {
-											$mixed_crar = $cra . $resort ['@attributes'] ['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$resort ['@attributes']['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $resort ['@attributes'] ['name'] . '</span></li>';
-											// $t[] = $resort['@attributes']['id'].'-'.$resort['@attributes']['name'];
-										}
-									}*/
+									
 									$str .= '</ul></li></ul>';
 								}
 							}
@@ -978,25 +944,7 @@ class Admin extends CI_Controller {
 									$cra = $this->input->post ( 'com_id' ) . '-' . $region ['@attributes'] ['Id'] . '-' . $region ['area'] ['@attributes'] ['id'] ;	//new
 									$attribute = in_array($cra,$arr_rows) ? 'checked' : '';
 									$str .= "<ul><li><input $arrpts type='checkbox' $attribute value='" . $cra . "' onchange='checkMe(this)' /><span>". urldecode($region ['area'] ['@attributes'] ['name']) . "</span><ul>";
-									//$count_resort = 0;
-									//$cra = $this->input->post ( 'com_id' ) . '-' . $region ['@attributes'] ['Id'] . '-' . $region ['area'] ['@attributes'] ['id'] . '-';
-									/*foreach ( $region ['area'] ['resort'] as $key_resort => $resort ) {
-										if ($key_resort === '@attributes') {
-											$mixed_crar = $cra . $region ['area'] ['resort'] ['@attributes'] ['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$region ['area'] ['resort']['@attributes']['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)'/><span>" . $region ['area'] ['resort'] ['@attributes'] ['name'] . '</span></li>';
-											// $t[] = $region['area']['resort']['@attributes']['id'].'-'.$region['area']['resort']['@attributes']['name'];
-											$count_resort ++;
-										}
-										if (! $count_resort) {
-											$mixed_crar = $cra . $resort ['@attributes'] ['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$resort ['@attributes'] ['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $resort ['@attributes'] ['name'] . '</span></li>';
-											// $t[] = $resort['@attributes']['id'].'-'.$resort['@attributes']['name'];
-										}
-									}*/
+									
 									$str .= '</ul></li></ul>';
 									$count_area ++;
 								}
@@ -1006,25 +954,7 @@ class Admin extends CI_Controller {
 									$attribute = in_array($cra,$arr_rows) ? 'checked' : '';			//new
 									
 									$str .= "<ul><li><input $arrpts type='checkbox' $attribute value='" . $cra . "' onchange='checkMe(this)' /><span>". urldecode($area ['@attributes'] ['name']) .  " </span><ul>";
-									//$cra = $this->input->post ( 'com_id' ) . '-' . $region ['@attributes'] ['Id'] . '-' . $area ['@attributes'] ['id'] . '-';
-									//$count_resort = 0;
-									/*foreach ( $area ['resort'] as $key_resort => $resort ) {
-										if ($key_resort === '@attributes') {
-											$mixed_crar = $cra . $area ['resort'] ['@attributes'] ['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$area ['resort'] ['@attributes']['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $area ['resort'] ['@attributes'] ['name'] . "</span></li>";
-											// $t[] = $area['resort']['@attributes']['id'].'-'.$area['resort']['@attributes']['name'];
-											$count_resort ++;
-										}
-										if (! $count_resort) {
-											$mixed_crar = $cra . $resort ['@attributes']['id'];
-											$attribute = in_array($mixed_crar,$arr_rows) ? 'checked' : '';
-											$arrpts = 'arrivals='.$resort ['@attributes']['arrapts'];
-											$str .= "<li><input $arrpts type='checkbox' $attribute value='" . $mixed_crar . "' onchange='checkMe(this)' /><span>" . $resort ['@attributes'] ['name'] . '</span></li>';
-											// $t[] = $resort['@attributes']['id'].'-'.$resort['@attributes']['name'];
-										}
-									}*/
+									
 									$str .= '</ul></li></ul>';
 								}
 							}
@@ -1037,4 +967,66 @@ class Admin extends CI_Controller {
 		echo $str;
 		exit;
 	}
+	
+	public  function contacts_list()
+	{
+		$data = array ();
+		$this->layouts->add_include ( array (
+				'css/admin/style.css',
+				'css/admin/lines.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/admin/custom.css',
+				'js/admin/metisMenu.min.js',
+				'js/admin/custom.js',
+				'js/admin/d3.v3.js',
+				'js/admin/rickshaw.js'
+		) );
+		$this->load->model ( 'Contactslist' );
+		$data['rows'] = $this->Contactslist->fetch_a_search(array(),'ALL');		
+		$this->layouts->set_title ( 'Contacts List' );
+		$this->layouts->view ( 'contacts_list.php', $data, 'admin' );
+	}
+	
+	public function margins()
+	{
+		
+		$data = array ();
+		$this->load->model('Options');
+		$data['opt_row'] = $this->Options->fetch_a_fields(array(),1);
+		//echo "<pre>";print_r($data['opt_row']);exit;
+		if ($this->input->post ()) {
+			$this->form_validation->set_rules ( 'margin_rate', 'Margin Rate', 'trim|required|integer' );			
+			if (! $this->form_validation->run ()) {
+					
+			} else {
+			
+				if($this->input->post('id')){
+					$this->Options->updateSearch($this->input->post(),$this->input->post('id'));					
+				}
+				else{
+					$this->Options->createSearch($this->input->post());
+				}
+				$this->session->set_flashdata ( 'message', 'Margin Rates successfully updated' );
+				redirect(base_url().'admin/margins');
+			}
+		}
+		
+		
+		$this->layouts->add_include ( array (
+				'css/admin/style.css',
+				'css/admin/lines.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/admin/custom.css',
+				'js/admin/metisMenu.min.js',
+				'js/admin/custom.js',
+				'js/admin/d3.v3.js',
+				'js/admin/rickshaw.js'
+		) );
+	
+		$this->layouts->set_title ( 'Exytra category management' );
+		$this->layouts->view ( 'margins.php', $data, 'admin' );
+	}
+	
 }

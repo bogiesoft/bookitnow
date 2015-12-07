@@ -2,7 +2,9 @@
 <!-- start slider -->
 
 <div class="header-slider">
-	<div class="caption">
+	        
+<div class="slider">
+<div class="caption">
 		<div class="tabbable custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll pull-left">
 			<ul class="nav nav-tabs">
 			  <h2>Holiday Type</h2>
@@ -45,55 +47,41 @@
             		</div>
             		<div class="flyform">
 		              	<label>Departure Date:</label>
-		              	<input class="" id="datepicker" type="text"  name="departure_date">
-		            </div>
-					<!--  <div class="board_basis">
-		              <label>Rooms :</label>
-		              <select name="rooms" class="input-block-level">						
-						 <option>1</option>
-		                 <option>2</option>
-		                 <option>3</option>
-		                 <option>4</option>
-					  </select>
-		            </div>-->
+		              	<input class="input-block-level" id="datepicker" type="text"  name="departure_date" >
+		            </div>					
 		            <div class="board_basis">
 		              <label>Nights :</label>
 		              <select class="input-block-level"   name="nights">
 		                <option value="-1">---Select---</option>
-		                <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
-		                <option>5</option>
-		                <option>6</option>
-		                <option>7</option>
-		                
+		               <?php for($i=1;$i<=21;$i++){
+		              	echo '<option>'.$i.'</option>';
+		              }?>       
 		              </select>
-		            </div>
-		           <!--  <div class="adults">
-		              <label>Adults:</label>
-		              <select class="input-block-level"  name="adults">		               
-		               <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
-		              </select>
-		            </div>
-
-					<div class="childerns">
-		              <label>Childrens:</label>
-		              <select class="input-block-level"  name="children">
-		                <option value="-1">---Select---</option>
-		                <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
-		              </select>
-		              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
-		            </div>-->
-            <div class="search">              
+		              </div><div>
+		              <div class="hotel_adults" >
+              <label>Adults:</label>
+              <select class="input-block-level" name="adults">   
+              <?php for($i=1;$i<=15;$i++){
+              	echo '<option>'.$i.'</option>';
+              }?>             
+               </select>
+            </div>
+            <div class="hotel_childerns"  >
+              <label>Childrens:</label>
+              <select class="input-block-level" name="childrens">
+                <option  value="-1">0</option>
+              <?php for($i=1;$i<=10;$i++){
+              	echo '<option>'.$i.'</option>';
+              }?>           
+              </select>
+              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
+            </div>
+		               <div class="search">              
               <input type="submit" class="sea" value="Search &gt;" />
             </div>
+		            </div>
+		        
+           
           </div>
         </div>
         <?php echo form_close();?>
@@ -136,7 +124,7 @@
             		</div>
             		<div class="flyform">
 		              	<label>Departure Date:</label>
-		              	<input class="" id="datepicker3" type="text"  name="full_departure_date">
+		              	<input class="input-block-level" id="datepicker3" type="text"  name="full_departure_date">
 		            </div>
 					<div class="board_basis">
 		              <label>Rooms :</label>
@@ -151,14 +139,9 @@
 		              <label>Nights :</label>
 		              <select class="input-block-level"   name="full_nights">
 		                <option value="-1">---Select---</option>
-		                <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
-		                <option>5</option>
-		                <option>6</option>
-		                <option>7</option>
-		                
+		                <?php for ($i=1;$i<=21;$i++){
+		                	echo '<option>'.$i.'</option>';
+		                }?>		              
 		              </select>
 		            </div>
 		            <div class="adults">
@@ -174,7 +157,7 @@
 					<div class="childerns">
 		              <label>Childrens:</label>
 		              <select class="input-block-level"  name="full_children" onchange="roomBase();">
-		                <option value="-1">---Select---</option>
+		                <option value="-1">0</option>
 		                <option>1</option>
 		                <option>2</option>
 		                <option>3</option>
@@ -182,7 +165,7 @@
 		              </select>
 		              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
 		            </div>
-		            <div id="append_ext"></div>
+		            
             <div class="search">              
               <input type="submit" class="sea" value="Search &gt;" />
             </div>
@@ -211,16 +194,15 @@
             </div>
             <div class="check"  style="margin-bottom:10px;">
               <label style="color:#fff;">Check In Date:</label>
-              <input id="datepicker1" type="text" name="hotel_check_in_date">
+              <input id="datepicker1" type="text" name="hotel_check_in_date" class="">
             </div>
             <div class="board_basis" >
               <label style="color:#fff;">Nights:</label>
               <select class="input-block-level" style="height:43px;margin-bottom:10px;" name="hotel_nights">
                 <option value="-1">---Select---</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <?php for ($i=1;$i<=21;$i++){
+		                	echo '<option>'.$i.'</option>';
+		                }?>		  
               </select>
             </div>
             </div>          
@@ -247,7 +229,7 @@
             <div class="hotel_childerns"  >
               <label>Childrens:</label>
               <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_childrens">
-                <option  value="-1">---Select---</option>
+                <option  value="-1">0</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -255,7 +237,7 @@
               </select>
               <p style="color:#fff; text-align:center;">(Age *2-12)</p>
             </div>
-             <div id="append_ext_hotel"></div>
+             
             <div class="search">
               <input type="submit" class="sea" value="Search &gt;" />
             </div>
@@ -265,10 +247,6 @@
       </div>
  
           </div>
-          </div>
-          </div>
-
-<div class="slider">
 
        
 <div class="callbacks_container">
@@ -441,7 +419,7 @@
 	<div class="clearfix"></div>
 	<?php include_once 'includes/independent_reviews_left.php';?>
 	<div class="clearfix"></div>
-	<?php include_once 'includes/deals_email_left.php';?>
+	
 
 </div>
 </div>
@@ -522,5 +500,10 @@ destinations..</h4>
                       
      </div>     
 </div>
+<style>
+.input-block-level{
+	height:auto !important;
+}
+</style>
 
 

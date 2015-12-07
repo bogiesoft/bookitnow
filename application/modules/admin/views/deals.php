@@ -88,6 +88,7 @@
 // 	}
 	function region(e,mapng)
 	{	
+		alert($(e).next().prop("tagName").toLowerCase());
 		if($(e).next().prop("tagName").toLowerCase() == 'ul')
 		{
 			$(e).next().remove();

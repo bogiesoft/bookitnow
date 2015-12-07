@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['available/:any'] = 'welcome/available';
 $route['flightsAvailability/:any'] = 'welcome/fullFlightsavailable';
 $route['aboutus'] = 'welcome/aboutus';
+$route['contactUs'] = 'welcome/contactUs';
 $route['price_promise'] = 'welcome/price_promise';
 $route['terms_of_use'] = 'welcome/terms_of_use';
 $route['availableHotels/:any'] = 'welcome/hotel/available_hotels';
@@ -65,5 +66,5 @@ $route['extras/:any'] = 'welcome/extras/index';
 $route['book/:any'] = 'welcome/extras/book';
 $route['book_hotel/:any'] = 'welcome/extras/book_hotel';
 $route['notavailable'] = 'welcome/notavailable';
-
-
+$route['managebookinglogin'] = 'welcome/extras/bookingLogin';
+$route['admin'] = 'welcome/adminLogin';

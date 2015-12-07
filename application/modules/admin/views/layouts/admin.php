@@ -139,6 +139,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li>
                             <a href="<?php echo base_url();?>admin/booking_info"><i class="fa fa-indent nav_icon"></i>Booking Information</a>
                         </li>
+                        <li>
+                            <a href="<?php echo base_url();?>admin/deals"><i class="fa fa-indent nav_icon"></i>Deals</a>
+                        </li>
                        
                     </ul>
                 </div>

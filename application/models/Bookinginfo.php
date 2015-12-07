@@ -13,12 +13,13 @@ class BookingInfo extends CI_Model {
 		if($this->db->insert(BOOKINFO_TABLE,$data))
 		{
 			//$ref_id = md5(microtime().'_'.$this->db->insert_id());
-			$ref_id = substr(md5(uniqid(mt_rand(), true)), 0, 10);
+			//$ref_id = substr(md5(uniqid(mt_rand(), true)), 0, 10);
+			$ref_id = 'BIN-QQ-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 5));
 			$data =array('reference_id'=>$ref_id);
 			$this->db->where('id',$this->db->insert_id());
 			if($this->db->update(BOOKINFO_TABLE,$data))
 			{
-				return true; 
+				return $ref_id; 
 			}
 			else
 			{

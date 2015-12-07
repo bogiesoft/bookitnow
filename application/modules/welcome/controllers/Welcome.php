@@ -29,7 +29,7 @@ class Welcome extends CI_Controller {
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->load->helper(array('form','url','common'));
 		$this->load->model('UserSearch');
-		
+		$this->load->model ( 'User' );
 	}
 	
 
@@ -48,33 +48,13 @@ class Welcome extends CI_Controller {
 		$data = array();
 		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/parallax-slider/jquery.cslider.js','js/jquery.fancybox.pack.js','js/script-home.js'));
 		$this->layouts->set_title('Home');
-		$results = array();$string = '';
-		/************fetching departure airports**************/
-		
-		//print_r($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));exit;
-		$results['departures'] = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
-		
-		foreach ($results['departures'] as $departure)
-		{
-			$code = (array)$departure->attributes()->code;
-			$name = (array)$departure->attributes()->name;			
-			$data['filtered_departures'] = $this->seperatorFlights($code[0],$name[0]);			
-			$data['departures'][$code[0]] = $name[0];
-		}		
-		if ( ! $foo = $this->cache->get('departures'))
-		{
-			$foo = $data['departures'];
-			// Save into the cache for 60 minutes
-			$this->cache->save('departures', $foo, 3600);
-		}
-		/******************end***********/
-		
+		$results = array();		
+		/************fetching departure airports**************/		
+		changeSearch($data);		
+		/******************end***********/		
 		/************fetching travel to list for hotels**************/
-		$data['hotel_travel_list'] = $this->arrival_list_basedon_dynaminc_departuere_airport();
-			
-		
-		/******************end***********/
-		
+		$data['hotel_travel_list'] = $this->arrival_list_basedon_dynaminc_departuere_airport();		
+		/******************end***********/		
 		$this->layouts->view('home_page',$data);
 	}
 		
@@ -121,33 +101,7 @@ class Welcome extends CI_Controller {
 	}
 	
 		
-		/*public function fetch_results()
-		{	
-			
-			$results = array();$string = '';				
-			$this->load->model ( 'Arrivals' );
-			$arr_rows_cat_wise = $this->Arrivals->fetchArrivalsByCategory();
-			
-			foreach($arr_rows_cat_wise as $key => $val)
-			{
-				$results[$val['name']][$val['arapts']] = $val['name_resort'];		
-				//$results[$val['name']][$val['map_root']] = $val['name_resort'];
-			}
-			
-			
-			$string .= '<option value="-1">Select Destination</option>';
-			foreach($results as $key => $val)
-			{
-				$string .= '<option value="-1" style="font-weight:bold;color:red;">'.strtoupper($key).'</option>';
-				foreach ($val as $key1 => $val1)
-				{
-					//echo '<pre>';print_r($val1);exit;
-					$string .= '<option value='.$key1.'>'.$val1.'</option>';
-				}
-			}
-			echo $string;exit;
-		}*/
-	
+		
 	
 	public function fetch_filtered_flights()
 	{
@@ -166,7 +120,10 @@ class Welcome extends CI_Controller {
 				$post_data = $this->input->post();
 				$data = array('service_url' => $req_url,
 						'type_search' => 'flight_hotel',
-						'selected_date' => $this->input->post('departure_date')						
+						'selected_date' => $this->input->post('departure_date'),
+						'num_adults' => $this->input->post('adults'),
+						'num_children' => $this->input->post('childrens'),
+						'arapts' => $this->input->post('arrival_airports')
 				);
 				$hash = $this->UserSearch->createSearch($data);
 				if(!empty($this->UserSearch->fetch_a_search(array('url_hash' => $hash))))
@@ -312,6 +269,7 @@ class Welcome extends CI_Controller {
 			// Future To-do :  Here Please check weather "selected_date" should more than current date otherwise 404 page
 					
 			$req_url = $rows[0]['service_url'];
+			
 			$req_url_half = str_replace($rows[0]['selected_date'],'',$req_url);	
 			
 			$data['results'] = new SimpleXMLElement($this->download_page($req_url));
@@ -424,6 +382,8 @@ class Welcome extends CI_Controller {
 					$results['selected_date'] = $rows[0]['selected_date'];
 				}
 				
+				
+				//For change search poopulations
 				$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
 				
 				foreach ($departures as $departure)
@@ -433,6 +393,24 @@ class Welcome extends CI_Controller {
 					$results['filtered_departures'] = $this->seperatorFlights($code[0],$name[0]);
 					$results['departures'][$code[0]] = $name[0];
 				}	
+				
+				
+				
+// 				$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+// 				foreach ($departures as $departure)
+// 				{
+// 					$code = (array)$departure->attributes()->code;
+// 					$name = (array)$departure->attributes()->name;
+// 					$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+// 					$data['departures'][$code[0]] = $name[0];
+// 				}
+				$parts = parse_url($req_url);
+				parse_str($parts['query'], $query);
+				$results['change_search_info']['query'] = $query;
+				$results['change_search_info']['row'] = $rows[0];
+				$results['controller'] = $this;
+				//End
+				
 				
 				$this->layouts->view('available_flights_view1',$results);
 			}
@@ -451,8 +429,8 @@ class Welcome extends CI_Controller {
 	 * Full package for flights availability
 	 */
 	
-	public function loadFlightDataFun($service_url,$u_selected_date)
-	{
+	public function loadFlightDataFun($service_url,$u_selected_date,$row)
+	{		
 		$data= array();$results=array();
 		$results['controller']=$this;
 		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/jquery.fancybox.css','css/style.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script.js'));
@@ -485,8 +463,6 @@ class Welcome extends CI_Controller {
 		$this->cache->delete($service_url);
 		
 			$count = 0;$flex = 3;
-			//$results['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-			//$results['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
 			$results['departures'] = $this->fetch_departures();
 			$results['arrivals'] = $this->fetch_arrivals();
 			// Future To-do :  Here Please check weather "selected_date" should more than current date otherwise 404 page
@@ -503,13 +479,10 @@ class Welcome extends CI_Controller {
 					$coded_date = json_decode(json_encode($data['results']),true);
 					$this->search_upto_flex_days($coded_date,$u_selected_date,$flex,$search_dates);
 					$search_dates[$u_selected_date]['offers_list'] = $coded_date['offer'];
-					//echo $rows[0]['selected_date'];exit;
 					if($cdate_bp = $this->best_price_date_wise_fun($coded_date['offer']))
-					{
-		
+					{		
 						$search_dates[$u_selected_date]['best_price'] = $cdate_bp;
-					}
-		
+					}		
 				}
 				else
 				{
@@ -520,8 +493,6 @@ class Welcome extends CI_Controller {
 			else{
 				$search_dates = $this->cache->get($service_url);
 			}
-		
-			//	echo "<pre>";print_r($search_dates);exit;
 			$list_min = array_column($search_dates, 'best_price');
 		
 			if(!empty($list_min))
@@ -533,7 +504,6 @@ class Welcome extends CI_Controller {
 				$count=0;
 		
 				//Variables
-				//$flight_suppliers=array();
 				$dept_take_offs=array();
 				$return_take_offs=array();
 				$results['fly_from'] = array();
@@ -576,9 +546,7 @@ class Welcome extends CI_Controller {
 		
 								$results['flight_operators'][$offer['@attributes']['suppcode']]=$results['suppliers_list'][$offer['@attributes']['suppcode']];
 							}
-							// END - Listing flight operator list
-		
-		
+							// END - Listing flight operator list	
 						}
 						$results['num_of_flights'][$key_date] = count(@$value_date['offers_list']);
 						$results['best_prices_dates_wise'][$key_date] = '&#163;'.@$value_date['best_price'];
@@ -603,7 +571,7 @@ class Welcome extends CI_Controller {
 					$results['selected_date'] = $u_selected_date;
 				}
 		
-				$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+				/*$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
 		
 				foreach ($departures as $departure)
 				{
@@ -612,7 +580,17 @@ class Welcome extends CI_Controller {
 					$results['filtered_departures'] = $this->seperatorFlights($code[0],$name[0]);
 					$results['departures'][$code[0]] = $name[0];
 				}
-				//echo '<pre>';print_r();exit;
+				*/
+				$parts = parse_url($service_url);
+				parse_str($parts['query'], $query);
+				$results['change_search_info']['query'] = $query;
+				$results['change_search_info']['row'] = $row[0];
+				
+				/************fetching departure airports**************/
+				changeSearch($results);
+				/******************end***********/
+				
+				//echo '<pre>';print_r($results);exit;
 				$this->layouts->view('available_flights_view1',$results);
 			}
 			else
@@ -623,17 +601,16 @@ class Welcome extends CI_Controller {
 	}
 	
 	public function fullFlightsavailable($id=null)
-	{			
+	{	
 		$this->load->model('FullSearch');
 		$rows = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
+		
 		if(!empty($rows))
 		{
 			$parts = parse_url($rows[0]['service_url']);
-			parse_str($parts['query'], $query);
-			//echo '<pre>';print_r($query);exit;
-				
+			parse_str($parts['query'], $query);						
 			$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=3&depapt=".$query['depapt']."&arrapt=".$rows[0]['arapts']."&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&flex=".$query['flex']."&depdate=".$query['depdate']."";
-			$this->loadFlightDataFun($url,$query['depdate']);
+			$this->loadFlightDataFun($url,$query['depdate'],$rows);
 		}	
 		else
 		{
@@ -1045,22 +1022,22 @@ class Welcome extends CI_Controller {
 	{		
 		$results = array();$string = '';
 		$this->load->model ( 'Arrivals' );
-		$arr_rows_cat_wise = $this->Arrivals->fetchArrivalsByCategory();		
+		$arr_rows_cat_wise = $this->Arrivals->fetchArrivalsByCategory();
+		
 		foreach($arr_rows_cat_wise as $key => $val)
 		{
 			$results[$val['name']][$val['arapts']][] = $val['name_resort'];
 			$results[$val['name']][$val['arapts']][] = $val['map_root'];
 			//$results[$val['name']][$val['map_root']] = $val['name_resort'];
 		}
-		//echo '<pre>';print_r($results);exit;
+		
 			
 		$string .= '<option value="-1">Select Destination</option>';
 		foreach($results as $key => $val)
 		{
 			$string .= '<option value="-1" style="font-weight:bold;color:red;">'.strtoupper($key).'</option>';
 			foreach ($val as $key1 => $val1)
-			{				
-				//echo '<pre>';print_r($val1[1]);exit;
+			{		
 				$string .= '<option mapper='.$val1[1].' value='.$key1.' >'.$val1[0].'</option>';
 				continue;				
 			}
@@ -1339,7 +1316,35 @@ class Welcome extends CI_Controller {
 	}
 	
 	
-	
+	public function adminLogin(){
+		if ($this->input->post ()) {
+			$this->load->library ( 'form_validation' );
+			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );
+			$this->form_validation->set_rules ( 'password_hash', 'Password', 'trim|required|min_length[3]' );
+			if (! $this->form_validation->run ()) {
+			} else {
+				$_POST ['password_hash'] = md5 ( $this->input->post ( 'password_hash' ) );
+				if ($row = $this->User->fetch_a_user ( $this->input->post () )) {
+					$newdata = array (
+							'id' => $row [0] ['id'],
+							'email' => $row [0] ['email'],
+							'logged_in' => TRUE 
+					);
+					$this->session->set_userdata ( $newdata );
+					redirect ( base_url () . 'admin/listings' );
+				} else {
+					$this->session->set_flashdata ( 'message', 'Sorry,Invalid credentials' );
+					redirect ( base_url () . 'admin/' );
+				}
+			}
+		}
+		$this->layouts->add_include ( array (
+				'css/login.css',
+				'css/font-awesome.min.css' 
+		) );
+		$this->layouts->set_title ( 'Admin Login' );
+		$this->layouts->view ( 'admin/login',array(),'login' );
+	}
 			
 	
 }

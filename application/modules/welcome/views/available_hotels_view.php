@@ -1,5 +1,13 @@
-<?php include_once 'includes/change_search_hotels.php';?> 
- 
+<div id="your_Search">
+<div class="container">
+<?php 
+	if($type == 'hotel'){
+		include_once 'includes/change_search_hotels_only.php';
+	}else{
+		include_once 'includes/change_search_hotels.php';
+	}?> 
+  <div class="col-sm-2" style="">
+          <div style="display: block;" id="dvToggle" class=""> 
        <div id="dvFilter" class="filter"><div>
             <div class="clearfix bg_white  drop_light has_bottom_margin">
                   <div class="title-left"><span class="h-title">Order Hotels By:</strong></div> 
@@ -14,13 +22,13 @@
                 </div>   -->          
                 
                 <div class="filtercheckbox"> <span name="check">
-                    <input id="chkFlightFilter_0" mandatory="price" checked="checked" type="checkbox">
+                    <input id="chkFlightFilter_0" mandatory="price" checked="checked" value="lowest" type="checkbox">
                     <label for="chkFlightFilter_0">Lowest Price</label>
                     </span>                    
                </div> 	
 
 				<div class="filtercheckbox"> <span name="check">
-                    <input id="chkFlightFilter_1" mandatory="price" name="highest" type="checkbox">
+                    <input id="chkFlightFilter_1" mandatory="price" value="highest" type="checkbox">
                     <label for="chkFlightFilter_1">Highest Price</label>
                     </span>
               
@@ -79,7 +87,7 @@
 	
 		echo '<div class="filtercheckbox">
                                <span name="check">
-            						<input id="chkStar_'.$key.'" type="checkbox" mandatory="star" >
+            						<input id="chkStar_'.$key.'" type="checkbox" mandatory="star" value='.$key.' >
             						<label style="height:100px;" for="chkStar_'.$key.'">'.$val.'
 					                    <p>
 					                       '.count($offers['populators']['star_ratting']['price'][$key]).' hotels from
@@ -147,11 +155,12 @@ foreach ($offers['populators']['boardbasis'] as $key => $val)
 </div>
 </div>
 <!-- middle design start here-->
-<div class="col-sm-7" style="padding-left:0px;">
+<div class="col-sm-7" style="padding-left:0px;" >
 
 	<?php 
-	
+		echo '<div id="hotel_content">';
 		echo $content;
+		echo '</div>';
 	?>
 	</div>
 <!-- middle design closed here-->
@@ -176,6 +185,9 @@ foreach ($offers['populators']['boardbasis'] as $key => $val)
 <!--sidebar-->
 </div>
 </div>
-				 
+<<script type="text/javascript">
+var hotel_crypt = '<?php echo $this->uri->segment(2);?>';
+var type = '<?php echo $type;?>';
+</script>			 
 					
 	

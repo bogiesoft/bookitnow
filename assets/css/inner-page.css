@@ -298,7 +298,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
     line-height: normal;
     padding: 10px 6px;
 }
-.button, .button:active, .button:visited, button, button:visited, button.active {
+/*.button, .button:active, .button:visited, button, button:visited, button.active {
     background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top , #fc6 5%, #ffbb34 100%) repeat scroll 0 0;
     border: 1px solid #ffb61a;
     border-radius: 6px;
@@ -318,7 +318,7 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {
     text-transform: uppercase;
     transition: all 0.2s linear 0s;
 }
-
+*/
 button[disabled], html input[disabled] {
     cursor: default;
 }
@@ -379,9 +379,9 @@ input {
 	 border-left: 1px solid #ddd;
 	  border-right: 1px solid #ddd;
 }
-.button, .button:active, .button:visited, button, button:visited, button.active{
+/*.button, .button:active, .button:visited, button, button:visited, button.active{
 background-color:#d8d3d3!important;
-}
+}*/
 
  a:focus {    
     text-decoration: none;

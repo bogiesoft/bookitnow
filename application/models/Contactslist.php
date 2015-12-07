@@ -12,24 +12,24 @@ class ContactsList extends CI_Model {
 		return $this->db->insert(CONTACTSLIST,$data);
 	}
 	
-	/*public function fetch_a_search($array,$limit=1,$offset=0)
+	public function fetch_a_search($array,$limit=1,$offset=0)
 	{
-		return $this->db->get_where(LUGGAGE_TABLE, $array , $limit, $offset)->result_array();		
+		return $this->db->get_where(CONTACTSLIST, $array , $limit, $offset)->result_array();		
 	}
 	public function update_row($data,$id)
 	 {
 	 	$this->db->where('id',$id);
-	 	return $this->db->update(LUGGAGE_TABLE,$data);
+	 	return $this->db->update(CONTACTSLIST,$data);
 	 }
 	 
 	 public function getAll()
 	 {
-	 	$query = $this->db->get(LUGGAGE_TABLE);
+	 	$query = $this->db->get(CONTACTSLIST);
 	 	return $query->result_array();
 	 }
-	 public function deleteRow($id)
+	 /* public function deleteRow($id)
 	 {
 	 	$this->db->where('id',$id);
 	 	return $this->db->delete(LUGGAGE_TABLE);
-	 }*/
+	 } */
 }

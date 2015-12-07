@@ -31,14 +31,27 @@ body {
 	padding: 0px;
 }
 .logo {
-	padding: 0px;
-	float: left;
+    float: left;
+    padding: 1px 0 9px;
 }
 .logo p {
 	font-size: 15px;
 	font-weight: 600;
 	color: #ff6600;
 }
+.abta {
+	padding: 0px;
+	float: left;
+	margin-left:12px;
+}
+.abta p {
+	font-size: 15px;
+	font-weight: 600;
+	color: #ff6600;
+	margin-top: 15px;
+}
+
+
 .phonenumbers {
 	float: right;
 }
@@ -71,7 +84,7 @@ p.call {
 .view {
 	float: right;
 	background-color: #37c837;
-	padding: 8.5px 20px;
+	padding: 13.8px 20px;
 	margin-right: 10px;
 }
 .view a {
@@ -102,16 +115,16 @@ p.call {
 	width: 100%;
 	border: 0;
 }
-.caption {
+/*.caption {
 	width: 65%;
 	position: absolute;
-	top: 28%;
+	
 	left: 14%;
 	bottom: 5%;
 	border-radius: 5px;
 	float: left;
 	z-index: 9999
-}
+}*/
 .caption h3 {
 	color: #ff9900;
 	font-size: 25px;
@@ -282,9 +295,9 @@ p.pera {
 	padding: 5px;
 }
 .superescapes ul li a {
-	font-size: 17px;
+font-size: 15px;
 	color: #ff9900;
-	padding: 5px 15px;
+	 padding: 5px 9px;
 	text-decoration: none;
 	font-weight: 600;
 }
@@ -355,7 +368,7 @@ p.pera {
 	margin-top: 1em;
 }
 .deals h2 {
-	background-color: #0099cc;
+	background-color: #ff9900;
 	padding: 10px;
 	color: #fff;
 	font-size: 15px;
@@ -603,8 +616,7 @@ p.privacy {
 }
 .txt_color_1 {
 	color: #06AAD1;
-	padding: 0px;
-	font-size: 15px;
+	padding: 5px;
 }
 small {
 	font-size: 75%;
@@ -640,7 +652,7 @@ small {
 	overflow: hidden;
 	text-transform: uppercase;
 	transition: all 0.2s linear 0s;
-	background: #06AAD1;
+	background:#F90;	
 	cursor: pointer;
 }
 .columns_three {
@@ -662,7 +674,7 @@ small {
 	right: 20px;
 	display: none;
 	float: right;
-	background: url(images/to-top2.png) no-repeat 5px 3px;
+	background: url(../images/to-top2.png) no-repeat 5px 3px;
 	z-index: 9999;
 }
 .clients {
@@ -769,7 +781,7 @@ input[type="text"], input[type="search"], select {
 	width: 100%;
 	padding: 8px;
 	border: 1px solid #DDD;
-	font-size: 75%;
+	font-size: 14px;
 	margin: 0px;
 	height: 35px;
 }
@@ -818,7 +830,9 @@ ul.steps.fh li {
 	background: -o-linear-gradient( #f19412, #f6b817); /* For Opera 11.1 to 12.0 */
 	background: -moz-linear-gradient( #f19412, #f6b817); /* For Firefox 3.6 to 15 */
 	background: linear-gradient( #f19412, #f6b817); /* Standard syntax */
-	color:#fff; font-size:25px; text-align:center;
+	color: #fff;
+	font-size: 25px;
+	text-align: center;
 }
 ul.steps li.current {
 	background: #FFF none repeat scroll 0% 0%;
@@ -833,7 +847,7 @@ ul.steps li {
 	color: #CCC;
 	text-align: center;
 	line-height: 30px;
-	font-size:16px;
+	font-size: 16px;
 }
 .fly_from_heading {
 	width: 100%;
@@ -904,10 +918,10 @@ label {
 	background-image: linear-gradient(to bottom, #fff, #f0f0f0);
 	border-bottom: 1px solid #DDD;
 }
-
-#middle_conent{width:100%; margin-top:3em;}
-
-
+#middle_conent {
+	width: 100%;
+	margin-top: 3em;
+}
 /*********inner page**********/
 .about {
 	width: 100%;
@@ -920,8 +934,9 @@ label {
 	font-size: 1.2em;
 	background-color: #f4f4f4;
 	line-height: 28px;
-	padding: 10px;
+	padding-left: 10px;
 	text-transform: uppercase;
+	padding:10px;
 }
 .contactform {
 	margin: 20px;
@@ -967,37 +982,3 @@ ul.contactform li {
 	font-size: 14px;
 	margin-left: 20px;
 }
-
-
-.bg_grey{
-	border: 1px solid #DDD;
-background-image: linear-gradient(to bottom, #FFF, #F0F0F0);
-    margin-right: 0px !important;
-    margin-left: 0px !important;
-}
-.top-add{
-	margin-top:20px;
-	
-}
-
-p a:hover{
-	color:white;
-}
-
-.orderhotels-1 {
-    padding: 0px!important;   
-    background-color: white;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-

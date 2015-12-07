@@ -46,7 +46,7 @@
     
     	<?php echo validation_errors(); 
     		echo $this->session->flashdata('message');
-    	$attributes = array('name'=>'admin_login');
+    		$attributes = array('name'=>'admin_login');
 			echo form_open(base_url().'admin', $attributes);
 		?>
 	    <div class="form-group">	    	

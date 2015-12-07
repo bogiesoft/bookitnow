@@ -136,13 +136,35 @@
 					<input class="form-control" title="Mobile" name="mobile">
 					</div>
 					<div class="col-md-4 col-sm-3 col-xs-12">				
-					<h5>I have a different billing address </h5><br><br><br>
+					<h5><input type="checkbox" id="toggle3" style="display:none;"/><span></span><label for="toggle3" style="text-decoration: underline;cursor:pointer;">I have a different billing address</label></h5><br><br><br>
+					
 					
 					</div>					
 				</div>
 				
 </div>	
-
+<div class="orderhotels-one toggle3" style="display: none;">
+		<div  class="row">
+			<div class="col-sm-6 col-md-12">
+				<h4 class="booknow-font"><b>Billing Information</b></h4>			
+			</div>	
+				<div class="col-md-4 col-sm-3 col-xs-12">				
+				<h5>Address Line 1 <span class="txt_red">*</span></h5>
+				<input class="form-control" title="Adderess-2" name="address_2">
+				</div>
+				<div class="col-md-4 col-sm-3 col-xs-12">				
+					<h5>City / County <span class="txt_red">*</span></h5>
+					<input class="form-control" title="City" name="city2">
+					</div>
+		</div>
+				<div  class="row">
+					<div class="col-md-4 col-sm-3 col-xs-12">				
+					<h5>Postcode <span class="txt_red">*</span></h5>
+					<input class="form-control" title="Postal code" name="post_code2"><br>
+					</div>					
+				</div>
+				
+</div>
 
 <div class="orderhotels-one">
 		<div  class="row">
@@ -183,8 +205,7 @@
 				<h5> Valid From Date</h5>
 				<div class="col-sm-6 col-md-4" style="margin-left: -15px;">	
 					<div class="form-group">
-						<select name="valid_from" title="Valid from">
-							<option value="-1">Month	</option>
+						<select name="valid_from" title="Valid from">													
 							<option value="01">01</option>
 							<option value="02">02</option>
 							<option value="03">03</option>
@@ -202,23 +223,12 @@
 						</div>
 						<div class="col-sm-6 col-md-4">	
 					<div class="form-group">
-						<select name="valid_from" title="Valid from">
-							<option value="-1">Year</option>
-							<option value="2001">2001</option>
-							<option value="2002">2002</option>
-							<option value="2003">2003</option>
-							<option value="2004">2004</option>
-							<option value="2005">2005</option>
-							<option value="2006">2006</option>
-							<option value="2007">2007</option>
-							<option value="2008">2008</option>
-							<option value="2009">2009</option>
-							<option value="2010">2010</option>
-							<option value="2011">2011</option>
-							<option value="2012">2012</option>
-							<option value="2013">2013</option>
-							<option value="2014">2014</option>
-							<option value="2015">2015</option>								
+						<select name="valid_from" title="Valid from">							
+							<?php 
+								for($i=(date('Y')-14);$i<=date('Y');$i++){
+									echo '<option value="'.$i.'">'.$i.'</option>';
+								}
+							?>														
 						</select>
 					</div>	
 					</div>
@@ -227,8 +237,8 @@
 				<h5> Valid To Date</h5>	
 				<div class="col-sm-6 col-md-4" style="margin-left: -15px;">	
 					<div class="form-group">
-						<select name="valid_to" title="Valid to">
-							<option value="-1">Month</option>
+						<select name="valid_to" title="Valid to">	
+							<option value="-1">--</option>						
 							<option value="01">01</option>
 							<option value="02">02</option>
 							<option value="03">03</option>
@@ -247,17 +257,12 @@
 						<div class="col-sm-6 col-md-4">	
 					<div class="form-group">
 						<select name="valid_to" title="valid to">
-							<option value="-1">Year</option>
-							<option value="2015">2015</option>
-							<option value="2016">2016</option>
-							<option value="2017">2017</option>
-							<option value="2018">2018</option>
-							<option value="2019">2019</option>
-							<option value="2020">2020</option>
-							<option value="2021">2021</option>
-							<option value="2022">2022</option>
-							<option value="2023">2023</option>
-							<option value="2024">2024</option>								
+							<option value="-1">--</option>			
+							<?php 
+								for($i=date('Y');$i<=(date('Y')+8);$i++){
+									echo '<option value="'.$i.'">'.$i.'</option>';
+								}
+							?>										
 						</select>
 					</div>	
 			
@@ -268,7 +273,7 @@
 					<div class="col-md-5 col-sm-3 col-xs-12">					
 					<h5>Security Number<br></h5>
 <h6>Last 3 numbers on the back of your card</h6>
-					<input class="form-control" title=" Security Number">
+					<input class="form-control" title=" Security Number" name="cvv_number">
 					</div>					
 				</div>
 				<div  class="row">

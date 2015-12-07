@@ -243,7 +243,14 @@
         	echo '<tr><td>Home Telephone</td><td>'.$row[0]['home_tel'].'</td></tr>';
         	echo '<tr><td>Postal Code</td><td>'.$row[0]['postal_code'].'</td></tr>';
         	echo '<tr><td>Address - 1</td><td>'.$row[0]['address_1'].'</td></tr>';
-        	echo '<tr><td>Address - 2</td><td>'.$row[0]['address_2'].'</td></tr>';
+        	if ($row[0]['address_2'] != '')
+        	{
+        	echo '<tr><td>Billing Address</td><td>'.$row[0]['address_2'].'</td></tr>';
+        	}
+        	else 
+        	{
+        		echo '<tr><td>Billing Address</td><td>'.$row[0]['address_2'].'</td></tr>';
+        	}
          	echo '<tr><td>City/Country</td><td>'.$row[0]['city_country'].'</td></tr>';        	
         	?>
         </tbody>
@@ -257,7 +264,8 @@
         	<?php 
         	echo '<tr><td>Card Type</td><td>'.$row[0]['card_type'].'</td></tr>';
         	echo '<tr><td>Card Holder Name</td><td>'.$row[0]['name_card'].'</td></tr>';
-        	echo '<tr><td>Card Number</td><td>'.$row[0]['card_number'].'</td></tr>';       	        	
+        	echo '<tr><td>Card Number</td><td>'.$row[0]['card_number'].'</td></tr>';   
+        	echo '<tr><td>CVV Number</td><td>'.$row[0]['cvv_number'].'</td></tr>';
         	?>
         </tbody>
       </table>

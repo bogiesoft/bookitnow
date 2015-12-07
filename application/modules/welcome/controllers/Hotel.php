@@ -21,6 +21,7 @@ class Hotel extends CI_Controller {
 	
 	public function __construct()
 	{
+		
 		parent::__construct();	
 		$this->load->library('Layouts');
 		$this->layouts->add_include($this->config->item('header_css'));
@@ -88,7 +89,9 @@ class Hotel extends CI_Controller {
 						'selected_date' => $post_data['hotel_check_in_date'],
 						'pax' => $post_data['pax'],
 						'num_adults' => $post_data['hotel_adults'],
-						'num_children' => $post_data['hotel_childrens']
+						'num_children' => $post_data['hotel_childrens'],
+						'arapts' => $post_data['hotel_travel_to'],
+						'num_rooms' => $post_data['hotel_rooms']
 				);
 				$hash = $this->UserSearch->createSearch($data);
 				if(!empty($this->UserSearch->fetch_a_search(array('url_hash' => $hash))))
@@ -118,21 +121,83 @@ class Hotel extends CI_Controller {
 			$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
 			$data= array();
 			$data['row'] = $rows;
-			if(!empty($rows))
-			{
-				if($results = $this->loadHotelDataFun($rows[0]['service_url'],$rows[0]['selected_date']))
-				{					
-					$this->format_array_fun($results['offer'],count($results['offer']),$data['offers']);					
-					$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'hotel_only');					
+			
+			if($rows[0]['pax'] != '')
+				{
+					$service_url_arr = explode(',',substr($rows[0]['service_url'],0,-1));
+					
+					$offers = array();
+					$n = 0;
+					foreach ($service_url_arr as $service_url)
+					{
+						
+						$parts = parse_url($service_url);
+						parse_str($parts['query'], $query);	
+						//echo $query['pax'];
+						$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=6&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&depdate=".$rows[0]['selected_date']."&flex=0&countryid=".$query['countryid']."&regionid=".$query['regionid']."&areaid=".$query['areaid']."&resortid=&boards=&rating=&pax=".$query['pax']."&offersperday=200";
+						
+						if($results = $this->loadHotelDataFun($url,$rows[0]['selected_date']))
+						{								
+							$temp = array();							
+							$this->format_array_fun($results['offer'],count($results['offer']),$temp);							
+							$offers[] = $temp;
+						}
+					}	
+					
+				
+					$data['offers'] = $this->filter_pax_based_fun($offers,0,count($offers),$offers[0]['filter_data']);
+					
+					if(empty(@$data['offers']['filter_data'])){
+						redirect(base_url()."notavailable");
+					}
+					
+					$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
+					$myser_URL = $service_url_arr[0];
+					//echo $myser_URL;exit;
 				}
-			}
-			else
+				else
+				{
+					
+					$parts = parse_url($rows[0]['service_url']);
+					parse_str($parts['query'], $query);
+					
+					$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=6&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&depdate=".$rows[0]['selected_date']."&flex=0&countryid=".$query['countryid']."&regionid=".$query['regionid']."&areaid=".$query['areaid']."&resortid=&boards=&rating=&pax=".$query['pax']."&offersperday=200";
+					if($results = $this->loadHotelDataFun($url,$rows[0]['selected_date']))
+					{
+						
+						$this->format_array_fun($results['offer'],count($results['offer']),$data['offers']);
+						if(empty($data['offers'])){
+							redirect(base_url()."notavailable");
+						}
+						//echo "<pre>";print_r($data['offers']);exit;
+						$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
+					}
+					$myser_URL = $rows[0]['service_url'];
+					
+				}
+				
+			//echo '<pre>';print_r($data['row']);exit;
+			/*****************end*****************************/
+			$data['type'] = 'hotel';
+			
+			//For change search poopulations
+			$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+			foreach ($departures as $departure)
 			{
-				redirect(base_url());
+				$code = (array)$departure->attributes()->code;
+				$name = (array)$departure->attributes()->name;
+				$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+				$data['departures'][$code[0]] = $name[0];
 			}
-			/*****************end*****************************/			
-			//echo '<pre>';print_r($data['offers']);exit;
-			//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
+			$parts = parse_url($myser_URL);
+			parse_str($parts['query'], $query);
+			$data['change_search_info']['query'] = $query;
+			$data['change_search_info']['row'] = $rows[0];
+			$data['controller'] = $this;
+			//End
+			 		
+		//	echo '<pre>';print_r($data['change_search_info']);exit;
+			
 			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
 			$this->layouts->set_title('Available Hotels');
 			$this->layouts->view('available_hotels_view',$data);
@@ -154,7 +219,8 @@ class Hotel extends CI_Controller {
 				'HB' => 'Half Board',
 				'FB' => 'Full Board'
 		);
-		
+		$populators = array();
+		if(!empty($results))
 		foreach ($results as $key => $result)
 		{
 			foreach ($result as $offer)
@@ -175,7 +241,7 @@ class Hotel extends CI_Controller {
 	}
 	public function filter_pax_based_fun($offers,$current_offer_pos,$count,$current_offer_result)
 	{
-		//echo '<pre>';print_r($offers);exit;
+		
 		static $result = array();
 		if($count == 1)
 		{
@@ -186,7 +252,7 @@ class Hotel extends CI_Controller {
 		else if(($count - $current_offer_pos) < 2 )
 		{		
 			
-			$result['populators'] = $this->populators_filter_fun($result['filter_data']);
+			$result['populators'] = $this->populators_filter_fun(@$result['filter_data']);
 			return $result;
 		}
 		
@@ -239,7 +305,7 @@ class Hotel extends CI_Controller {
 			
 		}
 		
-		return $this->filter_pax_based_fun($offers,$current_offer_pos+1,$count,$result['filter_data']);
+		return $this->filter_pax_based_fun($offers,$current_offer_pos+1,$count,@$result['filter_data']);
 		
 	}	
 	
@@ -309,13 +375,13 @@ class Hotel extends CI_Controller {
 			
 			$flight_row = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$rows[0]['id']));
 			$data['row'] = $rows;
-			
+			$data['fselected_date'] = $flight_row[0]['flight_selected_date'];
 			if(!empty($rows))
-			{		
-
+			{
 				if($rows[0]['pax'] != '')
 				{
 					$service_url_arr = explode(',',substr($rows[0]['service_url'],0,-1));
+					
 					$offers = array();
 					$n = 0;
 					foreach ($service_url_arr as $service_url)
@@ -336,8 +402,14 @@ class Hotel extends CI_Controller {
 					
 				
 					$data['offers'] = $this->filter_pax_based_fun($offers,0,count($offers),$offers[0]['filter_data']);
-					//echo '<pre>';print_r($data['offers']);exit;
+					
+					if(empty(@$data['offers']['filter_data'])){
+						redirect(base_url()."notavailable");
+					}
+					
 					$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
+					$myser_URL = $service_url_arr[0];
+					//echo $myser_URL;exit;
 				}
 				else
 				{
@@ -350,26 +422,15 @@ class Hotel extends CI_Controller {
 					{
 						
 						$this->format_array_fun($results['offer'],count($results['offer']),$data['offers']);
+						if(empty($data['offers'])){
+							redirect(base_url()."notavailable");
+						}
 						//echo "<pre>";print_r($data['offers']);exit;
 						$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
 					}
+					$myser_URL = $rows[0]['service_url'];
 					
-				}
-				
-				//echo '<pre>';print_r($data['offers']);exit;
-				
-			
-				/*********************Recommended hotels**************
-				 * just fetch the results which have 3 ratting and avg range hotels
-				 */
-				$filter_options_arr = array();
-				$filter_options_arr['price'] = array('recommended');
-				//$this->filtering_hotels_fun($filter_options_arr,$data['offers']['filter_data']);
-				
-				
-				/*end***/
-				/*********previous Selectd information************/
-				
+				}				
 				$departures = $this->fetch_departures();
 				$arrivals = $this->fetch_arrivals();
 			
@@ -461,10 +522,27 @@ class Hotel extends CI_Controller {
 			        </div>';
 				
 				/**************end*******************************/
-				
+				$data['type'] = 'pack_hotel';
 				$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
 				//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
 				$this->layouts->set_title('Available Hotels');
+				
+				//For change search poopulations
+				$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+				foreach ($departures as $departure)
+				{
+					$code = (array)$departure->attributes()->code;
+					$name = (array)$departure->attributes()->name;
+					$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+					$data['departures'][$code[0]] = $name[0];
+				}				
+ 				$parts = parse_url($myser_URL);
+ 				parse_str($parts['query'], $query);				
+ 				$data['change_search_info']['query'] = $query;
+ 				$data['change_search_info']['row'] = $rows[0];
+ 				$data['controller'] = $this;
+ 				//End				
+ 			
 				$this->layouts->view('available_hotels_view',$data);
 				
 				
@@ -543,7 +621,7 @@ class Hotel extends CI_Controller {
 	
 	public function hotels_html($offers,$limit,$offset,$crypt,$type)
 	{
-		
+		//echo $limit.' '.$offset;exit;
 		$data = array();$html = '';
 		$boardbasis_arr = array('AI' => 'All Inclusive',
 				'RO' => 'Room Only',
@@ -618,7 +696,7 @@ class Hotel extends CI_Controller {
 			}
 		}
 		$res_count = count($offers);
-		$current_page = round(($offset+$limit)/10);
+		$current_page = round(($limit)/10);
 		
 		
 		$num_pages = ($res_count%10)? ($res_count/10)+1 : $res_count/10;
@@ -800,6 +878,8 @@ class Hotel extends CI_Controller {
 	
 	
 	public function download_page($path){
+		//$path = urlencode($path);
+		//echo urldecode($path);exit;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$path);
 		curl_setopt($ch, CURLOPT_FAILONERROR,1);
@@ -857,4 +937,162 @@ class Hotel extends CI_Controller {
 		$this->load->view('full_details',$data);
 	}
 	
+	public function filterHotel_fun()
+	{
+		
+		if($this->input->post()){
+			
+			$checkedValues = $this->input->post('checkedValues');
+			
+			if($this->input->post('crypt') != '')
+			{
+				if($this->input->post('searchType') == 'pack_hotel' ){
+					$this->load->model('FullSearch');
+					$this->load->model('PhaseFlightOrHotel');
+					$rows = $this->FullSearch->fetch_a_search(array('url_hash' => trim($this->input->post('crypt'))));
+						
+					$flight_row = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$rows[0]['id']));
+					$sel_date = $flight_row[0]['flight_selected_date'];
+				}
+				else{
+					$this->load->model('UserSearch');
+					$rows = $this->UserSearch->fetch_a_search(array('url_hash' => trim($this->input->post('crypt'))));
+					$sel_date = $rows[0]['selected_date'];
+				}
+			
+				if(!empty($rows))
+				{
+					$offers = array();
+					if($rows[0]['pax'] != '')
+					{
+						
+						$service_url_arr = explode(',',substr($rows[0]['service_url'],0,-1));
+						
+						//$n = 0;
+						foreach ($service_url_arr as $service_url)
+						{
+			
+							$parts = parse_url($service_url);
+							parse_str($parts['query'], $query);
+							
+							$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=6&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&depdate=".$sel_date."&flex=0&countryid=".$query['countryid']."&regionid=".$query['regionid']."&areaid=".$query['areaid']."&resortid=&boards=&rating=&pax=".$query['pax']."&offersperday=200";
+			
+							if($results = $this->loadHotelDataFun($url,$sel_date))
+							{
+								//Sort by price
+								if(@$checkedValues['prices'] && $checkedValues['prices'][0] == 'highest')
+								{
+									uasort($results['offer'], 'cmp');
+								}
+								$temp = array();
+								$this->format_array_fun($results['offer'],count($results['offer']),$temp);
+								$offers[] = $temp;
+							}
+						}
+							
+			
+						$offers = $this->filter_pax_based_fun($offers,0,count($offers),$offers[0]['filter_data']);
+						
+						
+						
+					}
+					else
+					{
+							
+						$parts = parse_url($rows[0]['service_url']);
+						parse_str($parts['query'], $query);
+							
+						$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=6&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&depdate=".$sel_date."&flex=0&countryid=".$query['countryid']."&regionid=".$query['regionid']."&areaid=".$query['areaid']."&resortid=&boards=&rating=&pax=".$query['pax']."&offersperday=200";
+						if($results = $this->loadHotelDataFun($url,$sel_date))
+						{
+							
+							
+							//Sort by price 
+							if(@$checkedValues['prices'] && $checkedValues['prices'][0] == 'highest')
+							{
+								uasort($results['offer'], 'cmp');
+							}
+							//end
+							$this->format_array_fun($results['offer'],count($results['offer']),$offers);
+												
+						}							
+					}			
+				}		
+				//If any resort selected
+				if(@$checkedValues['resorts'])
+				{
+					$temp = array();
+					foreach ($offers['filter_data'] as $offr_key => $offer)
+					{
+						$offr_arr = current(explode('-',$offr_key));
+						foreach ($checkedValues['resorts'] as $resort)
+						{
+							if($offr_arr == $resort){
+								$temp[$offr_key] = $offer;
+							}
+						}
+					}
+					$offers['filter_data'] = $temp;
+				}
+				//end
+				//If any board basis selected
+				if(@$checkedValues['boardbasis'])
+				{
+					$temp = array();
+					foreach ($offers['filter_data'] as $offr_key => $offers)
+					{
+						foreach ($offers as $offer){
+							foreach ($checkedValues['boardbasis'] as $boardbasis)
+							{
+								if($boardbasis == $offer['@attributes']['boardbasis'])
+								{
+									$temp[$offr_key][] = $offer;
+								}
+							}
+						}
+					}
+					$offers['filter_data'] = $temp;
+				}
+				//end
+					
+				//If any star selected
+				if(@$checkedValues['stars'])
+				{
+					$temp = array();
+					foreach ($offers['filter_data'] as $offr_key => $offers)
+					{
+						foreach ($offers as $offer){
+							foreach ($checkedValues['stars'] as $star)
+							{
+								if((int)$star == (int)$offer['@attributes']['starrating'])
+								{
+									$temp[$offr_key][] = $offer;
+								}
+							}
+						}
+					}
+					$offers['filter_data'] = $temp;
+				}
+				//end
+				$limit = ((int)$checkedValues['page'] * 10)-1;
+				$offset = max(($limit-10),0);
+				//echo '<pre>';print_r($offers['filter_data']);exit;
+				$content = $this->hotels_html($offers['filter_data'],$limit,$offset,$this->input->post('crypt'),'pack_hotel');
+				
+			
+			echo $content;exit;
+			
+			
+			/*
+			if(@$checkedValues['resorts'])
+			{
+				echo "a";
+			}
+			else{
+				echo "else";
+			}
+			exit;	*/		
+		}
+		}
+	}
 }

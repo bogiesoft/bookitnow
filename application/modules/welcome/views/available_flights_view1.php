@@ -2,10 +2,31 @@
             	  else $type_flight = 'flight_date';
             ?>
 <div id="body_content" style="margin:0px;">
-<div id="your_Search">
+<!-- <div id="your_Search">
 <div class="container">
 <div class="you">
-<p><strong>Your Search:</strong> London Airports To Benidorm, 2 Adults, 7 Nights, 02 October 2015.</p>
+<?php 
+
+	$dept_arr = explode('|',$change_search_info['query']['depapt']);
+	$t = explode('-',$departures[$dept_arr[0]]);
+	$ser_str = array_pop($t) .' to ';	
+	$controller->load->model ( 'Arrivals' );
+	$arr_rows_cat_wise = $controller->Arrivals->fetchArrivalsByCategory();
+	foreach ($arr_rows_cat_wise as $tarrival)
+	{
+		if($tarrival['arapts'] == $change_search_info['query']['arrapt'])
+		{
+			$ser_str .= $tarrival['name_resort'];
+		}		
+	}
+	$ser_str .= ', '.$change_search_info['row']['num_adults'].' Adult(s), ';
+	$ser_str .= $change_search_info['row']['num_children'].' Children(s), ';
+	$ser_str .= $change_search_info['query']['maxstay'].' Night(s), ';
+	$ser_str .=  date('d M Y',$controller->cvtDt(str_date($change_search_info['query']['depdate'])));
+	
+	
+?>
+<p><strong>Your Search:</strong> <?php echo $ser_str;?>.</p>
 </div>
 
  <div class="make_buttons">
@@ -514,15 +535,21 @@
 
 
 
-</div>
 
-
-</div>
-<div class="clearfix"></div>
-
-<div id="select_names">
+</div></div>
+-->
+<div id="your_Search">
 <div class="container">
-<!--STEPS-->
+<?php 
+	if($type_flight == 'full_flight_date')
+	{
+		include_once 'includes/change_search_hotels.php';
+	}
+	else{
+		include_once 'includes/change_search_flight_only.php';
+	}
+?>  <div class="col-sm-2" style="">
+          <div style="display: block;" id="dvToggle" class=""> 
 
 <div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
       <div class="gridContainer ">
@@ -533,18 +560,19 @@
           <li class=""><strong>3. Savings &amp; Extras</strong></li>
           <li class=""><strong>4. Book</strong></li>
           <li class="bg_1 clearfix">
-        <div id="LP_DIV_1429625391320" class="right"></div>
+        <div class="right"></div>
       </li>
       	<?php } else { ?>
       		<li class="current"><strong>1. Select Flights </strong></li>
       		<li class=""><strong>2. Book</strong></li>
 	      	<li class="bg_1 clearfix">
-	        	<div id="LP_DIV_1429625391320" class="right"></div>
+	        	<div class="right"></div>
 	      	</li>
       	<?php }?>
         </ul>
   </div>
-    </div>
+  </div>
+  
 <!--/STEPS-->
 
 </div>
@@ -554,10 +582,10 @@
 <div class="clearfix"></div>
 
 <div id="middle_conent">
-<div class="container">
+ <!--<div class="container">
 <div class="gridContainer clearfix"> 
-          <!--Search From Grid Info-->
-          <div style="display: none;">
+         Search From Grid Info
+        <!--   <div style="display: none;">
         <h3>Your Selections:</h3>
         <div style="display: none;"> 1 rooms
               2 adult(s)
@@ -581,7 +609,7 @@
             <div class="clear"> </div>
           </div>
             </div>
-      </div>
+      </div>-->
           <!--Search From Grid Info--> 
           <!--Search Info-->
           <div style="display: none;">

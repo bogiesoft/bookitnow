@@ -1,55 +1,27 @@
-/*--meena css--*/
-
-@media screen and (max-width: 1366px) {	
-	.caption {
-	width:80%;
-	position: absolute;
-	top:32%;
-	left:8%;
-border-radius: 5px;
-	float: left;
-z-index:99!important;
-	
-}
-body .tabbable {
-	color: #fff !important;
-	width: 65%;
-	background-color: rgba(0, 0, 0, 0.2);
-	border-radius: 5px;
-	padding: 10px 20px;
-}
-}
-
-
-
-@media screen and (max-width: 1280px) {
-	
-	
-	
-.caption {
-	width:85%;
-	position: absolute;
-	top:25%;
-	left:8%;
-border-radius: 5px;
-	float: left;
-	z-index:99!important;
-	
-}
-body .tabbable {
-	color: #fff !important;
-	width: 65%;
-	background-color: rgba(0, 0, 0, 0.2);
-	border-radius: 5px;
-	padding: 10px 20px;
-}
-}
-
-/*--meena css--*/
-
-
-
 @media screen and (max-width: 320px) {
+
+.travelto-hotel {
+    width: 100%!important;
+ 
+}
+.travelto-hotel {
+    width: 100%!important;
+   
+    margin-left: 1px!important;
+}
+	.image-box {
+    bottom: 0px !important;
+    right: 12px !important;
+}
+.green_nature {
+      margin-bottom: 1%!important;
+    min-height: 190px!important;
+
+}
+.image-box {
+	bottom: 0px!important;
+	right: 1px!important;
+}
 .left {
 	text-align: center;
 	font-size: 0.9em;
@@ -180,7 +152,197 @@ ul.four {
 	width: 100% !important;
 }
 }
+@media screen and (max-width: 360px) {
+/*--meena adit--*/	
+.box-fly{
+   margin-top:50px!important;
+}
 
+.flyform {  
+
+	padding-bottom:10px!important;
+}
+.travelto-hotel {
+    width: 100%!important;
+ 
+}
+.travelto-hotel {
+    width: 100%!important;
+   
+    margin-left: 1px!important;
+}
+
+.duration-hotel {
+    width: 100%;
+    float: left;
+    padding-bottom: 10px;
+    margin-left: 7px;
+}	
+.image-box {
+    bottom: 0px !important;
+    right: 12px !important;
+}
+.green_nature {
+      margin-bottom: 1%!important;
+    min-height: 190px!important;
+
+}
+.image-box {
+	bottom: 0px!important;
+	right: 1px!important;
+}
+.left {
+	text-align: center;
+	font-size: 0.9em;
+}
+.logo {
+	width: 100%;
+}
+.logo p {
+	text-align: center;
+}
+.phonenumbers {
+	width: 100%;
+	margin-top: 1em;
+	text-align: center;
+}
+.phonenumbers h2 {
+	font-size: 20px;
+}
+.phonenumbers p {
+	font-size: 12px;
+}
+p.call {
+	font-size: 12px;
+}
+.view {
+	display: none;
+}
+.green_nature {
+	border: 1px #e5e5e5 solid;
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+.left-sidebar {
+	margin-top: 1em;
+}
+.deal_fender {
+	margin-top: 1em;
+}
+.deal_fender {
+	width: 100%;
+}
+.top_beach {
+	margin-top: 1em;
+	width: 100%;
+	float: left;
+}
+.top_beach ul li a {
+	font-size: 10.5px;
+	color: #fff;
+	line-height: 1.5em;
+}
+ul.second {
+	margin-left: 20px;
+}
+ul.third {
+	margin-left:14px !important;
+}
+ul.four {
+	margin-left: 20px;
+}
+.green_nature {
+	border: 1px #e5e5e5 solid;
+	width: 100%;
+	margin-bottom: 1em;
+	min-height: 300px;
+}
+.get h2 {
+	background-color: #ff9900;
+	padding: 10px;
+	color: #fff;
+	font-size: 15px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+.get h2 img {
+	display: none;
+}
+.latest_offers {
+	width: 100%;
+}
+.see h2 {
+	font-size: 13px;
+}
+.tabbable.custom-tabs>.nav-tabs>li>a {
+	padding: 10px 10px !important;
+	transition-duration: .15s;
+	font-size: 15px !important;
+	text-align: center;
+}
+.nav-tabs h2 {
+	color: #666;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px !important;
+}
+.nav-tabs h4 {
+	color: #666;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 15px !important;
+}
+.green_nature h2 {
+	font-size: 15px;
+}
+.green_nature h3 {
+	font-size: 13px;
+}
+.green_nature p {
+	font-size: 13px;
+}
+.caption {
+	width: 100%;
+	position: initial !important;
+	background: none!important;
+	color: #094fa3 !important;
+	border-radius: none!important;
+	top:0px;
+	margin-top:0px;
+
+}
+.hotel_adults {
+	width: 100% !important;
+}
+.hotel_rooms {
+	width: 100% !important;
+}
+.hotel_childerns {
+	width: 100% !important;
+}
+	
+/*--meena adit--*/	
+	
+
+
+	
+	
+	
+	
+	.image-box {
+	bottom: 0px!important;
+	right: 1px!important;
+	}
+	
+	.green_nature {
+    margin-bottom: 1%!important;
+    min-height: 190px!important;
+	}
+	.image-box {
+    bottom: 0px !important;
+    right: 12px !important;
+}
+}
 @media screen and (max-width: 480px) {
 .left {
 	text-align: center;
@@ -323,6 +485,15 @@ margin-top:12em !important;
 
 
  @media screen and (max-width: 360px) {
+ .box-border {
+    margin-left:1px!important; 
+}
+
+.orderhotels-top { 
+    padding:0px 0px;
+	background-color:red;
+}
+ 
 .left {
 	text-align: center;
 	font-size: 0.9em;
@@ -435,7 +606,7 @@ p.text {
 	background: none!important;
 	color: #094fa3 !important;
 	border-radius: none!important;
-	margin-top:8em !important;
+	margin-top:17em !important;
 }
 .hotel_adults {
 	width: 100%;
@@ -1342,20 +1513,17 @@ p.pera {
 }
 #body_content{margin-top:2em;}
 }
+/*--meena css--*/
 
-
-@media screen and (max-width: 1366px) {
-	
-	
-	
+@media screen and (max-width: 1366px) {	
 	.caption {
-	width:80%;
+	width: 80%;
 	position: absolute;
-	top:32%;
+	top: 36%;
 	left:8%;
 border-radius: 5px;
 	float: left;
-	z-index:9999;
+z-index:99!important;
 	
 }
 body .tabbable {
@@ -1365,14 +1533,6 @@ body .tabbable {
 	border-radius: 5px;
 	padding: 10px 20px;
 }
-
-
-
-.view {
-    float: right;
-    background-color: #37c837;
-    padding: 15.5px 20px;
-    margin-right: 10px;
 }
 
 
@@ -1381,14 +1541,14 @@ body .tabbable {
 	
 	
 	
-	.caption {
+.caption {
 	width:85%;
 	position: absolute;
 	top:25%;
 	left:8%;
 border-radius: 5px;
 	float: left;
-	z-index:9999;
+	z-index:99!important;
 	
 }
 body .tabbable {
@@ -1400,7 +1560,7 @@ body .tabbable {
 }
 }
 
-
+/*--meena css--*/
 
 
 

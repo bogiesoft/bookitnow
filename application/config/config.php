@@ -94,7 +94,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -523,3 +523,5 @@ $config['proxy_ips'] = '';
 
 $config['header_css'] = array('css/bootstrap.min.css');
 $config['header_js']  = array('js/jquery.min.js','js/bootstrap.min.js','js/jquery.cookie.js');
+
+//enter code here

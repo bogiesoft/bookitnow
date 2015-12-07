@@ -578,6 +578,8 @@ class Extras extends CI_Controller {
 	
 	public function book()
 	{	
+		
+		
 		$data = array();
 		$data['controller'] = $this;
 		$this->load->model('FullSearch');
@@ -787,7 +789,7 @@ class Extras extends CI_Controller {
 		return $body;
 	}
 	function booking_submition()
-	{			
+	{	
 		if($this->input->post())
 		{
 			$post_data = $this->input->post();
@@ -825,27 +827,32 @@ class Extras extends CI_Controller {
 			$data['children_info'] = json_encode($children_info);
 			$data['adults_info'] = json_encode($adults_info);
 			$data['address_1'] = $post_data['address_1'];
-			//$data['address_2'] = @$post_data['address_2'];
-			$data['address_2'] = '';
+			$data['address_2'] = @$post_data['address_2'];
+			//$data['address_2'] = '';
 			$data['mobile'] = $post_data['mobile'];
 			$data['home_tel'] = $post_data['home_tel'];
 			$data['email'] =	$post_data['email'];		
 			$data['postal_code'] = $post_data['post_code'];
+			$data['postal_code2'] = $post_data['post_code2'];
 			$data['city_country'] = $post_data['city'];	
+			$data['city_country2'] = $post_data['city2'];
 			$data['card_type'] = $post_data['card_type'];
 			$data['name_card'] = $post_data['name_card'];
 			$data['card_number'] = $post_data['card_number'];
+			$data['cvv_number'] = $post_data['cvv_number'];
 			
 			$this->load->model('BookingInfo');
 			
-		
-			if($this->BookingInfo->createRecord($data))
-			{
-				$list = array($post_data['email']);
-				$sub = "Booking Information";
+			
+			
+			if($rid = $this->BookingInfo->createRecord($data))
+			{				
+				$this->bookingInfoToEmail($rid,'email');
+				//$list = array($post_data['email']);
+				//$sub = "Booking Information";
 				
- 				if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
- 				{}
+ 				//if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
+ 				//{}
  				echo json_encode(array('success' => 1));
 			}
 			else
@@ -853,8 +860,143 @@ class Extras extends CI_Controller {
 				echo json_encode(array('success' => 0));
 			}
 			
+		}	
+	}
+	
+	
+	public function bookingInfoToEmail($ref_id,$type)
+	{
+	
+		$this->load->model ( 'Bookinginfo' );
+		$this->load->model('UserSearch');
+		$data = array();
+		$data['controller'] = $this;
+		$data['row'] = $this->Bookinginfo->fetch_a_search(array('reference_id'=>$ref_id));
+	
+		if($data['row'][0]['type_search'] == 'hotel_only'){
+	
+			$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+			$data['hobjs'] = json_decode($data['seg'][0]['pack_info'],true);
 		}
+		else{
+			$this->load->model('FullSearch');
+			//	$this->serachInfo($data['row'][0]['base_id'])
+			$data['seg'] = $this->FullSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+			if(!empty($data['seg']))
+			{
+				$this->load->model('PhaseFlightOrHotel');
+				$this->load->model('AlLugagePrice');
+				$this->load->model('SavingsNExtFields');
+				$this->load->model('PhaseSavingsNExtras');
+					
+	
+				$data['flit'] = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$data['seg'][0]['id']));
+				$data['hotel'] = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'pack_hotel','full_pack_id'=>$data['seg'][0]['id']));
+	
+				if(empty($data['flit']) || empty($data['hotel']))
+				{
+					redirect(base_url());
+				}
+	
+				$data['fobj'] = json_decode($data['flit'][0]['pack_info'],true);
+				$data['lug_row'] = $this->AlLugagePrice->fetch_a_search(array('airline_code'=>$data['fobj']['@attributes']['suppcode']));
+				$data['hobjs'] = json_decode($data['hotel'][0]['pack_info'],true);
+	
+				$tot_sel = 0;
+			}
+		}	
+			//Adviser Information
+			$data['pdfdata']['adviser_info']['name'] = ' Howard Finch ';
+			$data['pdfdata']['adviser_info']['reference'] = $ref_id;
+			$data['pdfdata']['adviser_info']['phone'] = '08006947174';
+			$data['pdfdata']['adviser_info']['date'] = date('d/m/y');
+			$data['pdfdata']['adviser_info']['email'] = 'finch@bookitnow.co.uk';
+			
+			boookattach($data,$type);
 		
+	}
+	
+	public function bookingLogin()
+	{
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/viewbooking.css','js/responsee.js','js/bxslider/jquery.bxslider.js','js/viewbooking.js'));
+		$data = array();
+		$this->load->library ( 'form_validation' );
+		$this->load->model ( 'Bookinginfo' );
+		$count = 0;
+		if ($this->input->post ()) {			
+			$this->form_validation->set_rules ( 'reference_id', 'Reference Id', 'trim|required' );
+			$this->form_validation->set_rules ( 'lname', 'Last Name', 'trim|required' );
+			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );			
+			if (! $this->form_validation->run ()) {} else {			
+				$rows = $this->Bookinginfo->fetch_a_search(array('reference_id' => $this->input->post ('reference_id'),'email'=>$this->input->post('email')));
+				if(!$rows){
+					$this->session->set_flashdata ( 'message', '<span class="error">Sorry,Given details not matched with our database</span>' );
+				}
+				else {
+					$this->yourBasket();
+					$count++;
+				}			
+			}
+		}
+		if(!$count){
 		
+		$this->layouts->set_title('View Booking Login');
+		$this->layouts->view('viewbookinglogin');	
+		}
+	}
+	
+	public function yourBasket()
+	{		
+		$this->load->model ( 'Bookinginfo' );
+		$this->load->model('UserSearch');
+		$data = array();
+		$data['controller'] = $this;
+		$data['row'] = $this->Bookinginfo->fetch_a_search(array('reference_id'=>$this->input->post('reference_id')));
+		
+		if($data['row'][0]['type_search'] == 'hotel_only'){
+		
+			$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+			$data['hobjs'] = json_decode($data['seg'][0]['pack_info'],true);
+		}
+		else{
+			$this->load->model('FullSearch');
+			//	$this->serachInfo($data['row'][0]['base_id'])
+			$data['seg'] = $this->FullSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+			if(!empty($data['seg']))
+			{
+				$this->load->model('PhaseFlightOrHotel');
+				$this->load->model('AlLugagePrice');
+				$this->load->model('SavingsNExtFields');
+				$this->load->model('PhaseSavingsNExtras');
+					
+		
+				$data['flit'] = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$data['seg'][0]['id']));
+				$data['hotel'] = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'pack_hotel','full_pack_id'=>$data['seg'][0]['id']));
+		
+				if(empty($data['flit']) || empty($data['hotel']))
+				{
+					redirect(base_url());
+				}
+		
+				$data['fobj'] = json_decode($data['flit'][0]['pack_info'],true);
+				$data['lug_row'] = $this->AlLugagePrice->fetch_a_search(array('airline_code'=>$data['fobj']['@attributes']['suppcode']));
+				$data['hobjs'] = json_decode($data['hotel'][0]['pack_info'],true);
+		
+				$tot_sel = 0;
+			}
+		}
+		if($this->input->post('download')){			
+			//Adviser Information
+			$data['pdfdata']['adviser_info']['name'] = ' Howard Finch ';
+			$data['pdfdata']['adviser_info']['reference'] = $this->input->post('reference_id');
+			$data['pdfdata']['adviser_info']['phone'] = '08006947174';
+			$data['pdfdata']['adviser_info']['date'] = date('d/m/y');
+			$data['pdfdata']['adviser_info']['email'] = 'finch@bookitnow.co.uk';
+			boookattach($data);			
+		}
+		$this->layouts->set_title('View Booking Info');
+		//echo '<pre>';print_r($data);exit;
+			$this->layouts->view ( 'view_booking', $data );
+					
 	}
 }

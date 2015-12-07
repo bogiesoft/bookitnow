@@ -58,7 +58,7 @@
           
           <div>
              <label>Subscribe to Our Newsletter</label><br>
-              <input type="checkbox" name="subscribe" checked="checked" title="Subscribe">
+              <input type="checkbox" style="display: block !important;position: static;opacity: initial;" name="subscribe" checked="checked" title="Subscribe">
           </div>
            <input type="hidden" name="segment" value="<?php echo @$this->uri->segment(2);?>" />
           <button type="submit" class="button" >SAVE &amp; SEND QUOTE <i aria-hidden="true" class="icon-envelope"></i></a>
