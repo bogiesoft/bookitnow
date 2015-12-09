@@ -137,6 +137,7 @@
 						$(this).next('.err_room').html("");
 						if(parseInt($(this).val()) > 0){    							
 							cunt_ad = cunt_ad +  parseInt($(this).val());
+							
 						}
 						else{    							
 							$(this).next('.err_room').html("Please fill all rooms with atleast one adult" );  

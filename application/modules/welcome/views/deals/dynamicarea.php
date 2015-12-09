@@ -9,6 +9,8 @@
 				<div class="left-img-wrap">
 					
 					
+					
+					
 					<h2 class="holiday-title">Tenerife Holidays </h2>
 					<div class="border-wrap"></div>
 					<div class="image-bg"><img src="<?php echo base_url();?>images/holiday-img.jpg" class="img-responsive" alt="banner-img">
