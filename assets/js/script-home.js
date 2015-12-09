@@ -29,14 +29,8 @@
 			return false;
 		});
 
-		      $("#slider").responsiveSlides({
-		      	auto: true,
-		      	nav: true,
-		      	speed: 500,
-		        namespace: "callbacks",
-		        pager: true,
-		      });
-		  
+		      
+		 
 			
 	// Datepicker
 	var dateToday = new Date();
@@ -89,7 +83,13 @@
 	       });
 	
 	
-	
+	$("#slider").responsiveSlides({
+      	auto: true,
+      	nav: true,
+      	speed: 500,
+        namespace: "callbacks",
+        pager: true,
+      });
 		
  });
 		
@@ -228,7 +228,7 @@
 				if(value.name != 'hotel_childrens' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
 				{
 					var msg = $('[name="'+ value.name +'"]').prev('label').text();
-					alert('Please select '+ msg +' field');
+					//alert('Please select '+ msg +' field');
 					count++;
 					return false;
 				}
@@ -351,12 +351,12 @@
         			var request_data = $(this).serializeArray();
         			var count = 0;
         			$.each(request_data, function(index, value){				
-        				if(value.name != 'children' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
-        				{
-        					alert('Please select '+ value.name +' field');
-        					count++;
-        					return false;
-        				}
+//        				if(value.name != 'children' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+//        				{
+//        					alert('Please select '+ value.name +' field');
+//        					count++;
+//        					return false;
+//        				}
         			});
         			if(count)return false;	
         			
@@ -389,14 +389,14 @@
 
         			
         			
-        			$.post( "welcome/fetch_filtered_flights",request_data, function( data ) {
+        			$.post( baseUrl + "welcome/fetch_filtered_flights",request_data, function( data ) {
         				
         				if(data == 'notavailable')
         				{
         					var date = new Date();
     			        	date.setTime(date.getTime() + (60 * 1000));
     			        	$.cookie('notavailable_info', str, { expires: date });	
-        					window.location = "notavailable";
+        					window.location = baseUrl + "notavailable";
         				}
         				else
         				{
@@ -406,7 +406,7 @@
              				$.cookie('selected_arrival_cookie', $('select[name="arrival_airports"]').val());
         					$.cookie('selected_nights_cookie',$('select[name="nights"]').val());                			
                 			$.cookie('selected_date_cookie', $('input[name="departure_date"]').val());
-        					window.location = data;
+        					window.location = baseUrl + data;
         				}				
         				}, "html");
         			return false;
@@ -489,7 +489,7 @@
     		/*-------------- fetch the arrivals list based on destination selection ------------------*/
     		
     		$('select[name="full_departure_airports"]').change(function(){
-    			
+    		
     			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
     			{
     				alert("Please choose proper destination");
@@ -501,7 +501,7 @@
     				request_data.dest_shrtcode = $(this).val();	
 
     				blockSearchingTabs();
-    				$.post( "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
+    				$.post( baseUrl + "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
     					
     					  $('select[name="full_arrival_airports"]').html('');	
     					  $('select[name="full_arrival_airports"]').append(data);	
@@ -572,7 +572,7 @@
     			
     			var request_data = {};
     			request_data.dest_shrtcode = $.cookie('selected_full_dept_cookie');				
-    			$.post( "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {    				
+    			$.post( baseUrl + "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {    				
     				$('select[name="full_arrival_airports"]').html('');
     				  $('select[name="full_arrival_airports"]').append(data);
     				
@@ -779,14 +779,14 @@
         	if($.cookie('mul_submition_prevent') == 1)
         	{          		
         		$.cookie('mul_submition_prevent',0);
-	        	$.post( "welcome/check_results_for_full_pack_fun",request_data, function( data ) {
+	        	$.post( baseUrl + "welcome/check_results_for_full_pack_fun",request_data, function( data ) {
 	        		
 					if(data == 'notavailable')
 					{		        	
 			        	var date = new Date();
 			        	date.setTime(date.getTime() + (60 * 1000));
 			        	$.cookie('notavailable_info', str, { expires: date });	
-						window.location = "notavailable";
+						window.location = baseUrl + "notavailable";
 						
 					}
 					else
@@ -805,7 +805,7 @@
 			    		$.cookie('selected_full_adults_cookie', $('select[name="full_adults"]').val());	
 			    		$.cookie('selected_full_nights_cookie', $('select[name="full_nights"]').val());
 			    		$.cookie('selected_full_date_cookie', $('input[name="full_departure_date"]').val());
-			    		window.location = data;
+			    		window.location = baseUrl + data;
 					}				
 				}, "html");
         	}

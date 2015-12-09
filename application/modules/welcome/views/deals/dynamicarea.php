@@ -28,90 +28,128 @@
 						
 <!------------------------------FORM START HERE MEENA -------------------------------------------->	
 
-<div class="tabbable-tab custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll pull-left">
+<div class="caption">
+<h2 class="holiday-title">Tenerife Holidays </h2>
+					<div class="border-wrap"></div>
+		<div class="tabbable-bg tabbable table-bg custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll pull-left">
 			<ul class="nav nav-tabs">
-		
-			  <h2 class="holiday-title">Holiday Type <span class="book-title">Search &amp; Book Your Holiday</span></h2>
-			  <div class="border-wrap"></div>
-			
-			  <li class="active-item flight_hotel"><a href="#panel2" data-toggle="tab"><span> Flight &amp; Hotel </span></a></li>
-			  <li class="hotel"><a href="#panel3" data-toggle="tab"><span>Just a Hotel</span></a></li>
-			  <li class="flight active"><a href="#panel1" data-toggle="tab" class="active "><span> Just a Flight </span></a></li>
+			 
+			  <li class="active-item active flight_hotel"><a href="#panel2" data-toggle="tab"><span> Flight & Hotel </span></a></li>
+			  <li class="hotel"><a href="#panel3" data-toggle="tab"><span >Just a Hotel</span></a></li>
+			  <li class="flight"><a href="#panel1" data-toggle="tab" class="active "><span> Just a Flight </span></a></li>
 			  
-			</ul>	<div class="form-bg-wrap">
-			<div class="tab-content " id="dvContent">
-				<div class="tab-pane active" id="panel2">
-					<form action="http://192.168.1.101:9999/index.php/welcome/index" name="flight_hotel_form" method="post" accept-charset="utf-8">
+			</ul>
+			<div class="tab-content "  id='dvContent'>
+				<div class="tab-pane" id="panel1">
+					<?php $attributes = array('name'=>'flight_hotel_form');
+						echo form_open('welcome/index', $attributes);
+					?>
 			<div class="row-fluid">
 				<div class="span5">
 					<div class="flyform">
   						<label>Fly From:</label>  						
-  						<select class="input-block-level" name="departure_airports">
+  						<select class="input-block-level"  name="departure_airports">
   							<option value="-1">Select Destination</option>
-  							<option value="ABZ|EDI|GLA|PIK">Scotland Airports</option><option value="BFS|ORK|DUB|SNN">Ireland Airports</option><option value="BHX|BOH|BRS|EMA|EXT|HUY|LBA|LPL|LCY|LGW|LHR|LTN|STN|MAN|NCL|NWI|DSA|SOU|SEN">England Airports</option><option value="CWL">Wales Airports</option><option value="IOM">Isle Of Man Airports</option>	                    
+  							<?php
+								foreach($filtered_departures as $key => $val)
+								{									
+									//echo "<option value='-1'>".$key."</option>";
+									$opt_val_str = '';
+									foreach($val as $key1 => $val1)
+									{
+										$opt_val_str .= $key1.'|';		
+									}
+									echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+								}
+							  ?>	                    
 		                </select>
 					</div>
 					<div class="travelto">
               			<label>Travel To:</label>
-              			<select class="input-block-level" name="arrival_airports">
+              			<select class="input-block-level"  name="arrival_airports">
                 			<option value="-1">Select Destination</option>                                          
               			</select>
             		</div>
             		<div class="flyform">
 		              	<label>Departure Date:</label>
-		              	<input class="input-block-level hasDatepicker" id="datepicker" name="departure_date" type="text">
+		              	<input class="input-block-level" id="datepicker" type="text"  name="departure_date" >
 		            </div>					
 		            <div class="board_basis">
 		              <label>Nights :</label>
-		              <select class="input-block-level" name="nights">
+		              <select class="input-block-level"   name="nights">
 		                <option value="-1">---Select---</option>
-		               <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option>       
+		               <?php for($i=1;$i<=21;$i++){
+		              	echo '<option>'.$i.'</option>';
+		              }?>       
 		              </select>
 		              </div><div>
-		              <div class="hotel_adults">
+		              <div class="hotel_adults" >
               <label>Adults:</label>
               <select class="input-block-level" name="adults">   
-              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>             
+              <?php for($i=1;$i<=15;$i++){
+              	echo '<option>'.$i.'</option>';
+              }?>             
                </select>
             </div>
-            <div class="hotel_childerns">
+            <div class="hotel_childerns"  >
               <label>Childrens:</label>
               <select class="input-block-level" name="childrens">
-                <option value="-1">0</option>
-              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>           
+                <option  value="-1">0</option>
+              <?php for($i=1;$i<=10;$i++){
+              	echo '<option>'.$i.'</option>';
+              }?>           
               </select>
-              <p style="color:#000000; text-align:center; font-size:12px;">(Age *2-12)</p>
+              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
             </div>
-		    <div class="search">              
-              <input class="sea-btn" value="Search>" type="submit">
+		               <div class="search">              
+              <input type="submit" class="sea" value="Search &gt;" />
             </div>
 		            </div>
 		        
            
           </div>
         </div>
-        </form>  
-
-		</div>
+        <?php echo form_close();?>
+      </div>
       
-		<div class="tab-pane" id="panel3">
-			<form action="http://192.168.1.101:9999/index.php/welcome/index" name="full_pack_form" onsubmit="return full_pack_submit(this)" method="post" accept-charset="utf-8">
+      
+      
+      
+      
+      
+		<div class="tab-pane active" id="panel2">
+			<?php $attributes = array('name'=>'full_pack_form','onSubmit'=>'return full_pack_submit(this)');
+				echo form_open('welcome/index', $attributes);
+			?>
 			<div class="row-fluid">
 				<div class="span5">
 					<div class="flyform">
   						<label>Fly From:</label>  						
   						<select class="input-block-level" name="full_departure_airports">
   							<option value="-1">Select Destination</option>
-  							<option value="ABZ|EDI|GLA|PIK">Scotland Airports</option><option value="BFS|ORK|DUB|SNN">Ireland Airports</option><option value="BHX|BOH|BRS|EMA|EXT|HUY|LBA|LPL|LCY|LGW|LHR|LTN|STN|MAN|NCL|NWI|DSA|SOU|SEN">England Airports</option><option value="CWL">Wales Airports</option><option value="IOM">Isle Of Man Airports</option>	                    
+  							<?php
+								foreach($filtered_departures as $key => $val)
+								{									
+									//echo "<option value='-1'>".$key."</option>";
+									$opt_val_str = '';
+									foreach($val as $key1 => $val1)
+									{
+										$opt_val_str .= $key1.'|';		
+									}
+									echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+								}
+							  ?>	                    
 		                </select>
 					</div>
 					<div class="travelto">
               			<label>Travel To:</label>
-              			<select class="input-block-level" name="full_arrival_airports"><option value="-1">Select Destination</option></select>
+              			<select class="input-block-level"  name="full_arrival_airports">
+                			<option value="-1">Select Destination</option>                                          
+              			</select>
             		</div>
             		<div class="flyform">
 		              	<label>Departure Date:</label>
-		              	<input class="input-block-level hasDatepicker" id="datepicker3" name="full_departure_date" type="text">
+		              	<input class="input-block-level" id="datepicker3" type="text"  name="full_departure_date">
 		            </div>
 					<div class="board_basis">
 		              <label>Rooms :</label>
@@ -124,14 +162,16 @@
 		            </div>
 		            <div class="adults">
 		              <label>Nights :</label>
-		              <select class="input-block-level" name="full_nights">
+		              <select class="input-block-level"   name="full_nights">
 		                <option value="-1">---Select---</option>
-		                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option>		              
+		                <?php for ($i=1;$i<=21;$i++){
+		                	echo '<option>'.$i.'</option>';
+		                }?>		              
 		              </select>
 		            </div>
 		            <div class="adults">
 		              <label>Adults:</label>
-		              <select class="input-block-level" name="full_adults">		               
+		              <select class="input-block-level"  name="full_adults">		               
 		               <option>1</option>
 		                <option>2</option>
 		                <option>3</option>
@@ -141,48 +181,59 @@
 
 					<div class="childerns">
 		              <label>Childrens:</label>
-		              <select class="input-block-level" name="full_children" onchange="roomBase();">
+		              <select class="input-block-level"  name="full_children" onchange="roomBase();">
 		                <option value="-1">0</option>
 		                <option>1</option>
 		                <option>2</option>
 		                <option>3</option>
 		                <option>4</option>
 		              </select>
-		               <p style="color:#000000; text-align:center; font-size:12px;">(Age *2-12)</p>
+		              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
 		            </div>
 		            
             <div class="search">              
-              <input class="sea-btn" value="Search>" type="submit">
+              <input type="submit" class="sea" value="Search &gt;" />
             </div>
           </div>
         </div>
-        </form>      </div>
+        <?php echo form_close();?>
+      </div>
       
-            
-      <div class="tab-pane" id="panel1">
-      <form action="http://192.168.1.101:9999/index.php/welcome/index" name="hotels_form" onsubmit="return hotelsForm(this);" method="post" accept-charset="utf-8">
-        <div class="row-fluid ">
+      
+      
+      
+      
+      
+      
+      <div class="tab-pane" id="panel3">
+      <?php $attributes = array('name'=>'hotels_form','onsubmit'=>'return hotelsForm(this);');
+						echo form_open('welcome/index', $attributes);
+					?>
+        <div class="row-fluid">
           <div class="span5">
             <label>Travel To:</label>
-            <select class="input-block-level" name="hotel_travel_to" style="padding:7px; margin-bottom:10px;">
+            <select class="input-block-level" name="hotel_travel_to" style="padding:10px; margin-bottom:10px;">
               <option value="-1">---Select Destination---</option>
-              	<option value="-1">Select Destination</option><option value="-1" style="font-weight:bold;color:red;">Top Selling Beach</option><option mapper="97-132-400" value="MKS|">Mekane Selam</option><option mapper="1-4-10" value="LPA|">Gran Canaria </option><option mapper="1-13-7" value="BCN|GRO|REU|">Costa Brava </option><option mapper="2-5-374" value="GRW|">Azores - Graciosa Island </option><option mapper="10-15-38" value="CUN|">Cancun Area </option><option mapper="1-1-1" value="PMI|">Mallorca </option>              </select>
+              	<?php echo $hotel_travel_list;?>
+              </select>
             </div>
-            <div class="check" style="margin-bottom:10px;">
-              <label style="color:#000;">Check In Date:</label>
-              <input id="datepicker1" name="hotel_check_in_date" class="hasDatepicker" type="text">
+            <div class="check"  style="margin-bottom:10px;">
+              <label style="color:#fff;">Check In Date:</label>
+              <input id="datepicker1" type="text" name="hotel_check_in_date" class="">
             </div>
-            <div class="board_basis">
-              <label style="color:#000;">Nights:</label>
+            <div class="board_basis" >
+              <label style="color:#fff;">Nights:</label>
               <select class="input-block-level" style="height:43px;margin-bottom:10px;" name="hotel_nights">
                 <option value="-1">---Select---</option>
-                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option>		  
+                <?php for ($i=1;$i<=21;$i++){
+		                	echo '<option>'.$i.'</option>';
+		                }?>		  
               </select>
             </div>
             </div>          
-            <div class="hotel_rooms">
+            <div class="hotel_rooms"  >
               <label>Rooms:</label>
-              <select class="input-block-level" onchange="roomBase_hotel()" name="hotel_rooms">
+              <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_rooms" >
                 <option value="-1">---Select---</option>
                <option>1</option>
                 <option>2</option>
@@ -190,36 +241,37 @@
                 <option>4</option>
               </select>
             </div>
-            <div class="hotel_adults">
+            <div class="hotel_adults" >
               <label>Adults:</label>
               <select class="input-block-level" name="hotel_adults">
-                <option value="-1">---Select---</option>
+                <option  value="-1">---Select---</option>
                <option>1</option>
                 <option>2</option>
                 <option>3</option>
                 <option>4</option>
               </select>
             </div>
-            <div class="hotel_childerns ">
+            <div class="hotel_childerns"  >
               <label>Childrens:</label>
-              <select class="input-block-level" onchange="roomBase_hotel()" name="hotel_childrens">
-                <option value="-1">0</option>
+              <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_childrens">
+                <option  value="-1">0</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
                 <option>4</option>
               </select>
-                <p style="color:#000000; text-align:center; font-size:12px;">(Age *2-12)</p>
+              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
             </div>
              
             <div class="search">
-              <input class="sea-btn" value="Search >" type="submit">
+              <input type="submit" class="sea" value="Search &gt;" />
             </div>
-          </form><br><br><br>
-		   </div>
-		  </div>
+          </div>
         </div>
-               </div>
+         <?php echo form_close();?>
+      </div>
+ 
+          </div>
 		  
 <!------------------------------FORM CLOSED MEENA -------------------------------------------->	  
 	  
@@ -480,7 +532,7 @@
 					<div class="tener_nature">	
 					<div class="image"><img src="<?php echo base_url();?>images/Pool.jpg" class="img-responsive" alt="Pool">
 						<div class="star"><img src="<?php echo base_url();?>images/star.png" class="img-responsive" alt="star"></div>
-							<div class="mini_img"><img src="<?php echo base_url();?>images/tree-t.jpg" alt="tree"> 
+							<div class="mini_img"><img src="<?php echo base_url();?>images/tree.jpg" alt="tree"> 
 							<img src="<?php echo base_url();?>images/family-t.jpg" alt="family">
 							</div>
 					</div>
@@ -807,8 +859,18 @@
 
 </div>
 
+
 <!--meena adit closed-->
 </div>
 </div><!--contanier-->
 <div class="clearfix"></div>
-<link href='https://fonts.googleapis.com/css?family=Merienda' rel='stylesheet' type='text/css'>
+
+<div id="rooms_div" style="display: none;">
+  <h2>Rooms - Persons</h2>
+     <div>
+        <h4 class="has_bottom_margin">Please share the members for each room.</h4>
+	    	<form id="rooms_form">
+	    	</form>
+                      
+     </div>     
+</div>
