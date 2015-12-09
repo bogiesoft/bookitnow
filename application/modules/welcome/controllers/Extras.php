@@ -1002,7 +1002,7 @@ class Extras extends CI_Controller {
 	
 	public function feefoXml()
 	{
-		//$download_page();
-		echo "hello";exit;
+		$feeds = $depts_raw = new SimpleXMLElement(download_page('http://www.feefo.com/feefo/xmlfeed.jsp?logon=www.superescapes.co.uk'));
+		echo "<pre>";print_r($feeds);exit;
 	}
 }

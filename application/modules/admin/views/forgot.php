@@ -43,15 +43,22 @@
       </div>
       <div class="clearfix"></div>
             
+            
           </div>
+          <?php echo validation_errors(); 
+    		echo $this->session->flashdata('message');
+    		$attributes = array('name'=>'forgot_form');
+			echo form_open(base_url().'welcome/forgot_pwd', $attributes);
+		?>
           <div class="form-group">
     <label for="exampleInputEmail1">Enter Mail Id</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Mail Id" required>
+    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter Mail Id" name="email">
   </div>
   
   
           
           <div class="reg-bwn"><button type="submit">SUBMIT</button></div>
+          <?php echo form_close();?>
           
         </div>
       </div>

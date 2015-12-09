@@ -59,7 +59,7 @@
 		</div>
         <div class="forgot">
             <div class="login-para">
-              <p><a href="<?php echo base_url();?>admin/forgot_pwd"> Forgot Password? </a></p>
+              <p><a href="<?php echo base_url();?>welcome/forgot_pwd"> Forgot Password? </a></p>
             </div>
         <div class="clear"> </div>
         </div>

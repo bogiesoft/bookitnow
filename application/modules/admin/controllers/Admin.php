@@ -59,14 +59,7 @@ class Admin extends CI_Controller {
 		$this->layouts->set_title ( 'Admin Login' );
 		$this->layouts->view ( 'login' );
 	}
-	public function forgot_pwd() {
-		$this->layouts->add_include ( array (
-				'css/login.css',
-				'css/font-awesome.min.css' 
-		) );
-		$this->layouts->set_title ( 'Forgot Password' );
-		$this->layouts->view ( 'forgot' );
-	}
+	
 	public function dashboard() {
 		$this->layouts->add_include ( array (
 				'css/login.css',
@@ -996,7 +989,8 @@ class Admin extends CI_Controller {
 		$data['opt_row'] = $this->Options->fetch_a_fields(array(),1);
 		//echo "<pre>";print_r($data['opt_row']);exit;
 		if ($this->input->post ()) {
-			$this->form_validation->set_rules ( 'margin_rate', 'Margin Rate', 'trim|required|integer' );			
+			$this->form_validation->set_rules ( 'hotel_rate', 'Hotel Rate', 'trim|required|integer' );
+			$this->form_validation->set_rules ( 'flight_rate', 'Flight Rate', 'trim|required|integer' );
 			if (! $this->form_validation->run ()) {
 					
 			} else {

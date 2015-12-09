@@ -142,6 +142,9 @@ class Hotel extends CI_Controller {
 							$this->format_array_fun($results['offer'],count($results['offer']),$temp);							
 							$offers[] = $temp;
 						}
+						else{
+							
+						}
 					}	
 					
 				

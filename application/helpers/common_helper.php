@@ -589,11 +589,30 @@ else{
 }
 
 
+	
 //============================================================+
 // END OF FILE
 //============================================================+
 
 	}
+	function findKey(&$array, $keySearch)
+	{
+		foreach ($array as $key => $item) {
+			if ($key === $keySearch) {
+				$array[$key] = $item;							
+				return $array;
+			}
+			else {
+				
+				if (is_array($item) && findKey($item, $keySearch)) {					
+					return $array;
+				}				
+			}
+		}
+		return false;
+	}
+	
+	
 	
 	
 

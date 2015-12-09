@@ -226,7 +226,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			  <li><a href="#">CITY BREAKS</a></li>
 			   <li><a href="<?php echo base_url();?>contactUs">CONTACT US</a></li>
 		</ul>
-   <div class="view"><a href="#" title="view my booking">View My Booking</a></div>
+   <div class="view"><a href="<?php echo base_url();?>managebookinglogin" title="view my booking">View My Booking</a></div>
 	</div><!-- /.nav-collapse -->
 	
   </nav>
@@ -269,7 +269,24 @@ Trustpilot </p>
           </div>
 
           <ul class="bxslider1 clients-list">
-            <li>
+          <?php $feeds = $depts_raw = new SimpleXMLElement(download_page('http://www.feefo.com/feefo/xmlfeed.jsp?logon=www.superescapes.co.uk'));
+          $feeds = json_decode(json_encode($feeds),true);
+          
+          if(!empty($feeds['FEEDBACK']))
+          foreach ($feeds['FEEDBACK'] as $feed){
+          	//echo "<pre>";print_r($feed);exit;
+          	 
+          	echo '<li><div class="every">';
+          	echo '<div  class="every_star"><img src="'.base_url().'images/f'.$feed['HREVIEWRATING'].'.jpg" class=""></div>';
+          	$truncated = (strlen($feed['SHORTCUSTOMERCOMMENT']) > 20) ? substr($feed['SHORTCUSTOMERCOMMENT'], 0, 20) . '...' : $feed['SHORTCUSTOMERCOMMENT'];
+          	echo '<h2>'.$truncated.'</h2>';
+          	$truncated = (strlen($feed['CUSTOMERCOMMENT']) > 100) ? substr($feed['CUSTOMERCOMMENT'], 0, 100) . '...' : $feed['CUSTOMERCOMMENT'];
+          	echo '<p>'.$truncated.'</p>';
+          	echo '</div></li>';          	
+          }
+         
+          ?>
+           <!--  <li>
         
              <div class="every">
 <div  class="every_star"><img src="<?php echo base_url();?>images/greenstars.jpg" class=""></div>
@@ -334,7 +351,7 @@ Trustpilot </p>
 <p>Very simple process to book. No problems encountered. Everything was completed and delivered very qu... </p>
 </div>
 
-            </li>
+            </li>-->
 
           </ul>
 

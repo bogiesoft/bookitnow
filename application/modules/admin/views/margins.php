@@ -9,14 +9,24 @@
 	
 		 	<h4>
 				<div class="form-group">
-				   <label for="focusedinput" class="col-sm-2 control-label">Margin Price</label>
+				   <label for="focusedinput" class="col-sm-2 control-label">Hotel Margin </label>
 				   <div class="col-sm-8">				   		
-				   		<?php if(!empty($opt_row)){$m = $opt_row[0]['margin_rate'];
+				   		<?php if(!empty($opt_row)){$m = $opt_row[0]['hotel_rate'];				   				
+				   		}
+				   				else { $m = 0;}
+				   		?>
+						<input type="number" class="form-control1" name="hotel_rate" value=<?php echo $m;?> />
+					</div>									
+				</div>	
+				<div class="form-group">
+				   <label for="focusedinput" class="col-sm-2 control-label">Flight Margin </label>
+				   <div class="col-sm-8">				   		
+				   		<?php if(!empty($opt_row)){$m = $opt_row[0]['flight_rate'];
 				   				echo '<input type="hidden" name="id" value='.$opt_row[0]['id'].' >';
 				   		}
 				   				else { $m = 0;}
 				   		?>
-						<input type="number" class="form-control1" name="margin_rate" value=<?php echo $m;?> />
+						<input type="number" class="form-control1" name="flight_rate" value=<?php echo $m;?> />
 					</div>									
 				</div>	
 				<div class="reg-bwn"><button class="btn btn-primary" type="submit" >ADD</button></div>      					

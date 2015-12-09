@@ -410,6 +410,8 @@ class Welcome extends CI_Controller {
 				$results['change_search_info']['row'] = $rows[0];
 				$results['controller'] = $this;
 				//End
+				//$t = findKey($results,'sellpricepp');
+			//	echo "<pre>";print_r($results);exit;
 				
 				
 				$this->layouts->view('available_flights_view1',$results);
@@ -1345,6 +1347,96 @@ class Welcome extends CI_Controller {
 		$this->layouts->set_title ( 'Admin Login' );
 		$this->layouts->view ( 'admin/login',array(),'login' );
 	}
+	public function forgot_pwd() {
+		$this->layouts->add_include ( array (
+				'css/login.css',
+				'css/font-awesome.min.css'
+		) );
+		if($this->input->post()){
+			$this->load->library ( 'form_validation' );
+			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );
 			
+			if (! $this->form_validation->run ()) {
+			} else {
+				$n = $this->User->fetch_a_user(array('email'=>$this->input->post('email')));
+				if(!empty($n)){
+					$info['flag'] = $this->randStrGen(30);
+					if($this->User->updateUser($info,'email',$this->input->post('email')))
+					{	
+						$subject = "Password Reminder";
+						$body = 'Hi '.$n[0]['first_name'];
+						$body .= '<br> Bellow is your reset link of book it now acount access.<br>';
+						$body .= 'Link : '.base_url().'welcome/resetPassword/'.$info['flag'];
+						$body .= '<br>Yours Thankfully,<br>BookItNow Admin';
+						$list = array($this->input->post('email'));
+						echo $body;exit;
+						//emailFunction($this,$subject,$body,BOOKINGADMINEMAIL,'Admin',$list);
+						
+					}
+				}
+				$this->session->set_flashdata ( 'message', '<p class="success">We sent reset passwork link to your email.Please check it.</p>' );
+				redirect(base_url().'admin');
+			}
+			
+			
+			
+			//$info['e']
+			//echo "<pre>";print_r();exit;
+		}
+		$this->layouts->set_title ( 'Forgot Password' );
+		$this->layouts->view ( 'admin/forgot',array(),'login' );
+	}	
+	
+	public function randStrGen($len){
+		$result = "";
+		$chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+		$charArray = str_split($chars);
+		for($i = 0; $i < $len; $i++){
+			$randItem = array_rand($charArray);
+			$result .= "".$charArray[$randItem];
+		}
+		return $result;
+	}
+	
+	public function resetPassword($flag)
+	{
+		if($flag == ''){
+			redirect(base_url());
+		}
+		else{
+			$data = array();
+			$data['flag'] = $flag;
+			$this->layouts->add_include ( array (
+					'css/login.css',
+					'css/font-awesome.min.css'
+			) );
+			if($this->input->post()){
+				//echo "<pre>";print_r($this->input->post());exit;
+				$this->load->library ( 'form_validation' );
+				$this->form_validation->set_rules ( 'password', 'Password', 'trim|required|matches[confirm_password]' );
+				$this->form_validation->set_rules ( 'confirm_password', 'Confirm Password', 'trim|required' );
+				if (! $this->form_validation->run ()) {
+				} else {
+					$n = $this->User->fetch_a_user(array('flag'=>$flag));
+					if(!empty($n)){
+						$info['password_hash'] = md5($this->input->post('password'));
+						if($this->User->updateUser($info,'flag',$flag)){
+							$this->session->set_flashdata ( 'message', '<p class="success">Your password have been reset successfully.</p>' );
+						}
+					}
+					else{
+						
+						$this->session->set_flashdata ( 'message', '<p class="error">Sorry, We are unable to update your password.</p>' );
+						redirect(base_url().'admin');
+					}
+				}
+			}
+			
+			$this->layouts->set_title ( 'Reset Password' );
+			$this->layouts->view ( 'admin/reset',$data,'login' );		
+		}
+				
+		
+	}
 	
 }

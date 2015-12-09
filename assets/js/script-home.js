@@ -125,10 +125,22 @@
 				}
 				for(var i=1;i<=$('select[name="hotel_rooms"]').val();i++)
     			{
-    				str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
+					if((i%3)== 1)
+					{
+						str += '<div class="row form-pop-container"><div class="col-md-12">';
+					}
+					str += '<div class="form-group"><p>Room-'+i+'</p>';
+					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
+					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
+					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+					{
+						str += '</div></div><br>';
+					}
+    				//str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
     			}
-					str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
-				$('#rooms_form').html(str);
+					//str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+				str += ' <div class="col-md-12"><span class="err_room"></span><span class="err_msg"></span><P class="btn-pop"><button class="btn btn-primary-pop" type="submit"> CONTINUE</button> </p></div>';
+					$('#rooms_form').html(str);
 				
 				$.cookie('mul_submition_prevent',1);
 				$('#rooms_form').on( "submit",function(e){				
@@ -648,9 +660,21 @@
     				}
     				for(var i=1;i<=$('select[name="full_rooms"]').val();i++)
         			{
-        				str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
+    					if((i%3)== 1)
+    					{
+    						str += '<div class="row form-pop-container"><div class="col-md-12">';
+    					}
+    					str += '<div class="form-group"><p>Room-'+i+'</p>';
+    					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
+    					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
+    					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+    					{
+    						str += '</div></div><br>';
+    					}
+        				//str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';    					
         			}
-    					str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+    					//str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+    				str += ' <div class="col-md-12"><span class="err_room"></span><span class="err_msg"></span><P class="btn-pop"><button class="btn btn-primary-pop" type="submit"> CONTINUE</button> </p></div>';
     				$('#rooms_form').html(str);
     				$.cookie('mul_submition_prevent',1);
     				$('#rooms_form').on( "submit",function(e){
