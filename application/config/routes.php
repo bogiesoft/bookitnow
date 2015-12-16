@@ -65,6 +65,7 @@ $route['HotelsAvailability/:any'] = 'welcome/hotel/full_available_hotels';
 $route['extras/:any'] = 'welcome/extras/index';
 $route['book/:any'] = 'welcome/extras/book';
 $route['book_hotel/:any'] = 'welcome/extras/book_hotel';
+$route['book_flight/:any'] = 'welcome/extras/book_flight';
 $route['notavailable'] = 'welcome/notavailable';
 $route['managebookinglogin'] = 'welcome/extras/bookingLogin';
 $route['admin'] = 'welcome/adminLogin';

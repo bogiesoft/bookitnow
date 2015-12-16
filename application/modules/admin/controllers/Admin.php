@@ -981,6 +981,28 @@ class Admin extends CI_Controller {
 		$this->layouts->view ( 'contacts_list.php', $data, 'admin' );
 	}
 	
+	public  function Subscribers_list()
+	{
+		$data = array ();
+		$this->layouts->add_include ( array (
+				'css/admin/style.css',
+				'css/admin/lines.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/admin/custom.css',
+				'js/admin/metisMenu.min.js',
+				'js/admin/custom.js',
+				'js/admin/d3.v3.js',
+				'js/admin/rickshaw.js'
+		) );
+		$this->load->model ( 'SubscribersList' );
+		$data['rows'] = $this->SubscribersList->fetch_a_search(array(),'ALL');
+		
+		$this->layouts->set_title ( 'Subscribers List' );
+		$this->layouts->view ( 'subscribers_list.php', $data, 'admin' );
+	}
+	
+	
 	public function margins()
 	{
 		

@@ -21,7 +21,6 @@ class Hotel extends CI_Controller {
 	
 	public function __construct()
 	{
-		
 		parent::__construct();	
 		$this->load->library('Layouts');
 		$this->layouts->add_include($this->config->item('header_css'));
@@ -154,7 +153,7 @@ class Hotel extends CI_Controller {
 						redirect(base_url()."notavailable");
 					}
 					
-					$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
+					$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'hotel_only');
 					$myser_URL = $service_url_arr[0];
 					//echo $myser_URL;exit;
 				}
@@ -173,7 +172,7 @@ class Hotel extends CI_Controller {
 							redirect(base_url()."notavailable");
 						}
 						//echo "<pre>";print_r($data['offers']);exit;
-						$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'pack_hotel');
+						$data['content'] = $this->hotels_html($data['offers']['filter_data'],9,0,$this->uri->segment(2),'hotel_only');
 					}
 					$myser_URL = $rows[0]['service_url'];
 					
@@ -181,7 +180,7 @@ class Hotel extends CI_Controller {
 				
 			//echo '<pre>';print_r($data['row']);exit;
 			/*****************end*****************************/
-			$data['type'] = 'hotel';
+			$data['type'] = 'hotel_only';
 			
 			//For change search poopulations
 			$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
@@ -472,24 +471,24 @@ class Hotel extends CI_Controller {
 			            <div style="margin-bottom: 5px; margin-top: 5px;">
 			                <strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
 			                <br>
-			                <div style="position: relative;" class="clearfix">
-			                    <div class="left">
+			                <!-- <div style="position: relative;" class="clearfix">
+			                   <div class="left">
 			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
 			                    </div>
 			                    <div class="right">
 			                        <span class="txt_color_2"></span>
 			                    </div>
-			                </div>
+			                </div>-->
 			               <small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
 			                <span class="txt_color_2"></span>			                
 			            </div>
 			            <div style="margin-bottom: 5px;">
 		                	<strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
-			                <div style="position: relative;" class="clearfix">
+			                <!--<div style="position: relative;" class="clearfix">
 			                    <div class="left">
 			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
 			                    </div>
-			                </div>
+			                </div>-->
 			               	 <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
 			                <span class="txt_color_2"></span>
             			</div>
@@ -599,6 +598,12 @@ class Hotel extends CI_Controller {
 			
 		}
 		
+		//margins - start - hotels
+		$this->load->model('Options');
+		$margin_row = $this->Options->fetch_a_fields(array(),1);
+		$first['@attributes']['sellpricepp'] = $first['@attributes']['sellpricepp'] + @$margin_row[0]['hotel_rate'];
+		$first['@attributes']['netpricepp'] = $first['@attributes']['netpricepp'] + @$margin_row[0]['hotel_rate'];
+		//end
 		$filter_data[$first['@attributes']['resort'].'-'.$first['@attributes']['hotelname']][] = $first;
 		
 		$populated_list['boardbasis'][$first['@attributes']['boardbasis']] = $boardbasis_arr[$first['@attributes']['boardbasis']];
@@ -611,8 +616,6 @@ class Hotel extends CI_Controller {
 		
 		if($count == ($raw_count-1))
 		{		
-//echo '<pre>';print_r($filter_data);exit;
-			
 			$final_result = array('filter_data' => $filter_data,'populators' => $populated_list);
 		}
 		else
@@ -639,7 +642,7 @@ class Hotel extends CI_Controller {
 		{			
 			if(isset($keys[$i]))
 			{
-			$html .= '<div class="orderhotels">
+			$html .= '<div class="orderhotels thumbnail">
 					<div class="row">
 						<div class="col-sm-6 col-md-7">
 							<div class="thumbnail box-border"><div>
@@ -654,9 +657,14 @@ class Hotel extends CI_Controller {
 				<div class="row">
 					<div class="col-sm-6 col-md-4">
 						<div class="thumbnail box-border"><div>
-						<div class="title-name">Recommended</div>
-						<img style="width: 125%;max-height: 180px;" src="'.urldecode($offers[$keys[$i]][0]['@attributes']['image']).'" alt="..."><br><br>
-					</div>
+						<div class="title-name">Recommended</div>';
+						if(is_array(@getimagesize(urldecode($offers[$keys[$i]][0]['@attributes']['image'])))){
+							$html .= '    <img style="width: 100%;max-height: 180px;" src="'.urldecode($offers[$keys[$i]][0]['@attributes']['image']).'" />';
+						}
+						else{
+							$html .= '    <img style="width: 100%;max-height: 180px;" src="'.base_url().'/images/destination_placeholder.jpg"/>';
+						}						
+					$html .='</div>
 				</div>
 			</div>
 			</div>
@@ -732,6 +740,11 @@ class Hotel extends CI_Controller {
 	{
 		if($this->input->post())
 		{
+			
+			
+			$this->load->model('Options');
+			$margin_row = $this->Options->fetch_a_fields(array(),1);
+			
 			if ($this->input->post('searchType') == 'pack_hotel')
 			{
 				$hobj = json_decode(encrypt_decrypt('decrypt',$this->input->post('crypt_text')),true);
@@ -741,8 +754,11 @@ class Hotel extends CI_Controller {
 				$this->load->model( 'FullSearch' );
 				$this->load->model( 'BookingInfo' );
 				$this->load->model('PhaseSavingsNExtras');
+				$row = $this->FullSearch->fetch_a_search(array('url_hash' => $this->input->post('crypt')));
+				
 				if(!empty($row = $this->FullSearch->fetch_a_search(array('url_hash' => $this->input->post('crypt')))))
 				{
+					
 					$flight_row = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$row[0]['id']));
 					
 					$ser_url_arr = explode(',',substr($row[0]['service_url'],0,-1));
@@ -760,7 +776,10 @@ class Hotel extends CI_Controller {
 						//	echo '<pre>';print_r($results);exit;
 							foreach ($results['offer'] as $offer)
 							{
-								//echo '<pre>';print_r($hobj);
+								//margins - while hotel submition
+								$offer['@attributes']['sellpricepp'] = $offer['@attributes']['sellpricepp'] + @$margin_row[0]['hotel_rate'];
+								$offer['@attributes']['netpricepp'] = $offer['@attributes']['netpricepp'] + @$margin_row[0]['hotel_rate'];
+								//end							
 								//echo '<pre>';print_r($results['offer']);exit;
 								if($offer['@attributes']['resort'] == $hobj['@attributes']['resort'] &&
 									$offer['@attributes']['hotelname'] == $hobj['@attributes']['hotelname'] &&
@@ -821,6 +840,7 @@ class Hotel extends CI_Controller {
 					}			
 				}
 				else{
+					
 					echo 'notavailable';
 				}
 			}
@@ -841,6 +861,11 @@ class Hotel extends CI_Controller {
 						{
 							foreach ($results['offer'] as $offer)
 							{
+								//margins - while hotel submition
+								$offer['@attributes']['sellpricepp'] = $offer['@attributes']['sellpricepp'] + @$margin_row[0]['hotel_rate'];
+								$offer['@attributes']['netpricepp'] = $offer['@attributes']['netpricepp'] + @$margin_row[0]['hotel_rate'];
+								//end							
+								
 								if($offer['@attributes']['resort'] == $hobj['@attributes']['resort'] &&
 										$offer['@attributes']['hotelname'] == $hobj['@attributes']['hotelname'] &&
 										$offer['@attributes']['boardbasis'] == $hobj['@attributes']['boardbasis'])
@@ -868,17 +893,7 @@ class Hotel extends CI_Controller {
 			}
 			exit;
 		}	
-	}
-	
-	
-	public function extras()
-	{
-		exit('hello');
-	}
-	
-	
-	
-	
+	}	
 	
 	public function download_page($path){
 		//$path = urlencode($path);
@@ -1076,11 +1091,24 @@ class Hotel extends CI_Controller {
 					}
 					$offers['filter_data'] = $temp;
 				}
+				//echo "<pre>";print_r($offers['filter_data']);exit;
+				if(trim($this->input->post('keyword')) != '')
+				{
+					$temp = array();
+					foreach ($offers['filter_data'] as $offr_key => $offers)
+					{
+						foreach ($offers as $offer){	
+							//echo "<pre>";print_r($offer);exit;
+							if (stripos(urlencode($offer['@attributes']['hotelname']),$this->input->post('keyword')) !== false) $temp[$offr_key][] = $offer;
+						}
+					}
+					$offers['filter_data'] = $temp;
+				}
 				//end
 				$limit = ((int)$checkedValues['page'] * 10)-1;
 				$offset = max(($limit-10),0);
 				//echo '<pre>';print_r($offers['filter_data']);exit;
-				$content = $this->hotels_html($offers['filter_data'],$limit,$offset,$this->input->post('crypt'),'pack_hotel');
+				$content = $this->hotels_html($offers['filter_data'],$limit,$offset,$this->input->post('crypt'),$this->input->post('searchType'));
 				
 			
 			echo $content;exit;

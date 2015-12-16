@@ -228,12 +228,79 @@
           
           <!-- /FILTER COLUMN-->
          
-         <div id="rooms_div" style="display: none;">
-  <h2>Rooms - Persons</h2>
-     <div>
-        <h4 class="has_bottom_margin">Please share the members for each room.</h4>
-	    	<form id="rooms_form">
-	    	</form>
-                      
-     </div>     
+       
+ <div id="rooms_div" style="display: none;">
+  <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
+      <div>
+	    	<form id="rooms_form" class="form-inline f-box">
+	    	</form>                      
+     </div>
+  </div>     
 </div>
+
+<style>
+.input-block-level{
+	height:auto !important;
+}
+
+
+
+.form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  width: 85px;
+	border-radius:none;
+}
+.fancybox-skin {
+    border: 5px solid #e48b05;
+	font-size:12px;
+
+}
+
+.btn-pop{
+float:right;
+margin-top:20px;
+margin-bottom:20px;
+}
+
+.btn-primary-pop{
+       background-color: #058ab9!important;
+    background-position: 0px -15px;
+	color:#fff;
+	border-radius:0px;
+	border-color:#e48b05;
+}
+.btn-primary-pop:hover{
+ background-color: #e48b05!important;
+border-radius:0px;
+    background-position: 0px -15px;
+	color:#fff;
+}
+
+.form-control { 
+    border-radius: 0px;
+}
+
+.form-pop-container {
+    margin: 0px;
+    float: left;
+}
+
+.f-box{
+margin: 0px 0px 0px 4px;
+margin-top: 20px;
+}
+.img-title{
+margin-top:10px;
+}
+
+.btn-pop {
+border-radius:0px;
+}
+
+input{
+margin : 2px;
+}
+
+</style>

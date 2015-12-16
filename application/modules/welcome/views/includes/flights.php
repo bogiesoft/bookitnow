@@ -55,7 +55,7 @@
                           <!--DETAILS--> 
                           <!--Depart-->
                           <div class="fluid zeroMargin_desktop flight_depart"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightdepart" aria-hidden="true"></i>Depart</strong><br>
-                       	 <div> <img id="cphContent_lvDatePlus3_imgRightlogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">
+                       	 <div> <!--<img id="cphContent_lvDatePlus3_imgRightlogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">-->
                               <div style="float: right"> </div>
                             </div>
                         <strong>'.date('l d M Y',$controller->cvtDt($flight_obj['@attributes']['outdep'])).'</strong><br>
@@ -66,7 +66,7 @@
                           <!--Return-->
             						
                           <div class="fluid flight_return"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightreturn" aria-hidden="true"></i>Return</strong><br>
-                        <div> <img id="cphContent_lvDatePlus3_imgReturnFlightLogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;"> </div>
+                        <div> <!--<img id="cphContent_lvDatePlus3_imgReturnFlightLogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">--> </div>
                         <strong>'.date('l d M Y',$controller->cvtDt($flight_obj['@attributes']['indep'])).'</strong><br>
                         <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
                         <span class="txt_color_2"> </span> </div>                        

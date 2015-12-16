@@ -300,56 +300,7 @@
 		});
 
 		
-		//Change search
-//		$('select[name="full_arrival_airports"]').html('<option value="-1">Select Destination</option>');
-//		if($.cookie('selected_full_dept_cookie') != -1 && $.cookie('selected_full_dept_cookie') != '' && $.cookie('selected_full_dept_cookie') != undefined)
-//		{
-//			alert('asdf')
-//			$('select[name="full_departure_airports"] option[value="'+$.cookie('selected_full_dept_cookie')+'"]').attr('selected','selected');
-//			
-//			var request_data = {};
-//			request_data.dest_shrtcode = $.cookie('selected_full_dept_cookie');				
-//			$.post( "/welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {    				
-//				$('select[name="full_arrival_airports"]').html('');
-//				  $('select[name="full_arrival_airports"]').append(data);
-//				
-//				  unblockSearchingTabs();
-//				 
-//				  if($.cookie('selected_full_arrival_cookie') != -1  || $.cookie('selected_full_dept_cookie') != '')
-//				  {    					  
-//					  $('select[name="full_arrival_airports"] option[value="'+$.cookie('selected_full_arrival_cookie')+'"]').attr('selected','selected');
-//				  }
-//				}, "html");		
-//				
-//		}
-//		
-//		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+				
 //	$('#da-slider').cslider({
 //	         autoplay    : true,
 //	         bgincrement : 100
@@ -541,9 +492,21 @@
     				}
     				for(var i=1;i<=$('select[name="full_rooms"]').val();i++)
         			{
-        				str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
+    					if((i%3)== 1)
+    					{
+    						str += '<div class="row form-pop-container"><div class="col-md-12">';
+    					}
+    					str += '<div class="form-group"><p>Room-'+i+'</p>';
+    					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
+    					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
+    					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+    					{
+    						str += '</div></div><br>';
+    					}
+        				//str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';    					
         			}
-    					str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+    					//str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+    				str += ' <div class="col-md-12"><span class="err_room"></span><span class="err_msg"></span><P class="btn-pop"><button class="btn btn-primary-pop" type="submit"> CONTINUE</button> </p></div>';
     				$('#rooms_form').html(str);
     				$.cookie('mul_submition_prevent',1);
     				$('#rooms_form').on( "submit",function(e){

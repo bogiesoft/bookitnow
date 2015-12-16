@@ -63,8 +63,8 @@ class Extras extends CI_Controller {
 			}
 			
 			
-		//	$data['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-			//$data['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+			$data['departures'] = $this->fetch_departures();
+			$data['arrivals'] = $this->fetch_arrivals();
 			//Future  - Region should be dynamic
 			//$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
 			$data['ext_fields'] = $this->SavingsNExtFields->fetchFilelsByCond(array('region'=>0));
@@ -554,10 +554,11 @@ class Extras extends CI_Controller {
 	}
 	
 	public function book_hotel()
-	{
+	{		
 		$data = array();
 		$tot_sel = 0;
 		$data['controller'] = $this;
+		$data['form_type'] = 'hotel_only';
 		if(!empty($row = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)))))
 		{			
 			$data['seg'] = $row;
@@ -603,8 +604,8 @@ class Extras extends CI_Controller {
 			$data['hobjs'] = json_decode($data['hotel'][0]['pack_info'],true);
 			
 			$tot_sel = 0;
-			$data['departures'] = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-			$data['arrivals'] = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+			$data['departures'] = $this->fetch_departures();
+			$data['arrivals'] = $this->fetch_arrivals();
 			//Future  - Region should be dynamic
 			$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
 			$arr1 = array();
@@ -825,21 +826,26 @@ class Extras extends CI_Controller {
 			}
 			
 			$data['children_info'] = json_encode($children_info);
-			$data['adults_info'] = json_encode($adults_info);
-			$data['address_1'] = $post_data['address_1'];
-			$data['address_2'] = @$post_data['address_2'];
-			//$data['address_2'] = '';
-			$data['mobile'] = $post_data['mobile'];
-			$data['home_tel'] = $post_data['home_tel'];
-			$data['email'] =	$post_data['email'];		
-			$data['postal_code'] = $post_data['post_code'];
-			$data['postal_code2'] = $post_data['post_code2'];
-			$data['city_country'] = $post_data['city'];	
-			$data['city_country2'] = $post_data['city2'];
-			$data['card_type'] = $post_data['card_type'];
-			$data['name_card'] = $post_data['name_card'];
-			$data['card_number'] = $post_data['card_number'];
-			$data['cvv_number'] = $post_data['cvv_number'];
+		   $data['adults_info'] = json_encode($adults_info);
+		   $data['address_1'] = $post_data['address_1'];
+		   if(isset($post_data['address_2']))
+		   $data['address_2'] = $post_data['address_2'];
+		   //$data['address_2'] = '';
+		   $data['mobile'] = $post_data['mobile'];
+		   $data['home_tel'] = $post_data['home_tel'];
+		   $data['email'] = $post_data['email'];  
+		   $data['postal_code'] = $post_data['post_code'];
+		   if(isset($post_data['post_code2']))
+		   $data['postal_code2'] = @$post_data['post_code2'];
+		   $data['city_country'] = $post_data['city']; 
+		   if(isset($post_data['city2']))
+		   $data['city_country2'] = @$post_data['city2'];
+		   $data['card_type'] = $post_data['card_type'];
+		   $data['name_card'] = $post_data['name_card'];
+		   $data['card_number'] = $post_data['card_number'];
+		   if(isset($post_data['cvv_number']))
+		   $data['cvv_number'] = @$post_data['cvv_number'];
+			
 			
 			$this->load->model('BookingInfo');
 			
@@ -923,21 +929,28 @@ class Extras extends CI_Controller {
 		$this->load->library ( 'form_validation' );
 		$this->load->model ( 'Bookinginfo' );
 		$count = 0;
-		if ($this->input->post ()) {			
-			$this->form_validation->set_rules ( 'reference_id', 'Reference Id', 'trim|required' );
-			$this->form_validation->set_rules ( 'lname', 'Last Name', 'trim|required' );
-			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );			
-			if (! $this->form_validation->run ()) {} else {			
-				$rows = $this->Bookinginfo->fetch_a_search(array('reference_id' => $this->input->post ('reference_id'),'email'=>$this->input->post('email')));
-				if(!$rows){
-					$this->session->set_flashdata ( 'message', '<span class="error">Sorry,Given details not matched with our database</span>' );
-				}
-				else {
-					$this->yourBasket();
-					$count++;
-				}			
-			}
-		}
+		if ($this->input->post ()) {   
+		   $this->form_validation->set_rules ( 'reference_id', 'Reference Id', 'trim|required' );
+		   $this->form_validation->set_rules ( 'lname', 'Last Name', 'trim|required' );
+		   $this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );   
+		   if (! $this->form_validation->run ()) {} else {   
+		    $rows = $this->Bookinginfo->fetch_a_search(array('reference_id' => $this->input->post ('reference_id'),'email'=>$this->input->post('email')));
+		    if(!$rows){
+		     $this->session->set_flashdata ( 'message', '<span class="error">Sorry,Given details not matched with our database</span>' );
+		    }
+		    else {     
+		     $adult_info=json_decode($rows[0]["adults_info"]);
+		     if($this->input->post ('lname') !== current($adult_info->lname))
+		     {
+		      $this->session->set_flashdata ( 'message', '<span class="error">Sorry,Given details not matched with our database</span>' );
+		     }
+		     else{
+		      $this->yourBasket();
+		      $count++;
+		     }     
+		    }   
+		   }
+	  }
 		if(!$count){
 		
 		$this->layouts->set_title('View Booking Login');
@@ -952,11 +965,18 @@ class Extras extends CI_Controller {
 		$data = array();
 		$data['controller'] = $this;
 		$data['row'] = $this->Bookinginfo->fetch_a_search(array('reference_id'=>$this->input->post('reference_id')));
-		
+		$data['departures'] = $this->fetch_departures();
+		$data['arrivals'] = $this->fetch_arrivals();
 		if($data['row'][0]['type_search'] == 'hotel_only'){
 		
 			$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
 			$data['hobjs'] = json_decode($data['seg'][0]['pack_info'],true);
+		}
+		else if($data['row'][0]['type_search'] == 'flight_only')
+		{
+			$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+			$data['fobj'] = json_decode($data['seg'][0]['pack_info'],true);			
+			$data['flit'][0]['flight_selected_date'] = explode(' ',$data['fobj']['@attributes']['outdep'])[0];
 		}
 		else{
 			$this->load->model('FullSearch');
@@ -1000,9 +1020,153 @@ class Extras extends CI_Controller {
 					
 	}
 	
-	public function feefoXml()
+public function book_flight()
 	{
-		$feeds = $depts_raw = new SimpleXMLElement(download_page('http://www.feefo.com/feefo/xmlfeed.jsp?logon=www.superescapes.co.uk'));
-		echo "<pre>";print_r($feeds);exit;
+		
+		
+		$data = array();
+		$tot_sel = 0;
+		$data['controller'] = $this;
+		$data['form_type'] = 'flight_only';
+		if(!empty($row = $this->UserSearch->fetch_a_search(array('type_search'=>'flight_hotel','url_hash' => $this->uri->segment(2)))))
+		{
+			$data['seg'] = $row;
+			$data['hobjs'] = json_decode($row[0]['pack_info'],true);
+			
+			$tot_sel=$data['hobjs']['@attributes']['sellpricepp'];
+			$data['res_sel_price'] = $tot_sel / count($data['hobjs']);
+			
+	
+			$departures = $this->fetch_departures();
+			$arrivals = $this->fetch_arrivals();
+				
+	//$this->load->model('PhaseFlightOrHotel');
+	$selected_info = $row;
+	//echo "<pre>";print_r($selected_info);exit;
+	//print_r($selected_info);exit;
+	$flight_obj = json_decode($selected_info[0]['pack_info'],true);
+	
+	$dscode = $flight_obj['@attributes']['depapt'];
+	
+	//echo $dscode;exit;
+	$ascode = $flight_obj['@attributes']['arrapt'];
+	
+	$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
+	
+	$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',$arrivals[(string)$ascode])[0]);
+	
+	$dscode = trim(explode('-',$departures[(string)$dscode])[0]);
+	//print_r($flight_obj);exit;
+	
+	$dept_start_time = substr(explode(' ',$flight_obj['@attributes']['outdep'])[1],0,-3);
+	$dept_arr_time = substr(explode(' ',$flight_obj['@attributes']['outarr'])[1],0,-3);
+	$return_start_time = substr(explode(' ',$flight_obj['@attributes']['indep'])[1],0,-3);
+	$return_arr_time = substr(explode(' ',$flight_obj['@attributes']['inarr'])[1],0,-3);
+	$this->load->helper('common');
+	$dept_images = dept_images();
+	$type_s = 'full_flight';
+	$cry = $this->uri->segment(2);
+	//echo "<pre>";print_r($row);exit;
+	$data['seleted_info'] =  '
+			
+		<div class="deals">	<h2>Your Selections	</h2></div>
+	<div class="conatiner-bg"style="
+      font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+"> <div class="basket_item bg_grey padded border_b clearfix">
+            			<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
+                			<div class="left">
+                    			<h4>Flights</h4>
+                			</div>
+			                <div class="right" style="text-align: right;">
+			                    <h4 style="margin-left: 125px;color: #0088cc;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']).'</h4>
+			                </div>
+			            </div>
+			            <div style="margin-bottom: 11px; margin-top: 0px;">
+			                <strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
+			                <br>
+			                <div style="position: relative;" class="clearfix">
+			                    <div class="left">
+			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="margin-left: 62px; margin-top: -42px;">
+			                    </div>
+			                    <div class="right">
+			                        <span class="txt_color_2"></span>
+			                    </div>
+			                </div>
+			               <small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
+			                <span class="txt_color_2"></span>
+			            </div>
+			            <div style="margin-bottom: 5px;">
+		                	<strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
+			                <div style="position: relative;" class="clearfix">
+			                    <div class="left">
+			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="margin-left: 62px; margin-top: -42px;">
+			                    </div>
+			                </div>
+			               	 <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
+			                <span class="txt_color_2"></span>
+            			</div>
+	
+			            <div style="position: relative;" class="clearfix">
+			                <div class="left">
+			                    <small>
+			                        <span id="cphContent_ucBookingSummary_lblFPersonCount"> Adults + Children : '.($row[0]['num_adults'] + max($row[0]['num_children'],0)).' x </span><span id="cphContent_ucBookingSummary_lblFPrice">&#163;'.$flight_obj['@attributes']['sellpricepp'].'</span>
+			                    </small>
+			                </div>
+			                <div class="right">
+			                    <small>
+			                        <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
+			                    </small>
+			                </div>
+			            </div>
+			          </div>
+			           <div class="conatiner-bg"  style="margin-left: -12px;
+    margin-right: -13px;">
+			          <div class=" basket_item bg_grey padded border_b" style="position: relative;">
+					    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
+			                <div class="left">
+			                    <h4>Atol Protection</h4>
+			                </div>
+			                <div class="right" style="text-align: right;">
+			                    <h4 style="margin-left: 125px;color: #0088cc;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 ).'</h4>
+			                </div>
+			            </div>
+			            <div style="position: relative;" class="clearfix">
+			                <div class="left">
+			                    <small>£2.50 x '.($row[0]['num_adults'] + max($row[0]['num_children'],0)).'
+			                    </small>
+			                </div>
+           			   </div>
+			        </div>
+			        </div>
+			           		
+			                    		
+	 
+	<div class="basket_item bg_grey padded border_b" style="position: relative;">
+	
+       <div class="conatiner-bg" style="margin-left: -13px;
+    margin-right: -13px;">
+	<div style="position: relative;" class="clearfix">
+	<div class="left">
+  
+	<small> 
+			<h3 style="font-size: 18px;">TOTAL:</h3> <h4 style="margin-left: 80px;margin-top: -19px;color: #0088cc;">&#163;'.((($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']  ) + (($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 )).'</h4>
+	
+					</small>
+			</div>
+			</div>
+					</div>
+			</div>
+					';
+	/**************total*******************************/
+	/**************end*******************************/
+	$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery-ui.css','css/customeffects','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
+	$this->layouts->set_title('Book Hotel');
+	$this->layouts->view('book_flight_view',$data);
+	}
+	else{
+		redirect(base_url());
+	}
 	}
 }

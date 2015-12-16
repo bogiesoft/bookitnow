@@ -142,6 +142,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li>
                             <a href="<?php echo base_url();?>admin/deals"><i class="fa fa-indent nav_icon"></i>Deals</a>
                         </li>
+                       <li>
+                            <a href="<?php echo base_url();?>admin/subscribers_list"><i class="fa fa-indent nav_icon"></i>Subscribers</a>
+                        </li>
+                       <li>
+                            <a href="<?php echo base_url();?>admin/contacts_list"><i class="fa fa-indent nav_icon"></i>Contacts List</a>
+                        </li>
                        
                     </ul>
                 </div>

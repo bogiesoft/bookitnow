@@ -1,4 +1,25 @@
 @media screen and (max-width: 320px) {
+	
+	body .tabbable-ht {
+    margin:0px!important;
+}
+.flight {
+    width: 70%!important;
+}
+.buttons-holiday li {
+    margin: 2px!important;	
+	}
+
+.buttons-holiday li {
+
+    width: 100%;
+}
+.image-bg {
+    background-color: #F7E2C2!important;
+    padding: 30px 29px 111px!important;
+}
+	
+/*--TENERIFE closed here--*/
 
 .travelto-hotel {
     width: 100%!important;
@@ -153,6 +174,28 @@ ul.four {
 }
 }
 @media screen and (max-width: 360px) {
+	/*--TENERIFE start here--*/
+.buttons-holiday li {
+    margin: 2px!important;	
+	}
+body .tabbable-ht {
+    margin:0px!important;	
+}
+.flight {
+    width: 61%!important;
+}
+.buttons-holiday li {
+    width: 100%;
+}
+.image-bg {
+    background-color: #F7E2C2!important;
+    padding: 30px 29px 111px!important;
+}
+.form-bg-wrap {
+    background-color: #F7E2C2;  
+    height: 490px!important;
+}
+	/*--TENERIFE end here--*/
 /*--meena adit--*/	
 .box-fly{
    margin-top:50px!important;

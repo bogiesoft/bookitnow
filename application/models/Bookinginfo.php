@@ -14,7 +14,7 @@ class BookingInfo extends CI_Model {
 		{
 			//$ref_id = md5(microtime().'_'.$this->db->insert_id());
 			//$ref_id = substr(md5(uniqid(mt_rand(), true)), 0, 10);
-			$ref_id = 'BIN-QQ-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 5));
+			$ref_id = 'BIN-QQ-'.$this->db->insert_id().strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 5));
 			$data =array('reference_id'=>$ref_id);
 			$this->db->where('id',$this->db->insert_id());
 			if($this->db->update(BOOKINFO_TABLE,$data))

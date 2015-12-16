@@ -82,6 +82,27 @@ class Deals extends CI_Controller {
 		$this->layouts->view('deals/dynamicarea',$data);
 	}
 	
+	public function dynamicResort(){
+		$data = array();
+		/************fetching departure airports**************/
+		changeSearch($data);
+	
+		/******************end***********/
+		/************fetching travel to list for hotels**************/
+		$data['hotel_travel_list'] = $this->arrival_list_basedon_dynaminc_departuere_airport();
+		/******************end***********/
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/tenerife-holidays.css','css/jquery.fancybox.css','css/slideshow.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/gallery.js','js/script-home.js'));
+		$this->layouts->set_title('Home');
+		$this->layouts->view('deals/dynamicResort',$data);
+	}
+	
+	public function dynamicDeals(){
+		$data = array();
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/tenerife-holidays.css','css/jquery.fancybox.css','css/slideshow.css','css/mamaison.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/gallery.js','js/script-home.js'));
+		$this->layouts->set_title('Home');
+		$this->layouts->view('deals/dynamicDeals',$data);
+	}
+	
 
 	
 }

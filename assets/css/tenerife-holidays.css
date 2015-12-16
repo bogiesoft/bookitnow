@@ -18,7 +18,8 @@ padding: 30px 30px 38px;
 
 .form-bg-wrap{
   background-color: #E6E1E1;
-padding: 24px 26px 53px 24px;
+padding: 24px 26px 0px 24px;
+  min-height:290px;
 margin: 2px 4px 8px 0px;
 }
 
@@ -69,7 +70,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9c9c9c', end
 	border: none;
 }
 body .tabbable-tab {
-    color: #FFF;
+    /*color: #FFF;*/
     width: 100%;
     background-color:none!important;
     border-radius: 5px;
@@ -215,3 +216,5 @@ background-color:#fff;
 .img-wrap-bg {
     background-color:#E6E1E1;
 }
+
+

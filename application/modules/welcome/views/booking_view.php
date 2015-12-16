@@ -317,25 +317,25 @@
 	<div class="flight-wrap"><h5><b>&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * $fobj['@attributes']['sellpricepp']); ?> </b></h5></div>	
 	<h5><b>Flights</b></h5>	
 	<h5>Depart:</h5>
-	<div style="position: relative;" class="clearfix">
+	<!-- <div style="position: relative;" class="clearfix">
 		<div class="left">
 		    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
 		</div>
 		<div class="right">
 		    <span class="txt_color_2"></span>
 		</div>
-	</div>
+	</div> -->
 	<h6><?php echo $dscode.' to '.$ascode;?></h6>
 	<h6><?php echo date('d M Y',$controller->cvtDt(str_date($flit[0]['flight_selected_date'])));?> : <?=$dept_start_time . ' - ' . $dept_arr_time;?></h6>
 	<h5>Return:</h5>
-	<div style="position: relative;" class="clearfix">
+	<!-- <div style="position: relative;" class="clearfix">
 		<div class="left">
 		    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
 		</div>
 		<div class="right">
 		    <span class="txt_color_2"></span>
 		</div>
-	</div>
+	</div> -->
 	<h6><?php echo $ascode.' to '.$dscode;?></h6>
 	<h6><?php echo date('d M Y',$controller->cvtDt(str_date(explode(' ',$fobj['@attributes']['indep'])[0])));?> : <?=$return_start_time . ' - ' . $return_arr_time;?></h6>
 	
@@ -436,10 +436,7 @@
                   <h2 class="txt_color_1 txt_xtra_large">&#163;<span id="cphContent_lblSubTotal"><?php echo $sel_info['whole'];?></span></h2>
                   <small>Per Person: &#163;<span id="pprice"><?php echo ($sel_info['whole'] / ($seg[0]['num_adults'] + $seg[0]['num_children']));?></span>  X <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']);?></small>
               </div>
-         </div>
-         <div class="conatiner-bg">
-         	<a onclick="callWaitPageForextra();" class="button full_width txt_xtra_large" href="<?php echo base_url().'book/'.$this->uri->segment(2);?>"><i aria-hidden="true" class="icon-lock"></i>&nbsp;BOOK NOW</a>
-    	 </div>
+         </div>        
 	  </div>
     
      </div>	

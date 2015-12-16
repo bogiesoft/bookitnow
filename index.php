@@ -15,7 +15,7 @@ define("EXTRA_CATEGORIES_TABLE", "extra_categories");
 define("OPTIONS", "options");
 
 define("CONTACTSADMINEMAIL", "satya@expertwebworx.com");
-define("BOOKINGADMINEMAIL", "satya@expertwebworx.com");
+define("BOOKINGADMINEMAIL", "satya.bhxpro@gmail.com");
 define("SMTP_EMAIL",'campusxroads@expertwebworx.in');
 define("SMTP_PASSWORD",'C}BA,RI25#c_c%UopsdW9neX');
 define("SMTP_PORT",'25');

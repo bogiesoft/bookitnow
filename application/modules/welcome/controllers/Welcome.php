@@ -20,8 +20,7 @@ class Welcome extends CI_Controller {
 	 */
 	
 	public function __construct()
-	{
-		
+	{	
 		parent::__construct();	
 		$this->load->library('Layouts');
 		$this->layouts->add_include($this->config->item('header_css'));
@@ -29,7 +28,7 @@ class Welcome extends CI_Controller {
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->load->helper(array('form','url','common'));
 		$this->load->model('UserSearch');
-		$this->load->model ( 'User' );
+		$this->load->model ( 'User' );	
 	}
 	
 
@@ -118,11 +117,12 @@ class Welcome extends CI_Controller {
 			if($data['results']->attributes()->offers > 0)
 			{
 				$post_data = $this->input->post();
+				$post_data['childrens'] = ($this->input->post('childrens') != -1) ? $this->input->post('childrens') : 0;
 				$data = array('service_url' => $req_url,
 						'type_search' => 'flight_hotel',
 						'selected_date' => $this->input->post('departure_date'),
 						'num_adults' => $this->input->post('adults'),
-						'num_children' => $this->input->post('childrens'),
+						'num_children' => $post_data['childrens'],
 						'arapts' => $this->input->post('arrival_airports')
 				);
 				$hash = $this->UserSearch->createSearch($data);
@@ -258,7 +258,7 @@ class Welcome extends CI_Controller {
 				'MNTF' => '/images/MNTF.gif'
 		
 		);
-		$this->cache->delete($this->uri->segment(2));
+		//$this->cache->delete($this->uri->segment(2));
 		if(!empty($rows))
 		{		
 			$count = 0;$flex = 3;
@@ -275,8 +275,8 @@ class Welcome extends CI_Controller {
 			$data['results'] = new SimpleXMLElement($this->download_page($req_url));
 			
 			$search_dates=array();$best_price = 0;
-			if(empty($this->cache->get($this->uri->segment(2))))
-			{
+			//if(empty($this->cache->get($this->uri->segment(2))))
+			//{
 				if($data['results']->attributes()->offers > 0)
 				{
 					$coded_date = json_decode(json_encode($data['results']),true);
@@ -294,13 +294,13 @@ class Welcome extends CI_Controller {
 				{						
 					redirect(base_url());			
 				}			
-				$this->cache->save($this->uri->segment(2),$search_dates, 3600);
-			}
-			else{		
-				$search_dates = $this->cache->get($this->uri->segment(2));				
-			}
+				//$this->cache->save($this->uri->segment(2),$search_dates, 3600);
+			//}
+			//else{		
+			//	$search_dates = $this->cache->get($this->uri->segment(2));				
+		//}
 			
-		//	echo "<pre>";print_r($search_dates);exit;
+			//echo "<pre>";print_r($search_dates);exit;
 			$list_min = array_column($search_dates, 'best_price');
 			
 			if(!empty($list_min))
@@ -337,8 +337,11 @@ class Welcome extends CI_Controller {
 					if(!empty(@$value_date['offers_list']))
 					{	
 						
-						foreach ($value_date['offers_list'] as $offer)
+						foreach ($value_date['offers_list'] as $key => $offer)
 						{
+							
+							//$value_date['offers_list'][$key]['@attributes']['sellpricepp'] = $offer['@attributes']['sellpricepp'] + 10;
+							
 							//$flight_suppliers[$offer['@attributes']['suppname']] = $offer['@attributes']['suppcode'];
 							$dept_take_offs[] =  (int)substr(explode(' ',$offer['@attributes']['outdep'])[1],0,2);							
 							$return_take_offs[] = (int)substr(explode(' ',$offer['@attributes']['indep'])[1],0,2);
@@ -393,17 +396,6 @@ class Welcome extends CI_Controller {
 					$results['filtered_departures'] = $this->seperatorFlights($code[0],$name[0]);
 					$results['departures'][$code[0]] = $name[0];
 				}	
-				
-				
-				
-// 				$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
-// 				foreach ($departures as $departure)
-// 				{
-// 					$code = (array)$departure->attributes()->code;
-// 					$name = (array)$departure->attributes()->name;
-// 					$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
-// 					$data['departures'][$code[0]] = $name[0];
-// 				}
 				$parts = parse_url($req_url);
 				parse_str($parts['query'], $query);
 				$results['change_search_info']['query'] = $query;
@@ -462,7 +454,7 @@ class Welcome extends CI_Controller {
 				'MNTF' => '/images/MNTF.gif'
 		
 		);
-		$this->cache->delete($service_url);
+		//$this->cache->delete($service_url);
 		
 			$count = 0;$flex = 3;
 			$results['departures'] = $this->fetch_departures();
@@ -472,10 +464,10 @@ class Welcome extends CI_Controller {
 			$req_url = $service_url;
 			
 			$data['results'] = new SimpleXMLElement($this->download_page($req_url));
-		
+			
 			$search_dates=array();$best_price = 0;
-			if(empty($this->cache->get($service_url)))
-			{
+			//if(empty($this->cache->get($service_url)))
+			//{
 				if($data['results']->attributes()->offers > 0)
 				{
 					$coded_date = json_decode(json_encode($data['results']),true);
@@ -490,11 +482,11 @@ class Welcome extends CI_Controller {
 				{
 					redirect(base_url());
 				}
-				$this->cache->save($service_url,$search_dates, 3600);
-			}
-			else{
-				$search_dates = $this->cache->get($service_url);
-			}
+			//	$this->cache->save($service_url,$search_dates, 3600);
+			//}
+			//else{
+			//	$search_dates = $this->cache->get($service_url);
+			//}
 			$list_min = array_column($search_dates, 'best_price');
 		
 			if(!empty($list_min))
@@ -849,7 +841,7 @@ class Welcome extends CI_Controller {
 				                      <div class="clearfix">
 				                    	<div class="flight_info clearfix">
 				                          <div class="fluid zeroMargin_desktop flight_depart"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightdepart" aria-hidden="true"></i>Depart</strong><br>
-				                       	 	<div> <img id="cphContent_lvDatePlus3_imgRightlogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">
+				                       	 	<div><!-- <img id="cphContent_lvDatePlus3_imgRightlogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">-->
 				                              <div style="float: right"> </div>
 				                            </div>
 				                        	<strong>'.date('l d M Y',$this->cvtDt($flight_obj['@attributes']['outdep'])).'</strong><br>
@@ -857,7 +849,7 @@ class Welcome extends CI_Controller {
 				                       		<small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
 				                        	<span class="txt_color_2"> </span> </div>
 				                          	<div class="fluid flight_return"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightreturn" aria-hidden="true"></i>Return</strong><br>
-				                        		<div> <img id="cphContent_lvDatePlus3_imgReturnFlightLogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;"> </div>
+				                        		<div> <!--<img id="cphContent_lvDatePlus3_imgReturnFlightLogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">--> </div>
 						                        <strong>'.date('l d M Y',$this->cvtDt($flight_obj['@attributes']['indep'])).'</strong><br>
 						                        <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
 						                        <span class="txt_color_2"> </span>
@@ -961,7 +953,8 @@ class Welcome extends CI_Controller {
 	}
 	
 	public function search_upto_flex_days(&$req_url_raw,$provided_date,$flex=3,&$data)
-	{		
+	{
+		
 		static $decr=0;
 		static $incr=0;		
 		$date = DateTime::createFromFormat('d/m/Y', $provided_date);
@@ -1001,18 +994,26 @@ class Welcome extends CI_Controller {
 	
 	public function pushDateDataFun(&$req_url_raw,$provided_date,&$data)
 	{		
-		$array_for_best_price = array();
+		$array_for_best_price = $margin_row = array();
+		$this->load->model('Options');
+		$margin_row = $this->Options->fetch_a_fields(array(),1);
 		
 		foreach($req_url_raw as $key => $row)
 		{		
 			if($provided_date == explode(' ',$row['@attributes']['outdep'])[0])
-			{	
+			{				
+				//margins - start
+				$row['@attributes']['sellpricepp'] = $row['@attributes']['sellpricepp'] + @$margin_row[0]['flight_rate'];
+				$row['@attributes']['netpricepp'] = $row['@attributes']['netpricepp'] + @$margin_row[0]['flight_rate'];
+				//end
+				
+				
+				
 				$array_for_best_price[] = $row['@attributes']['sellpricepp'];
 				$data[$provided_date]['offers_list'][] = $row;
 				unset($req_url_raw[$key]);		
 			}			
 		}
-		//echo "<pre>";print_r($array_for_best_price);exit;
 		
 		if(@min($array_for_best_price))$data[$provided_date]['best_price'] = @min($array_for_best_price);
 		else $data[$provided_date]['best_price'] = 10000; // Bad one
@@ -1358,7 +1359,7 @@ class Welcome extends CI_Controller {
 			
 			if (! $this->form_validation->run ()) {
 			} else {
-				$n = $this->User->fetch_a_user(array('email'=>$this->input->post('email')));
+				$n = $this->User->fetch_a_user(array('email'=>$this->input->post('email')));				
 				if(!empty($n)){
 					$info['flag'] = $this->randStrGen(30);
 					if($this->User->updateUser($info,'email',$this->input->post('email')))
@@ -1369,13 +1370,18 @@ class Welcome extends CI_Controller {
 						$body .= 'Link : '.base_url().'welcome/resetPassword/'.$info['flag'];
 						$body .= '<br>Yours Thankfully,<br>BookItNow Admin';
 						$list = array($this->input->post('email'));
-						echo $body;exit;
+						$this->session->set_flashdata ( 'message', '<p class="success">We sent reset password link to your email.Please check it.</p>' );
+						redirect(base_url().'admin');
 						//emailFunction($this,$subject,$body,BOOKINGADMINEMAIL,'Admin',$list);
 						
 					}
 				}
-				$this->session->set_flashdata ( 'message', '<p class="success">We sent reset passwork link to your email.Please check it.</p>' );
-				redirect(base_url().'admin');
+				else{
+					$this->session->set_flashdata ( 'message', '<p class="warning">Sorry,given email is not existed in our database.</p>' );
+					redirect(base_url().'welcome/forgot_pwd');
+				}
+				
+				
 			}
 			
 			
@@ -1434,9 +1440,28 @@ class Welcome extends CI_Controller {
 			
 			$this->layouts->set_title ( 'Reset Password' );
 			$this->layouts->view ( 'admin/reset',$data,'login' );		
-		}
-				
-		
+		}	
 	}
 	
+	public function bulkSubmit(){
+		if($this->input->post()){
+			$postData = $this->input->post();			
+		//	echo "<pre>";print_r($postData['mformData']['Fly_From']);exit;
+			$subject = 'Bulk Booking Request';
+			$body = 'Hi';
+			$body .= '<br/><p>The following user requesting for bulk booking</p><br/>';
+			foreach ($postData['bformData'] as $uinfo){
+				$body .= '<b>'.ucfirst($uinfo['name']).'</b> : '.$uinfo['value'].'<br>';
+				if($uinfo['name'] == 'email')$from = $uinfo['value'];
+				if($uinfo['name'] == 'first_name')$sendername = $uinfo['value'];
+			}
+			$body .= '<p>Here is the search information :</p><br/>';
+			foreach ($postData['mformData'] as $key => $sinfo){				
+				$body .= '<b>'.str_replace("_"," ",$key).'</b> : '.$sinfo.'<br>';
+			}		
+			$body .= '<p>Regards</p><p>BookItNow Admin</p>';
+			//emailFunction($this,$subject,$body,$from,$sendername,array(BOOKINGADMINEMAIL));
+			echo json_encode(array('status'=>'success','message'=>'Thank you,We will contact you soon'));exit;
+		}		
+	}	
 }

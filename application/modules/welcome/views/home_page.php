@@ -104,8 +104,7 @@
   							<option value="-1">Select Destination</option>
   							<?php
 								foreach($filtered_departures as $key => $val)
-								{									
-									//echo "<option value='-1'>".$key."</option>";
+								{										
 									$opt_val_str = '';
 									foreach($val as $key1 => $val1)
 									{
@@ -128,7 +127,7 @@
 		            </div>
 					<div class="board_basis">
 		              <label>Rooms :</label>
-		              <select name="full_rooms" onchange="roomBase()" class="input-block-level">						
+		              <select name="full_rooms" class="input-block-level">						
 						 <option>1</option>
 		                 <option>2</option>
 		                 <option>3</option>
@@ -156,7 +155,7 @@
 
 					<div class="childerns">
 		              <label>Childrens:</label>
-		              <select class="input-block-level"  name="full_children" onchange="roomBase();">
+		              <select class="input-block-level"  name="full_children">
 		                <option value="-1">0</option>
 		                <option>1</option>
 		                <option>2</option>
@@ -208,7 +207,7 @@
             </div>          
             <div class="hotel_rooms"  >
               <label>Rooms:</label>
-              <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_rooms" >
+              <select class="input-block-level"   name="hotel_rooms" >
                 <option value="-1">---Select---</option>
                <option>1</option>
                 <option>2</option>
@@ -228,7 +227,7 @@
             </div>
             <div class="hotel_childerns"  >
               <label>Childrens:</label>
-              <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_childrens">
+              <select class="input-block-level"  name="hotel_childrens">
                 <option  value="-1">0</option>
                 <option>1</option>
                 <option>2</option>
@@ -499,6 +498,28 @@ destinations..</h4>
      </div>
   </div>     
 </div>
+
+<div id="bluk_div" style="display: none;">
+  <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
+      <div>
+	    	 <form class="f-box" id="bulk_form" method="post">
+	    		<div class="form-group">	    			
+	    			<input type="text" class="form-control" placeholder="Name" name="first_name">
+	    		</div>
+	    		<div class="form-group">
+	    			
+	    			<input type="text" class="form-control" placeholder="Email" name="email">
+	    		</div>
+	    		<div class="form-group">	    			
+	    			<input type="text" class="form-control" placeholder="Mobile" name="mobile">
+	    		</div>		    		
+	    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
+	    	</form>    
+	    	
+     </div>
+  </div>     
+</div>
+
 <style>
 .input-block-level{
 	height:auto !important;
@@ -510,7 +531,7 @@ destinations..</h4>
     display: inline-block;
     width: auto;
     vertical-align: middle;
-  width: 85px;
+  width: 90px;
 	border-radius:none;
 }
 .fancybox-skin {
@@ -563,7 +584,7 @@ border-radius:0px;
 input{
 margin : 2px;
 }
-
+.room_box_child{margin-right:10px;}
 </style>
 
 

@@ -17,7 +17,7 @@
                 </div>
             </div>
 <div id="body_content">
-<div class="container">
+<div class="container" >
 
 <!-- booknow start here-->
 <div class="col-sm-9" style="padding-left:0px;">
@@ -34,7 +34,7 @@
 				   <div>
 				 	<!--  <p class="online-save">Online Savings: <span class="online-rate">&#163;57.70</span></p>			
 					<p class="online-save">RRP:  	<span class="text-decoration">&#163;665.04</span></P>-->
-					<p class="online-save">Total Cost:  	<span class="online-rate">&#163;<?php echo $sel_info['whole']; ?></span></P>					
+					<p class="online-save">Total Cost:  	<span class="online-rate online-final">&#163;<?php echo $sel_info['whole']; ?></span></P>					
 					<p> <a href="<?php echo base_url().'book/'.$this->uri->segment(2);?>" class="btn-small btn-default-small" role="button" onclick="return callWaitPageForextra();">BOOK NOW</a></p>	
 					<p class="later"><a id="cphContent_lnkDesktopBasketQQ" onclick="LoadQQPopup(this);">Save for Later<a></p>					
 				   </div>
@@ -141,7 +141,7 @@
 
     <div class="col-sm-3">	
 	<?php 
-	$dscode = $fobj['@attributes']['depapt'];
+	$dscode = $fobj['@attributes']['depapt'];	
 	$ascode = $fobj['@attributes']['arrapt'];
 	$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
 	$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',@$arrivals[(string)$ascode])[0]);
@@ -160,25 +160,25 @@
 	<div class="flight-wrap"><h5><b>&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * $fobj['@attributes']['sellpricepp']); ?> </b></h5></div>	
 	<h5><b>Flights</b></h5>	
 	<h5>Depart:</h5>
-	<div style="position: relative;" class="clearfix">
+	<!--<div style="position: relative;" class="clearfix">
 		<div class="left">
 		    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
 		</div>
 		<div class="right">
 		    <span class="txt_color_2"></span>
 		</div>
-	</div>
+	</div>-->
 	<h6><?php echo $dscode.' to '.$ascode;?></h6>
 	<h6><?php echo date('d M Y',$controller->cvtDt(str_date($flit[0]['flight_selected_date'])));?> : <?=$dept_start_time . ' - ' . $dept_arr_time;?></h6>
 	<h5>Return:</h5>
-	<div style="position: relative;" class="clearfix">
+	<!-- <div style="position: relative;" class="clearfix">
 		<div class="left">
 		    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
 		</div>
 		<div class="right">
 		    <span class="txt_color_2"></span>
 		</div>
-	</div>
+	</div>-->
 	<h6><?php echo $ascode.' to '.$dscode;?></h6>
 	<h6><?php echo date('d M Y',$controller->cvtDt(str_date(explode(' ',$fobj['@attributes']['indep'])[0])));?> : <?=$return_start_time . ' - ' . $return_arr_time;?></h6>
 	

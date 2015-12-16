@@ -280,14 +280,14 @@ if( !function_exists('boardbasis') ) {
   		// Logo
   		//echo getcwd();exit;
   		$image_file = 'images/logo.png'; // *** Very IMP: make sure this image is available on given path on your server
-  		$this->Image($image_file,20,6,25);
+  		$this->Image($image_file,20,6,30);
   		// Set font
-  		$this->SetFont('helvetica', 'C', 12);
+  		$this->SetFont('helvetica', '', 12);
   
   		// Line break
   		$this->Ln(5);
   		$this->SetTextColor(9,79,162);
-  		$this->Cell(210, 15, 'BookItNow Travel', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+  		$this->Cell(210, 25, 'Bookitnow Travel', 0, false, 'C', 0, '', 0, false, 'M', 'M');
   		//$this->SetTextColor(255,0,0);
   		$this->Ln(6);
   		$this->SetFont('times', 'BI', 10, '', 'false');
@@ -295,29 +295,19 @@ if( !function_exists('boardbasis') ) {
   		$this->Ln(5);
   		$this->Cell(210, 0, 'T:0138 629 8003 E : info@bookitnow.co.uk W : www.bookitnow.co.uk', 0, false, 'C', 0, '', 0, false, 'M', 'M');
   		
-  		$this->writeHTML('<br/><hr/><br/>', true, false, false, false, '');
-//   		$style = array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 0, 0));
-  		
-//   		$this->Line(5, 10, 80, 30, $style);
-  		// We need to adjust the x and y positions of this text ... first two parameters
+  		$this->writeHTML('<br/><br/>', true, false, false, false, '');
+
   
   	}
   
   	// Page footer
-//   	public function Footer() {
-//   		// Position at 25 mm from bottom
-//   		$this->SetY(-15);
-//   		// Set font
-//   		$this->SetFont('helvetica', 'I', 8);
-  
-//   		$this->Cell(0, 0, 'Product Company - ABC test company, Phone : +91 1122 3344 55, TIC : TESTTEST', 0, 0, 'C');
-//   		$this->Ln();
-//   		$this->Cell(0,0,'www.clientsite.com - T : +91 1 123 45 64 - E : info@clientsite.com', 0, false, 'C', 0, '', 0, false, 'T', 'M');
-  
-//   		// Page number
-//   		$this->Cell(0, 10, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-//   	}
-  
+   	public function Footer() {
+   		$tbl = '<table><tr><td colspan="3" style="font-size:12px;font-weight:bold;">BookItNow Travel is a trading name of broadway Travel Services (Wimbledon) Ltd.<br>Whose registered office is at Unit 1,Finway,Dallow Road,Luton,Beds LUI 1WE</td><td><img width="100" src="'.base_url().'/images/pdf_abta.png"/></td></tr>
+</table>';
+   		
+   		$this->writeHTML($tbl, true, false, false, false, '');   	
+   	}
+   
   }
   
 	
@@ -331,7 +321,8 @@ if( !function_exists('boardbasis') ) {
 		
 // Include the main TCPDF library (search for installation path).
  //require_once('tcpdf/examples/tcpdf_include.php');
- $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+ $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'utf-8', false);
+ //$pdf->Footer('hello');
 // create new PDF document
 //$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -357,8 +348,8 @@ $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 // set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
+$pdf->SetFooterMargin(20);
+//echo PDF_MARGIN_FOOTER;exit;
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
@@ -380,8 +371,8 @@ $pdf->setFontSubsetting(true);
 // dejavusans is a UTF-8 Unicode font, if you only need to
 // print standard ASCII chars, you can use core fonts like
 // helvetica or times to reduce file size.
-$pdf->SetFont('dejavusans', '', 10, '', true);
-
+//$pdf->SetFont('dejavusans', '', 10, '', true);
+$pdf->SetFont('Helvetica', '', 10, '', 'false');
 // Add a page
 // This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
@@ -391,7 +382,7 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>1, 'depth_h'=>0.2, 'color'
 
 // Set some content to print
 
-$tbl = '	
+$tbl = '<br /><br/><br/><br/>	
 <table border="0" cellpadding="2" cellspacing="2" nobr="true">
  
  <tr>
@@ -414,14 +405,14 @@ $t = json_decode($results['row'][0]['adults_info'],true);
 
 $tbl = '
 <div>
-	<p>Dear '.$t['fname'][0].'</p>
-	<p></p>
+	<span>Dear '.$t['fname'][0].'</span>
+	</br>
 	<p>
 		I have pleasure in enclosing a quote in respect of your recent enquiry with Super Escapes. Please feel free to contact us, should you need any more information or advice.
 	</p>
 </div>';
 $pdf->writeHTML($tbl, true, false, false, false, '');
-
+if(isset($results['fobj'])){
 $depts = fetch_departures();
 $arrivs = fetch_arrivals();
 $dep_arr = explode('-',$depts[$results['fobj']['@attributes']['depapt']]);
@@ -449,7 +440,7 @@ $tbl = '
 		<td>'.$dept_start_time.'</td>
 		<td>'.explode(' ',$results['fobj']['@attributes']['outarr'])[0].'</td>
 		<td>'.$dept_arr_time.'</td>
-		<td>'.$results['fobj']['@attributes']['suppname'].'</td>
+		<td>'.$results['fobj']['@attributes']['outfltnum'].'</td>
     </tr>
     <tr>
          <td >'.array_pop($arr_arr).' Airport '.current($ret_arr).' Airport</td>
@@ -457,13 +448,14 @@ $tbl = '
 		<td>'.$return_start_time.'</td>
 		<td>'.explode(' ',$results['fobj']['@attributes']['inarr'])[0].'</td>
 		<td>'.$return_arr_time.'</td>
-		<td>'.$results['fobj']['@attributes']['suppname'].'</td>
+		<td>'.$results['fobj']['@attributes']['infltnum'].'</td>
     </tr>  
 </table>';
-$ci = $results['controller'];
-
 $pdf->writeHTML($tbl, true, false, false, false, '');
-
+}
+$ci = $results['controller'];
+if(!empty($results['hobjs']))
+{
 $tbl = '
 <b><u>Accommodation Details: </u></b><br><br>  
 <table border="0" cellpadding="2" cellspacing="2" nobr="true">
@@ -498,13 +490,13 @@ $tbl = '
 </table>';
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
-
+}
 
 $tbl = <<<EOD
 <div style="margin-top:20px;">
 	<b><u>Price Summary:</u></p>	
 	<p>
-		The total price inclusive of any discounts for the holiday described above is: £653.92 To make a firm reservation please call us on 01386298033 and quote the reference number at the top of this quote. Our friendly and experienced travel consultants will be happy to book the above holiday or look for any alternatives that may suit your needs. 
+		The total price inclusive of any discounts for the holiday described above is: Â£653.92 To make a firm reservation please call us on 01386298033 and quote the reference number at the top of this quote. Our friendly and experienced travel consultants will be happy to book the above holiday or look for any alternatives that may suit your needs. 
 	</p>
 	<p>		
 		May we take this opportunity of thanking you for your enquiry, and we do hope that we are able to assist you in fulfilling your requirements.
@@ -519,25 +511,60 @@ $tbl = <<<EOD
 	<small>
 		* All costings are subject to a final confirmation which will be given upon making a firm reservation *
 	</small>
-</div>
+</div><br/><br/>
 EOD;
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-$tbl = <<<EOD
-<div style="margin-top:20px;text-align:center;display:inline-block;">	
-	<p style="color:blue">BookItNow Travel is a trading name of broadway Travel Services (Wimbledon) Ltd. Whose registered office is at Unit 1,Finway,Dallow Road,Luton,Beds LUI 1WE</p>
-	<img src="/images/abta.png"/>
-</div>
-EOD;
-$pdf->writeHTML($tbl, true, false, false, false, '');
-
+/*$tbl = '
+<div style="margin-top:20px;width:100%;display:inline-flex;">	
+	<div style="color:blue;text-align:center;width:60%">BookItNow Travel is a trading name of broadway Travel Services (Wimbledon) Ltd. Whose registered office is at Unit 1,Finway,Dallow Road,Luton,Beds LUI 1WE</div>
+	<div> <img src="'.base_url().'/images/abta.png"/></div>
+</div>';
+$pdf->writeHTML($tbl, true, false, false, false, '');*/
+//echo $tbl;exit;
 $tbl ='
-<div style="margin-top:20px;">	
-	<p>Yours sincerely</p>
-	<p>'.@$results['pdfdata']['adviser_info']['name'].'</p>	
+<div style="margin-top:20px;">
+	<span>Yours sincerely</span>
+	<p>'.@$results['pdfdata']['adviser_info']['name'].'</p>
 </div>';
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
+
+if(!empty($results['hobjs']))
+{
+// $hotel_meta = new SimpleXMLElement(download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=7&compid=1&brochurecode=BEWE-AMTSES1CO0'));
+$hotel_meta = new SimpleXMLElement(download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=7&compid=1&brochurecode='.$results['hobjs'][0]['@attributes']['brocode']));
+ $i=1;
+
+ 
+ $desc = urldecode($hotel_meta->HotelDescription); 
+ $ty = new tidy;
+ $desc = $ty->repairString($desc);
+ 
+ $tbl = '<br /><br/><br/><br/><h2 style="text-align:center; "pagebreak="true">Accommodation Info</h2><table>';
+ foreach($hotel_meta->Images->Url as $img){	
+	$tbl .= '<tr>';
+	//Allow_url_fopen must be On
+	if(is_array(@getimagesize(urldecode($img)))){		
+			$tbl .= '<td colspan="1"  style="margin-right: 30px !important;"><img src="'.urldecode($img).'" /></td>';
+	}
+	else{	
+		$tbl .= '<td colspan="3"><img src="'.base_url().'/images/destination_placeholder.jpg"/></td>';
+	}
+		$tbl .= '<td colspan="1"></td>';
+	if($i == 1)
+	{			
+		$tbl .= '<td rowspan="'.count($hotel_meta->Images->Url).'" colspan="8">'.$desc.'</td>';		
+	}
+	$tbl .= '</tr>';
+	//$tbl .= '<style>.desc{background:red;}</style>';
+	$i++;
+}
+$tbl .= '</table>';
+//echo $tbl;exit;
+$pdf->writeHTML($tbl, true, false, false, false, '');
+
+	}
 // ---------------------------------------------------------
 
 // Close and output PDF document
@@ -585,7 +612,7 @@ if($type == 'email')
 	}	
 }
 else{
-	$pdf->Output($results['pdfdata']['adviser_info']['reference'].'.pdf', 'D');
+	$pdf->Output($results['pdfdata']['adviser_info']['reference'].'.pdf', 'D');exit;
 }
 
 
@@ -594,26 +621,4 @@ else{
 // END OF FILE
 //============================================================+
 
-	}
-	function findKey(&$array, $keySearch)
-	{
-		foreach ($array as $key => $item) {
-			if ($key === $keySearch) {
-				$array[$key] = $item;							
-				return $array;
-			}
-			else {
-				
-				if (is_array($item) && findKey($item, $keySearch)) {					
-					return $array;
-				}				
-			}
-		}
-		return false;
-	}
-	
-	
-	
-	
-
-  
+	}  

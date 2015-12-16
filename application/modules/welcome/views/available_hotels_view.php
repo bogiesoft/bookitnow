@@ -1,7 +1,7 @@
 <div id="your_Search">
 <div class="container">
 <?php 
-	if($type == 'hotel'){
+	if($type == 'hotel_only'){
 		include_once 'includes/change_search_hotels_only.php';
 	}else{
 		include_once 'includes/change_search_hotels.php';
@@ -44,12 +44,14 @@
 				<div class="title-left"><span class="h-title">Find Hotel Name</span></div>
 						<div id="custom-search-input">
                             <div class="input-group col-md-12">
-									<input type="text" class="  search-query form-control" placeholder="Search" />
+                               <form onsubmit="return filterHotels('<?php echo $this->uri->segment(2);?>','<?php echo $type; ?>',1, document.getElementById('hotel_key').value);">
+									<input type="text" class="search-query form-control" placeholder="Search" id="hotel_key" />
 									<span class="input-group-btn">
-										<button class="btn btn-danger" type="button">
-                                        <span class=" glyphicon glyphicon-search">GO</span>
+										<button class="btn btn-danger" type="submit">
+											<span class=" glyphicon glyphicon-search">GO</span>
 										</button>									
-									</span>							
+									</span>	
+								</form>						
 							</div>
                         </div>
 
@@ -73,26 +75,26 @@
 //	echo '<pre>';print_r($offers['populators']);exit;
 	
 	
-	echo '<div class="filtercheckbox">
+	echo '<div class="filtercheckbox filtercheckbox2">
               <span name="check">
             	<input id="chkStar_all" type="checkbox" checked="checked">
-            	<label style="height:100px;" for="chkStar_all">All Rattings
-					<p>'.array_sum(array_map('count_hot_star',$offers['populators']['star_ratting']['price'])).' hotels from</p>
-	            	<p> &#163;'.min(array_map('min_price_star',$offers['populators']['star_ratting']['price'])).'</p>
+            	<label style="height:50px;" for="chkStar_all">All Rattings
+					<p class="p1">'.array_sum(array_map('count_hot_star',$offers['populators']['star_ratting']['price'])).' hotels from</p>
+	            	<p class="p2"> &#163;'.min(array_map('min_price_star',$offers['populators']['star_ratting']['price'])).'</p>
 				</label>
               </span>
            </div>';
 	foreach ($offers['populators']['star_ratting']['res'] as $key => $val)
 	{
 	
-		echo '<div class="filtercheckbox">
+		echo '<div class="filtercheckbox filtercheckbox2">
                                <span name="check">
             						<input id="chkStar_'.$key.'" type="checkbox" mandatory="star" value='.$key.' >
-            						<label style="height:100px;" for="chkStar_'.$key.'">'.$val.'
-					                    <p>
+            						<label style="height:50px;" for="chkStar_'.$key.'">'.$val.'
+					                    <p class="p1">
 					                       '.count($offers['populators']['star_ratting']['price'][$key]).' hotels from
 					            		</p>
-	                   					 <p> &#163;'.min($offers['populators']['star_ratting']['price'][$key]).'</p>
+	                   					 <p class="p2"> &#163;'.min($offers['populators']['star_ratting']['price'][$key]).'</p>
 									</label>
                   				</span>
                            </div>';
@@ -115,7 +117,7 @@
 
 foreach ($offers['populators']['boardbasis'] as $key => $val)
 {
-		echo '<div class="filtercheckbox">
+		echo '<div class="filtercheckbox filtercheckbox1">
                                <span name="check">
             						<input id="chkBoardbasisFilter_'.$key.'" mandatory="boardbasis" type="checkbox" value="'.$key.'" >
             						<label for="chkBoardbasisFilter_'.$key.'">'.$val.'</label>
@@ -140,7 +142,7 @@ foreach ($offers['populators']['boardbasis'] as $key => $val)
 				foreach ($offers['populators']['resorts'] as $key => $val)
 				{
 					//echo '<button type="button" class="btn btn-primary">'.$val.'</button>';
-					echo '<div class="filtercheckbox">
+					echo '<div class="filtercheckbox filtercheckbox1">
                                <span name="check" groupname="filter">
             						<input id="chkResortsFilter_'.$key.'" type="checkbox"  mandatory="resorts" value="'.$key.'" >
             						<label for="chkResortsFilter_'.$key.'">'.$val.'</label>
@@ -189,5 +191,28 @@ foreach ($offers['populators']['boardbasis'] as $key => $val)
 var hotel_crypt = '<?php echo $this->uri->segment(2);?>';
 var type = '<?php echo $type;?>';
 </script>			 
-					
+<style>	 
+.filtercheckbox1 {
+    border-radius: 5px;
+    margin-bottom: 0;
+    position: relative;
+    text-align: left;
+    margin-top: -20px;
+}
+.filtercheckbox2 {
+    border-radius: 5px;
+    margin-bottom: 0;
+    position: relative;
+    text-align: left;
+       margin-top: 2px;
+}
+.p1 {
+    margin: -7px -29px 10px;
+    height: 5px;
+}
+.p2 {
+    margin:-14px 68px 10px;
+    color: #1A8DD2;
+    }
+</style>		
 	

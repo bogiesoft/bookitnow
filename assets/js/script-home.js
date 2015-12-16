@@ -40,7 +40,14 @@
 		dateFormat: "dd/mm/yy"
 	});    
    
-	
+	if ($("#slider").length)
+    	$("#slider").responsiveSlides({
+          	auto: true,
+          	nav: true,
+          	speed: 500,
+            namespace: "callbacks",
+            pager: true,
+          });
 	
     $('ul.nav-tabs li').click(function(){
     	
@@ -62,9 +69,9 @@
     			
     	}
     });
-   
+    
     if($.cookie('actve_tab_cookie') != undefined)
-	{ 
+	{
     	
     	$('a[href="'+$.cookie('actve_tab_cookie')+'"]').trigger('click');
     	/*if($.cookie('actve_tab_cookie') == '#panel3')justAHotel('#panel3');
@@ -77,19 +84,14 @@
     	justAFlightNHotel('#panel2');
     }   
 		
+    
 	$('#da-slider').cslider({
 	         autoplay    : true,
 	         bgincrement : 100
 	       });
 	
 	
-	$("#slider").responsiveSlides({
-      	auto: true,
-      	nav: true,
-      	speed: 500,
-        namespace: "callbacks",
-        pager: true,
-      });
+
 		
  });
 		
@@ -112,7 +114,10 @@
 			{
 				var str = '';
 				$.fancybox({
-                    'href': '#rooms_div',                       
+                    'href': '#rooms_div',
+                    beforeShow: function() {
+                        this.wrap.draggable();
+                    }
                 });
 				
 				
@@ -123,6 +128,10 @@
 				{
 					$('select[name="hotel_rooms"]').val($('select[name="hotel_adults"]').val());
 				}
+				
+				
+				
+				
 				for(var i=1;i<=$('select[name="hotel_rooms"]').val();i++)
     			{
 					if((i%3)== 1)
@@ -132,7 +141,7 @@
 					str += '<div class="form-group"><p>Room-'+i+'</p>';
 					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
 					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
-					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+					if(!(i%3) || i == $('select[name="hotel_rooms"]').val())
 					{
 						str += '</div></div><br>';
 					}
@@ -253,6 +262,18 @@
 			t['name'] = 'mapper';
 			t['value'] = $('select[name="hotel_travel_to"] option[value="'+arr_val+'"]').attr('mapper');
 			request_data.push(t);
+			if(Number($('select[name="hotel_adults"]').val()) >= 10)
+			{				
+				var mformData ={}; 
+				mformData['Travel_To'] = $('[name="hotel_travel_to"] option:selected').text();
+				mformData['Departure_Date'] = $('[name="hotel_check_in_date"]').val();
+				mformData['Rooms'] = $('[name="hotel_rooms"] option:selected').text();
+				mformData['Nights'] = $('[name="hotel_nights"] option:selected').text();
+				mformData['Adults'] = $('[name="hotel_adults"] option:selected').text();
+				mformData['Children'] = $('[name="hotel_childrens"] option:selected').text();    				
+				bulkForm(mformData);
+				return false;
+			}
 			room_parllalization(request_data);
 			return false;
         	
@@ -364,12 +385,12 @@
         			var request_data = $(this).serializeArray();
         			var count = 0;
         			$.each(request_data, function(index, value){				
-//        				if(value.name != 'children' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
-//        				{
-//        					alert('Please select '+ value.name +' field');
-//        					count++;
-//        					return false;
-//        				}
+        				if(value.name != 'childrens' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+        				{
+        					alert('Please select '+ value.name +' field');
+        					count++;
+        					return false;
+        				}
         			});
         			if(count)return false;	
         			
@@ -457,34 +478,25 @@
         		$('select[name="nights"] option[value='+$.cookie('selected_nights_cookie')+']').attr('selected','selected');
         		
         		if($.cookie('selected_dept_cookie') != -1 && $.cookie('selected_dept_cookie') != '' && $.cookie('selected_dept_cookie') != undefined)
-        		{
-        			
-        			
-        			
-        			
+        		{       			
         			$('select[name="departure_airports"] option[value="'+$.cookie('selected_dept_cookie')+'"]').attr('selected','selected');
         			
-//        			var request_data = {};
-//        			request_data.dest_shrtcode = $.cookie('selected_dept_cookie');				
-//        			$.post( "welcome/fetch_results",request_data, function( data ) {				
-//        				  $('.travelto select').html('');
-//        				  $('.travelto select').append(data);
-//        				  if($.cookie('selected_arrival_cookie') != -1  || $.cookie('selected_dept_cookie') != '')
-//        				  {
-//        					  $('select[name="arrival_airports"] option[value='+$.cookie('selected_arrival_cookie')+']').attr('selected','selected');
-//        				  }
-//        				}, "html");
-        			
         			var request_data = {};
-    				request_data.dest_shrtcode = $(this).val();	
-
+    				request_data.dest_shrtcode = $.cookie('selected_dept_cookie');	
+    				
     				blockSearchingTabs();
-    				$.post( "/welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
+    				$.post( baseUrl + "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
     					  $('.travelto select').html('');	
-    					  $('.travelto select').append(data);       					  
+    					  $('.travelto select').append(data);       
+    					  if($.cookie('selected_arrival_cookie') != 'undefined')
+    		        	  {    		        			
+    		        		$('select[name="arrival_airports"] option[value="'+$.cookie('selected_arrival_cookie')+'"]').attr('selected','selected');
+    		        	  }
     					  unblockSearchingTabs();        					 	
     					}, "html");
         		}
+
+        		
         		
         		$.cookie('actve_tab_cookie',tab);
         	/*
@@ -505,7 +517,8 @@
     		
     			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
     			{
-    				alert("Please choose proper destination");
+    				//alert("Please choose proper destination");
+    				$('select[name="full_arrival_airports"]').html('');
     			}
     			else
     			{
@@ -609,7 +622,63 @@
     		
         }
         
-       
+       function bulkForm(mformData){     	  
+    	   $.fancybox({
+               'href': '#bluk_div',
+               beforeShow: function() {
+                   this.wrap.draggable();
+               },              
+           });    	     
+    	   $('#bulk_form').submit(function(){    		
+    		   var bformData = $(this).serializeArray();
+    		   var count = 0;
+    		   $.each(bformData, function(index, value){ 
+    			   if(value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == '')
+   					{
+	   					var msg = $('[name="'+ value.name +'"]').attr('placeholder');
+	   					alert('Please fill '+ msg +' field');   
+	   					count++;
+	   					return false; 
+	   					
+   					}    			 
+	    			   if(value.name == 'email' && !validateEmail(value.value))
+	       			   {
+	    				   alert('Please enter valid email address'); 
+	    				   count++;
+		   					return false; 
+		   					
+	       			   }
+	    			   if(value.name == 'mobile' && !phonenumber(value.value)){
+	    				   alert('Please enter valid mobile number');
+	    				   count++;
+		   					return false; 
+	    			   }
+   			   }); 
+    		   if(count)return false;
+    		   $.post( baseUrl + "welcome/bulkSubmit",{bformData,mformData}, function( data ) {
+    			   alert(data.message);
+    			   window.location = '/';    			   
+    		   },'json');  		  
+    		   return false;
+    	   })
+       }      
+       function validateEmail(email) {
+           var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+           return re.test(email);
+       }
+       function phonenumber(inputtxt)
+       {
+         var phoneno = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+         if(inputtxt.match(phoneno))
+               {
+       	  		return true;
+               }
+             else
+               {
+               
+               return false;
+               }
+       }
         
         function full_pack_submit(e)
         {
@@ -636,7 +705,21 @@
     			var t = {};
     			t['name'] = 'mapper';
     			t['value'] = $('select[name="full_arrival_airports"] option[value="'+arr_val+'"]').attr('mapper');
-    			request_data.push(t);
+    			request_data.push(t);    			
+    			if(Number($('select[name="full_adults"]').val()) >= 10)
+    			{
+    				var mformData ={};     				
+    				mformData['Fly_From'] = $('[name="full_departure_airports"] option:selected').text();
+    				mformData['Travel_To'] = $('[name="full_arrival_airports"] option:selected').text();
+    				mformData['Departure_Date'] = $('[name="full_departure_date"]').val();
+    				mformData['Rooms'] = $('[name="full_rooms"] option:selected').text();
+    				mformData['Nights'] = $('[name="full_nights"] option:selected').text();
+    				mformData['Adults'] = $('[name="full_adults"] option:selected').text();
+    				mformData['Children'] = $('[name="full_children"] option:selected').text();    				
+    				bulkForm(mformData);
+    				return false;
+    			}
+    			
     			
     			/****************Room parllalization**************/
     			
@@ -647,7 +730,8 @@
                         'href': '#rooms_div',
                         beforeShow: function() {
                             this.wrap.draggable();
-                        }
+                        },
+                       
                     });
     				
     				
@@ -660,14 +744,14 @@
     				}
     				for(var i=1;i<=$('select[name="full_rooms"]').val();i++)
         			{
-    					if((i%3)== 1)
+    					if((i%2)== 1)
     					{
     						str += '<div class="row form-pop-container"><div class="col-md-12">';
     					}
     					str += '<div class="form-group"><p>Room-'+i+'</p>';
     					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
     					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
-    					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+    					if(!(i%2) || i == $('select[name="full_rooms"]').val())
     					{
     						str += '</div></div><br>';
     					}

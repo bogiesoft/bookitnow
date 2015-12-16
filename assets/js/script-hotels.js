@@ -72,7 +72,7 @@
     		else $('[mandatory="resorts"]').not(this).attr('checked',false);
     	}
     	var date = $('li.current').find('.current_date').attr('dt');
-    	var page = 1;var keyword='';
+    	var page = 1;var keyword=$('#hotel_key').val();
     	filterHotels(hotel_crypt,type,page,keyword);     
     })
     $('#toggle3').change(function(){    	
@@ -89,7 +89,7 @@
 
     $(document.body).on('click', 'a.pagerhyperlink' ,function(){
     	
-    	var keyword='';
+    	var keyword=$('#hotel_key').val();
     	filterHotels(hotel_crypt,type,$(this).text(),keyword);
     });
     $('select[name="full_rooms"]').change(function(){
@@ -121,7 +121,7 @@
  });
  
  	function filterHotels(hotel_crypt,type,page,keyword)
- 	{
+ 	{ 		
  		blockSearchingTabs();
  		var checkedValues = {};
 		checkedValues['prices'] = $('input[mandatory="price"]:checked').map(function() {
@@ -139,12 +139,14 @@
 		//checkedValues['page'] = $('#cphContent_dpAllStar').find('span').not('.pagerhyperlink').text();
 		checkedValues['page'] = page;
 		
-		$.post("/welcome/hotel/filterHotel_fun",{'searchType':type,'checkedValues':checkedValues,'crypt':hotel_crypt},function(data){
+		$.post("/welcome/hotel/filterHotel_fun",{'searchType':type,'checkedValues':checkedValues,'crypt':hotel_crypt,'keyword':keyword},function(data){
 			//console.log(data);return false;
 			$('#hotel_content').html('');
 			$('#hotel_content').html(data);
 			unblockSearchingTabs();
-		},'html');		
+			return false;
+		},'html');
+		return false;
  	}
 	 function getpackinfo(e)
 	 {	
@@ -162,7 +164,7 @@
             $.blockUI.defaults.css = {};
             
             //$('#dvContent').block({
-            $('#middle_conent').block({
+            $('#middle_conent,#body_content').block({
                 message: '<div><img src="/images/loader-bar.gif" alt=""  width="225px"/></div>',
                 overlayCSS: { backgroundColor: '#fff' }
             });
@@ -170,7 +172,7 @@
 		//close popup once get the ajax response
         function unblockSearchingTabs() {
           //  $('#dvContent').unblock();
-        	  $('#middle_conent').unblock();
+        	  $('#middle_conent,#body_content').unblock();
         }
         
         function Addhotel(type,info,segment)
@@ -216,7 +218,7 @@
            
         	$.post("/welcome/hotel/savehotel_fun",{'searchType':type,'crypt_text':info,'crypt':segment},function(data){  
         		
-        	//	console.log(data);return false;
+        		//console.log(data);return false;
 
         		if(data == 'notavailable')
 				{
@@ -250,55 +252,62 @@
         
         function update_luggage(lug,crypt)
         {
+        	blockSearchingTabs();
         	$.post('/welcome/extras/update_lug_fun',{lug:lug,crypt:crypt},function(data){
         		$('#ExtraTotal').text(data.total);
         		$('#extra_segments').html(data.sel_block.segment);
         		$('.aspNetDisabled').val(data.bags);
-        		//$('.online-rate,#cphContent_lblSubTotal').text(data.whole);
-        		$('#cphContent_lblSubTotal').text(data.whole);
+        		$('.online-save .online-final,#cphContent_lblSubTotal').text(data.whole);
+        		//$('#cphContent_lblSubTotal').text(data.whole);
         		$('#pprice').text(parseFloat(data.whole / data.persons).toFixed(2));
+        		unblockSearchingTabs();
         	},'json');
         	
         }
         
         function addsavings(id,crypt)
         {
+        	blockSearchingTabs();
         	$.post('/welcome/extras/update_extras_fun',{id:id,crypt:crypt,dp:$('select[name="ct_'+id+'"]').val()},function(data){
         		//console.log(data.sel_block.lug);
         		$('#ExtraTotal').text(data.total);
         		$('#extra_segments').html(data.sel_block.segment);
         		$('.aspNetDisabled').val(data.bags);
-        		//$('.online-rate,#cphContent_lblSubTotal').text(data.whole);
-        		$('#cphContent_lblSubTotal').text(data.whole);
+        		$('.online-save .online-final,#cphContent_lblSubTotal').text(data.whole);
+        		//$('#cphContent_lblSubTotal').text(data.whole);
         		$('#pprice').text(parseFloat(data.whole / data.persons).toFixed(2));
+        		unblockSearchingTabs();
         	},'json');
         }
         
         function blockAddingExtraPopup(field_num,crypt)
         {
+        	blockSearchingTabs();
         	$.post('/welcome/extras/remove_extras_fun',{field_num:field_num,crypt:crypt},function(data){
         		
         		$('#ExtraTotal').text(data.total);
         		$('#extra_segments').html(data.sel_block.segment);
         		$('.aspNetDisabled').val(data.bags);
-        		$('#cphContent_lblSubTotal').text(data.whole);
-        		//$('.online-rate,#cphContent_lblSubTotal').text(data.whole);
+        		//$('#cphContent_lblSubTotal').text(data.whole);
+        		$('.online-save .online-final,#cphContent_lblSubTotal').text(data.whole);
         		$('#pprice').text(parseFloat(data.whole / data.persons).toFixed(2));
+        		unblockSearchingTabs();
         	},'json');
         	
         }
         
         function rmBagg(id,crypt)
-        {        	
+        {        
+        	blockSearchingTabs();
         	$.post('/welcome/extras/remove_extras_fun',{lug:id,crypt:crypt},function(data){
         		
         		$('#ExtraTotal').text(data.total);
         		$('#extra_segments').html(data.sel_block.segment);
         		$('.aspNetDisabled').val(data.bags);
-        		//$('.online-rate,#cphContent_lblSubTotal').text(data.whole);
-        		$('#cphContent_lblSubTotal').text(data.whole);
+        		$('.online-save .online-final,#cphContent_lblSubTotal').text(data.whole);
+        		//$('#cphContent_lblSubTotal').text(data.whole);
         		$('#pprice').text(parseFloat(data.whole / data.persons).toFixed(2));
-        			
+        		unblockSearchingTabs();
         	},'json');
         }
         
@@ -567,9 +576,21 @@
     				}
     				for(var i=1;i<=$('select[name="full_rooms"]').val();i++)
         			{
-        				str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
+    					if((i%3)== 1)
+    					{
+    						str += '<div class="row form-pop-container"><div class="col-md-12">';
+    					}
+    					str += '<div class="form-group"><p>Room-'+i+'</p>';
+    					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
+    					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
+    					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+    					{
+    						str += '</div></div><br>';
+    					}
+        				//str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';    					
         			}
-    					str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+    					//str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+    				str += ' <div class="col-md-12"><span class="err_room"></span><span class="err_msg"></span><P class="btn-pop"><button class="btn btn-primary-pop" type="submit"> CONTINUE</button> </p></div>';
     				$('#rooms_form').html(str);
     				$.cookie('mul_submition_prevent',1);
     				$('#rooms_form').on( "submit",function(e){
@@ -769,7 +790,10 @@
 			{
 				var str = '';
 				$.fancybox({
-                    'href': '#rooms_div',                       
+                    'href': '#rooms_div',
+                    beforeShow: function() {
+                        this.wrap.draggable();
+                    }
                 });
 				
 				
@@ -782,10 +806,22 @@
 				}
 				for(var i=1;i<=$('select[name="hotel_rooms"]').val();i++)
     			{
-    				str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
+					if((i%3)== 1)
+					{
+						str += '<div class="row form-pop-container"><div class="col-md-12">';
+					}
+					str += '<div class="form-group"><p>Room-'+i+'</p>';
+					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
+					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
+					if(!(i%3) || i == $('select[name="hotel_rooms"]').val())
+					{
+						str += '</div></div><br>';
+					}
+    				//str +=  '<div class="form-group"><label for="email">Room - '+i+':</label><input type="text" '+kp+' class="form-control room_box_adult" placeholder="Number of Adults" name="num_adult_'+i+'"><p class="err_room"></p><input type="text" '+kp+' name="num_child_'+i+'" class="form-control room_box_child" placeholder="Number of Childeren"></div>';
     			}
-					str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
-				$('#rooms_form').html(str);
+					//str += '<span class="err_msg"></span><button class="btn btn-primary" type="submit"> CONTINUE</button>';
+				str += ' <div class="col-md-12"><span class="err_room"></span><span class="err_msg"></span><P class="btn-pop"><button class="btn btn-primary-pop" type="submit"> CONTINUE</button> </p></div>';
+					$('#rooms_form').html(str);
 				
 				$.cookie('mul_submition_prevent',1);
 				$('#rooms_form').on( "submit",function(e){				
@@ -876,7 +912,7 @@
 			
         }
         
-        
+                
         function submit_fnh_hotel_fun(request_data)
         {
         	

@@ -30,259 +30,257 @@
 						
 <!------------------------------FORM START HERE MEENA -------------------------------------------->	
 
-<div class="caption">
-<h2 class="holiday-title">Tenerife Holidays </h2>
-					<div class="border-wrap"></div>
-		<div class="tabbable-bg tabbable table-bg custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll pull-left">
-			<ul class="nav nav-tabs">
-			 
-			  <li class="active-item active flight_hotel"><a href="#panel2" data-toggle="tab"><span> Flight & Hotel </span></a></li>
-			  <li class="hotel"><a href="#panel3" data-toggle="tab"><span >Just a Hotel</span></a></li>
-			  <li class="flight"><a href="#panel1" data-toggle="tab" class="active "><span> Just a Flight </span></a></li>
-			  
-			</ul>
-			<div class="tab-content "  id='dvContent'>
-				<div class="tab-pane" id="panel1">
-					<?php $attributes = array('name'=>'flight_hotel_form');
-						echo form_open('welcome/index', $attributes);
-					?>
-			<div class="row-fluid">
-				<div class="span5">
-					<div class="flyform">
-  						<label>Fly From:</label>  						
-  						<select class="input-block-level"  name="departure_airports">
-  							<option value="-1">Select Destination</option>
-  							<?php
-								foreach($filtered_departures as $key => $val)
-								{									
-									//echo "<option value='-1'>".$key."</option>";
-									$opt_val_str = '';
-									foreach($val as $key1 => $val1)
-									{
-										$opt_val_str .= $key1.'|';		
-									}
-									echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
-								}
-							  ?>	                    
-		                </select>
-					</div>
-					<div class="travelto">
-              			<label>Travel To:</label>
-              			<select class="input-block-level"  name="arrival_airports">
-                			<option value="-1">Select Destination</option>                                          
-              			</select>
-            		</div>
-            		<div class="flyform">
-		              	<label>Departure Date:</label>
-		              	<input class="input-block-level" id="datepicker" type="text"  name="departure_date" >
-		            </div>					
-		            <div class="board_basis">
-		              <label>Nights :</label>
-		              <select class="input-block-level"   name="nights">
-		                <option value="-1">---Select---</option>
-		               <?php for($i=1;$i<=21;$i++){
-		              	echo '<option>'.$i.'</option>';
-		              }?>       
-		              </select>
-		              </div><div>
-		              <div class="hotel_adults" >
-              <label>Adults:</label>
-              <select class="input-block-level" name="adults">   
-              <?php for($i=1;$i<=15;$i++){
-              	echo '<option>'.$i.'</option>';
-              }?>             
-               </select>
-            </div>
-            <div class="hotel_childerns"  >
-              <label>Childrens:</label>
-              <select class="input-block-level" name="childrens">
-                <option  value="-1">0</option>
-              <?php for($i=1;$i<=10;$i++){
-              	echo '<option>'.$i.'</option>';
-              }?>           
-              </select>
-              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
-            </div>
-		               <div class="search">              
-              <input type="submit" class="sea" value="Search &gt;" />
-            </div>
-		            </div>
-		        
-           
-          </div>
-        </div>
-        <?php echo form_close();?>
-      </div>
-      
-      
-      
-      
-      
-      
-		<div class="tab-pane active" id="panel2">
-			<?php $attributes = array('name'=>'full_pack_form','onSubmit'=>'return full_pack_submit(this)');
-				echo form_open('welcome/index', $attributes);
-			?>
-			<div class="row-fluid">
-				<div class="span5">
-					<div class="flyform">
-  						<label>Fly From:</label>  						
-  						<select class="input-block-level" name="full_departure_airports">
-  							<option value="-1">Select Destination</option>
-  							<?php
-								foreach($filtered_departures as $key => $val)
-								{									
-									//echo "<option value='-1'>".$key."</option>";
-									$opt_val_str = '';
-									foreach($val as $key1 => $val1)
-									{
-										$opt_val_str .= $key1.'|';		
-									}
-									echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
-								}
-							  ?>	                    
-		                </select>
-					</div>
-					<div class="travelto">
-              			<label>Travel To:</label>
-              			<select class="input-block-level"  name="full_arrival_airports">
-                			<option value="-1">Select Destination</option>                                          
-              			</select>
-            		</div>
-            		<div class="flyform">
-		              	<label>Departure Date:</label>
-		              	<input class="input-block-level" id="datepicker3" type="text"  name="full_departure_date">
-		            </div>
-					<div class="board_basis">
-		              <label>Rooms :</label>
-		              <select name="full_rooms" onchange="roomBase()" class="input-block-level">						
-						 <option>1</option>
-		                 <option>2</option>
-		                 <option>3</option>
-		                 <option>4</option>
-					  </select>
-		            </div>
-		            <div class="adults">
-		              <label>Nights :</label>
-		              <select class="input-block-level"   name="full_nights">
-		                <option value="-1">---Select---</option>
-		                <?php for ($i=1;$i<=21;$i++){
-		                	echo '<option>'.$i.'</option>';
-		                }?>		              
-		              </select>
-		            </div>
-		            <div class="adults">
-		              <label>Adults:</label>
-		              <select class="input-block-level"  name="full_adults">		               
-		               <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
-		              </select>
-		            </div>
 
-					<div class="childerns">
-		              <label>Childrens:</label>
-		              <select class="input-block-level"  name="full_children" onchange="roomBase();">
-		                <option value="-1">0</option>
-		                <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
-		              </select>
-		              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
-		            </div>
-		            
-            <div class="search">              
-              <input type="submit" class="sea" value="Search &gt;" />
-            </div>
-          </div>
-        </div>
-        <?php echo form_close();?>
-      </div>
+          
+          <div class="tabbable-tab custom-tabs tabs-animated  flat flat-all hide-label-980 shadow track-url auto-scroll pull-left">
+			<ul class="nav nav-tabs">
+		
+			  <h2 class="holiday-title">Holiday Type <span class="book-title">Search &amp; Book Your Holiday</span></h2>
+			  <div class="border-wrap"></div>
+			
+			  <li class="active-item flight_hotel"><a href="#panel2" data-toggle="tab"><span> Flight &amp; Hotel </span></a></li>
+			  <li class="hotel"><a href="#panel3" data-toggle="tab"><span>Just a Hotel</span></a></li>
+			  <li class="flight active"><a href="#panel1" data-toggle="tab" class="active "><span> Just a Flight </span></a></li>
+			  
+			</ul>	
+			<div class="form-bg-wrap">
+				<div class="tab-content " id="dvContent">
+					<div class="tab-pane" id="panel1">
+						<?php $attributes = array('name'=>'flight_hotel_form');
+							echo form_open('welcome/index', $attributes);
+						?>
+				<div class="row-fluid">
+					<div class="span5">
+						<div class="flyform">
+	  						<label>Fly From:</label>  						
+	  						<select class="input-block-level"  name="departure_airports">
+	  							<option value="-1">Select Destination</option>
+	  							<?php
+									foreach($filtered_departures as $key => $val)
+									{									
+										//echo "<option value='-1'>".$key."</option>";
+										$opt_val_str = '';
+										foreach($val as $key1 => $val1)
+										{
+											$opt_val_str .= $key1.'|';		
+										}
+										echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+									}
+								  ?>	                    
+			                </select>
+						</div>
+						<div class="travelto">
+	              			<label>Travel To:</label>
+	              			<select class="input-block-level"  name="arrival_airports">
+	                			<option value="-1">Select Destination</option>                                          
+	              			</select>
+	            		</div>
+	            		<div class="flyform">
+			              	<label>Departure Date:</label>
+			              	<input class="input-block-level" id="datepicker" type="text"  name="departure_date" >
+			            </div>					
+			            <div class="board_basis">
+			              <label>Nights :</label>
+			              <select class="input-block-level"   name="nights">
+			                <option value="-1">---Select---</option>
+			               <?php for($i=1;$i<=21;$i++){
+			              	echo '<option>'.$i.'</option>';
+			              }?>       
+			              </select>
+			              </div><div>
+			              <div class="hotel_adults" >
+	              <label>Adults:</label>
+	              <select class="input-block-level" name="adults">   
+	              <?php for($i=1;$i<=15;$i++){
+	              	echo '<option>'.$i.'</option>';
+	              }?>             
+	               </select>
+	            </div>
+	            <div class="hotel_childerns"  >
+	              <label>Childrens:</label>
+	              <select class="input-block-level" name="childrens">
+	                <option  value="-1">0</option>
+	              <?php for($i=1;$i<=10;$i++){
+	              	echo '<option>'.$i.'</option>';
+	              }?>           
+	              </select>
+	              <p text-align:center;">(Age *2-12)</p>
+	            </div>
+			               <div class="search">              
+	              <input type="submit" class="sea" value="Search &gt;" />
+	            </div>
+			            </div>
+			        
+	           
+	          </div>
+	        </div>
+	        <?php echo form_close();?>
+	      </div>
+	            
+	      		 	<div class="tab-pane active" id="panel2">
+				<?php $attributes = array('name'=>'full_pack_form','onSubmit'=>'return full_pack_submit(this)');
+					echo form_open('welcome/index', $attributes);
+				?>
+				<div class="row-fluid">
+					<div class="span5">
+						<div class="flyform">
+	  						<label>Fly From:</label>  						
+	  						<select class="input-block-level" name="full_departure_airports">
+	  							<option value="-1">Select Destination</option>
+	  							<?php
+									foreach($filtered_departures as $key => $val)
+									{									
+										//echo "<option value='-1'>".$key."</option>";
+										$opt_val_str = '';
+										foreach($val as $key1 => $val1)
+										{
+											$opt_val_str .= $key1.'|';		
+										}
+										echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+									}
+								  ?>	                    
+			                </select>
+						</div>
+						<div class="travelto">
+	              			<label>Travel To:</label>
+	              			<select class="input-block-level"  name="full_arrival_airports">
+	                			<option value="-1">Select Destination</option>                                          
+	              			</select>
+	            		</div>
+	            		<div class="flyform">
+			              	<label>Departure Date:</label>
+			              	<input class="input-block-level" id="datepicker3" type="text"  name="full_departure_date">
+			            </div>
+						<div class="board_basis">
+			              <label>Rooms :</label>
+			              <select name="full_rooms" onchange="roomBase()" class="input-block-level">						
+							 <option>1</option>
+			                 <option>2</option>
+			                 <option>3</option>
+			                 <option>4</option>
+						  </select>
+			            </div>
+			            <div class="adults">
+			              <label>Nights :</label>
+			              <select class="input-block-level"   name="full_nights">
+			                <option value="-1">---Select---</option>
+			                <?php for ($i=1;$i<=21;$i++){
+			                	echo '<option>'.$i.'</option>';
+			                }?>		              
+			              </select>
+			            </div>
+			            <div class="adults">
+			              <label>Adults:</label>
+			              <select class="input-block-level"  name="full_adults">		               
+			               <option>1</option>
+			                <option>2</option>
+			                <option>3</option>
+			                <option>4</option>
+			              </select>
+			            </div>
+	
+						<div class="childerns">
+			              <label>Childrens:</label>
+			              <select class="input-block-level"  name="full_children" onchange="roomBase();">
+			                <option value="-1">0</option>
+			                <option>1</option>
+			                <option>2</option>
+			                <option>3</option>
+			                <option>4</option>
+			              </select>
+			              <p text-align:center;">(Age *2-12)</p>
+			            </div>
+			            
+	            <div class="search">              
+	              <input type="submit" class="sea" value="Search &gt;" />
+	            </div>
+	          </div>
+	        </div>
+	        <?php echo form_close();?>
+	      </div>
+	      
+	      		    <div class="tab-pane" id="panel3">
+	      <?php $attributes = array('name'=>'hotels_form','onsubmit'=>'return hotelsForm(this);');
+							echo form_open('welcome/index', $attributes);
+						?>
+	        <div class="row-fluid">
+	          <div class="span5"  style="padding-bottom: 10px;">
+	            <label>Travel To:</label>
+	            <select class="input-block-level" name="hotel_travel_to">
+	              <option value="-1">---Select Destination---</option>
+	              	<?php echo $hotel_travel_list;?>
+	              </select>
+	            </div>
+	            <div class="check"  style="margin-bottom:10px;">
+	              <label>Check In Date:</label>
+	              <input id="datepicker1" type="text" name="hotel_check_in_date" style="height: 35px;">
+	            </div>
+	            <div class="board_basis" >
+	              <label>Nights:</label>
+	              <select class="input-block-level" name="hotel_nights">
+	                <option value="-1">---Select---</option>
+	                <?php for ($i=1;$i<=21;$i++){
+			                	echo '<option>'.$i.'</option>';
+			                }?>		  
+	              </select>
+	            </div>
+	            </div>          
+	            <div class="hotel_rooms"  >
+	              <label>Rooms:</label>
+	              <select class="input-block-level"  name="hotel_rooms" >
+	                <option value="-1">---Select---</option>
+	               <option>1</option>
+	                <option>2</option>
+	                <option>3</option>
+	                <option>4</option>
+	              </select>
+	            </div>
+	            <div class="hotel_adults" >
+	              <label>Adults:</label>
+	              <select class="input-block-level" name="hotel_adults">
+	                <option  value="-1">---Select---</option>
+	               <option>1</option>
+	                <option>2</option>
+	                <option>3</option>
+	                <option>4</option>
+	              </select>
+	            </div>
+	            <div class="hotel_childerns"  >
+	              <label>Childrens:</label>
+	              <select class="input-block-level" name="hotel_childrens">
+	                <option  value="-1">0</option>
+	                <option>1</option>
+	                <option>2</option>
+	                <option>3</option>
+	                <option>4</option>
+	              </select>
+	              <p text-align:center;">(Age *2-12)</p>
+	            </div>
+	             
+	            <div class="search">
+	              <input type="submit" class="sea" value="Search &gt;" />
+	            </div>
+	              <?php echo form_close();?>
+	               <br><br> <br> <br>
+	          </div>
+	         
+	      		</div>   
+	      		   	
+	      	</div>
+		</div>
       
-      
-      
-      
-      
-      
-      
-      <div class="tab-pane" id="panel3">
-      <?php $attributes = array('name'=>'hotels_form','onsubmit'=>'return hotelsForm(this);');
-						echo form_open('welcome/index', $attributes);
-					?>
-        <div class="row-fluid">
-          <div class="span5">
-            <label>Travel To:</label>
-            <select class="input-block-level" name="hotel_travel_to" style="padding:10px; margin-bottom:10px;">
-              <option value="-1">---Select Destination---</option>
-              	<?php echo $hotel_travel_list;?>
-              </select>
-            </div>
-            <div class="check"  style="margin-bottom:10px;">
-              <label style="color:#fff;">Check In Date:</label>
-              <input id="datepicker1" type="text" name="hotel_check_in_date" class="">
-            </div>
-            <div class="board_basis" >
-              <label style="color:#fff;">Nights:</label>
-              <select class="input-block-level" style="height:43px;margin-bottom:10px;" name="hotel_nights">
-                <option value="-1">---Select---</option>
-                <?php for ($i=1;$i<=21;$i++){
-		                	echo '<option>'.$i.'</option>';
-		                }?>		  
-              </select>
-            </div>
-            </div>          
-            <div class="hotel_rooms"  >
-              <label>Rooms:</label>
-              <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_rooms" >
-                <option value="-1">---Select---</option>
-               <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-            </div>
-            <div class="hotel_adults" >
-              <label>Adults:</label>
-              <select class="input-block-level" name="hotel_adults">
-                <option  value="-1">---Select---</option>
-               <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-            </div>
-            <div class="hotel_childerns"  >
-              <label>Childrens:</label>
-              <select class="input-block-level"  onchange="roomBase_hotel()"  name="hotel_childrens">
-                <option  value="-1">0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
-            </div>
-             
-            <div class="search">
-              <input type="submit" class="sea" value="Search &gt;" />
-            </div>
-          </div>
-        </div>
-         <?php echo form_close();?>
-      </div>
- 
-          </div>
+          
 		  
 <!------------------------------FORM CLOSED MEENA -------------------------------------------->	  
 	  
 		  
 
-					</div>
-				</div>
+					
+				
 			</div>
+			
 	</div>
+	
 	</div>
 		  <div class="clearfix"></div>  
 
@@ -571,23 +569,23 @@
 			<div class="tenerife">
 				<h2>Top 3 Star tenerife Hotels</h2>
 				
-						<div class="tene-text-left"><b>Vigilia Park</b> ---    fr £124pp</div>										
-						<div class="tene-text-left"><b>Royal Park Albatros Club</b> ---fr £133pp</div>									
-						<div class="tene-text-left"><b>Globales Acurio</b> ---fr £138pp</div>	
+						<div class="tene-text-left"><a href="#"><b>Vigilia Park</b> ---    fr £124pp</a></div>										
+						<div class="tene-text-left"><a href="#"><b>Royal Park Albatros Club</b> ---fr £133pp</a></div>									
+						<div class="tene-text-left"><a href="#"><b>Globales Acurio</b> ---fr £138pp</a></div>	
 			</div>
 			
 			<div class="clearfix"></div>			
 			<div class="tenerife">
 						<h2>Top 4 Star tenerife Hotels </h2>				
-						<div class="tene-text-left"><b> Neptuno</b> ---fr £130pp</div>										
-						<div class="tene-text-left"><b>Marino Tenerife </b> ---  fr £133pp</div>									
-						<div class="tene-text-left"><b>Cordial Golf Plaza</b> --- fr £135pp</div>					
+						<div class="tene-text-left"><a href="#"><b> Neptuno</b> ---fr £130pp</a></div>										
+						<div class="tene-text-left"><a href="#"><b>Marino Tenerife </b> ---  fr £133pp</a></div>									
+						<div class="tene-text-left"><a href="#"><b>Cordial Golf Plaza</b> --- fr £135pp</a></div>					
 			</div><div class="clearfix"></div>
 			<div class="tenerife">
 						<h2>Top 5 Star tenerife Hotels  </h2>				
-						<div class="tene-text-left"><b> Los Claveles</b> ---fr £183pp</div>										
-						<div class="tene-text-left"><b>Hollywood Mirage</b> ---fr £183pp</div>									
-						<div class="tene-text-left"><b>Mediterranean Palace</b> ---fr £205pp</div>
+						<div class="tene-text-left"><a href="#"><b> Los Claveles</b> ---fr £183pp</a></div>										
+						<div class="tene-text-left"><a href="#"><b>Hollywood Mirage</b> ---fr £183pp</a></div>									
+						<div class="tene-text-left"><a href="#"><b>Mediterranean Palace</b> ---fr £205pp</a></div>
 					
 			</div><div class="clearfix"></div>
 			
@@ -876,3 +874,11 @@
                       
      </div>     
 </div>
+<link href='https://fonts.googleapis.com/css?family=Merienda' rel='stylesheet' type='text/css'>
+<style>
+label{
+color: #393838;
+font-size:14px;
+}
+
+</style>

@@ -69,25 +69,25 @@
         		<td>Flight Info</td>
         		<td>
         				<h5>Depart:</h5>
-						<div style="position: relative;" class="clearfix">
+						<!-- <div style="position: relative;" class="clearfix">
 							<div class="left">
 							    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
 							</div>
 							<div class="right">
 							    <span class="txt_color_2"></span>
 							</div>
-						</div>
+						</div> -->
 						<h6><?php echo $dscode.' to '.$ascode;?></h6>
 						<h6><?php echo date('d M Y',$controller->cvtDt(str_date($flit[0]['flight_selected_date'])));?> : <?=$dept_start_time . ' - ' . $dept_arr_time;?></h6>
 						<h5>Return:</h5>
-						<div style="position: relative;" class="clearfix">
+						<!--<div style="position: relative;" class="clearfix">
 							<div class="left">
 							    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
 							</div>
 							<div class="right">
 							    <span class="txt_color_2"></span>
 							</div>
-						</div>
+						</div>-->
 						<h6><?php echo $ascode.' to '.$dscode;?></h6>
 						<h6><?php echo date('d M Y',$controller->cvtDt(str_date(explode(' ',$fobj['@attributes']['indep'])[0])));?> : <?=$return_start_time . ' - ' . $return_arr_time;?></h6>
 						
@@ -99,7 +99,8 @@
 					$whole += (($seg[0]['num_adults'] + $seg[0]['num_children']) * $fobj['@attributes']['sellpricepp']);
 					?></td>
 			</tr>
-			<?php } ?>
+			<?php } 
+			if(!empty($hobjs)) { ?>
 			<tr>
 				<td>Hotel Info</td>
         		<td>
@@ -166,7 +167,7 @@
         				
         			?></td>
 			</tr>
-				<?php if(@$fobj){?>
+				<?php }  if(@$ext_row){?>
 			<tr>
 				<td>Extras Info</td>
         		<td>
@@ -264,8 +265,10 @@
         	<?php 
         	echo '<tr><td>Card Type</td><td>'.$row[0]['card_type'].'</td></tr>';
         	echo '<tr><td>Card Holder Name</td><td>'.$row[0]['name_card'].'</td></tr>';
-        	echo '<tr><td>Card Number</td><td>'.$row[0]['card_number'].'</td></tr>';   
-        	echo '<tr><td>CVV Number</td><td>'.$row[0]['cvv_number'].'</td></tr>';
+        	
+        	echo '<tr><td>Card Number</td><td>'.@substr_replace($row[0]['card_number'],str_repeat ('X' ,strlen($row[0]['card_number'])-4),0,-4).'</td></tr>'; 
+        	
+        	//echo '<tr><td>CVV Number</td><td>'.$row[0]['cvv_number'].'</td></tr>';
         	?>
         </tbody>
       </table>
