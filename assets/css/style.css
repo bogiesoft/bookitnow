@@ -1701,9 +1701,9 @@ body {
 	padding-top: 20px;
 	padding-bottom: 20px
 }
-.gridContainer {
+/*.gridContainer {
 	max-width: 1232px
-}
+}*/
 .columns_one, .columns_two, .columns_three, .columns_four, .columns_five, .columns_six, .columns_seven, .columns_eight, .columns_nine, .columns_ten, .columns_eleven, .columns_twelve, .columns_fifty_percent_tablet {
 	clear: none;
 	margin-bottom: 0;

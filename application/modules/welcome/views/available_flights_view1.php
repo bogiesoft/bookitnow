@@ -13,13 +13,18 @@
 	else{
 		include_once 'includes/change_search_flight_only.php';
 	}
-?>  <div class="col-sm-2" style="">
+?> 
+ <div  class="col-sm-2" style="width: 100.666667%;
+    margin-top: -89px;">
+   
           <div style="display: block;" id="dvToggle" class=""> 
 
 <div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
+
       <div class="gridContainer ">
-    <ul class="fluidList steps fh clearfix">
+  
     <?php if($type_flight == 'full_flight_date'){?>
+     <ul class="fluidList steps fh clearfix" >
           <li class="current"><strong>1. Select Flights </strong></li>
           <li class=""><strong>2. Select Hotel</strong></li>
           <li class=""><strong>3. Savings &amp; Extras</strong></li>
@@ -27,7 +32,11 @@
           <li class="bg_1 clearfix">
         <div class="right"></div>
       </li>
+      
       	<?php } else { ?>
+      	 <ul class="fluidList steps fh clearfix" style="
+    margin-top: 59px;
+ margin-left: 117px;">
       		<li class="current"><strong>1. Select Flights </strong></li>
       		<li class=""><strong>2. Book</strong></li>
 	      	<li class="bg_1 clearfix">
@@ -36,13 +45,18 @@
       	<?php }?>
         </ul>
   </div>
+  
   </div>
+  </div>
+  
+  
+  
   
 <!--/STEPS-->
 
 </div>
 
-</div>
+
 
 <div class="clearfix"></div>
 
@@ -163,3 +177,6 @@
 
 </div>
 </div>
+<style>
+. select_search{   background: rgba(253, 249, 249, 0.59) linear-gradient(to bottom, #F9F9F9 1%, rgba(152, 116, 60, 0.76) 100%) repeat scroll 0% 0%;
+}</style>

@@ -1448,19 +1448,34 @@ class Welcome extends CI_Controller {
 			$postData = $this->input->post();			
 		//	echo "<pre>";print_r($postData['mformData']['Fly_From']);exit;
 			$subject = 'Bulk Booking Request';
-			$body = 'Hi';
+			$body = 'Hi';$search = '';
 			$body .= '<br/><p>The following user requesting for bulk booking</p><br/>';
+			$in_user_arr = array('email','first_name','mobile');
+			$db_data = array();
 			foreach ($postData['bformData'] as $uinfo){
-				$body .= '<b>'.ucfirst($uinfo['name']).'</b> : '.$uinfo['value'].'<br>';
+				if($uinfo['value'] != '')				
+				if(in_array($uinfo['name'],$in_user_arr)){
+					$body .= '<b>'.ucfirst(str_replace("_"," ",$uinfo['name'])).'</b> : '.$uinfo['value'].'<br>';
+				}
+				else{
+					$search .= '<b>'.ucfirst(str_replace("_"," ",$uinfo['name'])).'</b> : '.$uinfo['value'].'<br>';
+				}
+				
 				if($uinfo['name'] == 'email')$from = $uinfo['value'];
 				if($uinfo['name'] == 'first_name')$sendername = $uinfo['value'];
+				
+				$db_data[$uinfo['name']] = $uinfo['value'];
 			}
 			$body .= '<p>Here is the search information :</p><br/>';
-			foreach ($postData['mformData'] as $key => $sinfo){				
+			$body .= $search;
+			/*foreach ($postData['mformData'] as $key => $sinfo){				
 				$body .= '<b>'.str_replace("_"," ",$key).'</b> : '.$sinfo.'<br>';
-			}		
+			}*/		
 			$body .= '<p>Regards</p><p>BookItNow Admin</p>';
+			$this->load->model('BulkBooking');
+			$this->BulkBooking->createRecord($db_data);
 			//emailFunction($this,$subject,$body,$from,$sendername,array(BOOKINGADMINEMAIL));
+		//	echo json_encode(array('status'=>'success','message'=>$body));exit;
 			echo json_encode(array('status'=>'success','message'=>'Thank you,We will contact you soon'));exit;
 		}		
 	}	

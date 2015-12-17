@@ -1072,8 +1072,7 @@ public function book_flight()
 		<div class="deals">	<h2>Your Selections	</h2></div>
 	<div class="conatiner-bg"style="
       font-weight: 500;
-    line-height: 1.1;
-    color: inherit;
+       color: inherit;
 "> <div class="basket_item bg_grey padded border_b clearfix">
             			<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
                 			<div class="left">
@@ -1084,26 +1083,26 @@ public function book_flight()
 			                </div>
 			            </div>
 			            <div style="margin-bottom: 11px; margin-top: 0px;">
-			                <strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
+			                <strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
 			                <br>
-			                <div style="position: relative;" class="clearfix">
+			              <!--  <div style="position: relative;" class="clearfix">
 			                    <div class="left">
 			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="margin-left: 62px; margin-top: -42px;">
 			                    </div>
 			                    <div class="right">
 			                        <span class="txt_color_2"></span>
 			                    </div>
-			                </div>
+			                </div>-->
 			               <small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
 			                <span class="txt_color_2"></span>
 			            </div>
 			            <div style="margin-bottom: 5px;">
-		                	<strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
-			                <div style="position: relative;" class="clearfix">
+		                	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
+			             <!--   <div style="position: relative;" class="clearfix">
 			                    <div class="left">
 			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="margin-left: 62px; margin-top: -42px;">
 			                    </div>
-			                </div>
+			                </div>-->
 			               	 <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
 			                <span class="txt_color_2"></span>
             			</div>
@@ -1121,12 +1120,11 @@ public function book_flight()
 			                </div>
 			            </div>
 			          </div>
-			           <div class="conatiner-bg"  style="margin-left: -12px;
-    margin-right: -13px;">
+			      <div class="conatiner-bg">
 			          <div class=" basket_item bg_grey padded border_b" style="position: relative;">
 					    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
 			                <div class="left">
-			                    <h4>Atol Protection</h4>
+			                    <h4 style="color: rgba(241, 113, 19, 0.98);">Atol Protection</h4>
 			                </div>
 			                <div class="right" style="text-align: right;">
 			                    <h4 style="margin-left: 125px;color: #0088cc;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 ).'</h4>
@@ -1143,17 +1141,16 @@ public function book_flight()
 			           		
 			                    		
 	 
-	<div class="basket_item bg_grey padded border_b" style="position: relative;">
+	             <div class="basket_item bg_grey padded border_b" style="position: relative;">
 	
-       <div class="conatiner-bg" style="margin-left: -13px;
-    margin-right: -13px;">
-	<div style="position: relative;" class="clearfix">
-	<div class="left">
+                  <div class="conatiner-bg" >
+	               <div style="position: relative;" class="clearfix">
+	                 <div class="left">
   
-	<small> 
-			<h3 style="font-size: 18px;">TOTAL:</h3> <h4 style="margin-left: 80px;margin-top: -19px;color: #0088cc;">&#163;'.((($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']  ) + (($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 )).'</h4>
+	               <small> 
+                  <h3 style="font-size: 18px;">TOTAL:</h3> <h4 style="margin-left: 164px;margin-top: -19px;color: #0088cc;">&#163;'.((($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']  ) + (($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 )).'</h4>
 	
-					</small>
+			</small>
 			</div>
 			</div>
 					</div>

@@ -20,9 +20,7 @@ class Deals extends CI_Controller {
 	 */
 	
 	public function __construct()
-	{
-		
-		
+	{	
 		parent::__construct();	
 		$this->load->library('Layouts');
 		$this->layouts->add_include($this->config->item('header_css'));
@@ -98,11 +96,30 @@ class Deals extends CI_Controller {
 	
 	public function dynamicDeals(){
 		$data = array();
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/tenerife-holidays.css','css/jquery.fancybox.css','css/slideshow.css','css/mamaison.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/gallery.js','js/script-home.js'));
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+				'css/jquery-ui.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/custom.css',
+				'css/responsive.css',
+				'css/menu.css',
+				'css/preview.min.css',
+				'css/bxslider/jquery.bxslider.css',
+				'css/jquery.fancybox.css',
+				'css/mamaison.css',
+				'css/tenerife-holidays.css',				
+				'css/slideshow.css',				
+				'js/jquery-ui.js',
+				'js/jquery.blockUI.js',
+				'js/responsee.js',
+				'js/bxslider/jquery.bxslider.js',
+				'js/jquery.fancybox.pack.js',
+				'js/gallery.js',				
+				'js/script-home.js'));
 		$this->layouts->set_title('Home');
 		$this->layouts->view('deals/dynamicDeals',$data);
 	}
 	
-
+	
 	
 }

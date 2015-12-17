@@ -436,10 +436,10 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#f9f9f
 background: -webkit-linear-gradient(top,  #f9f9f9 1%,#efefef 100%); /* Chrome10+,Safari5.1+ */
 background: -o-linear-gradient(top,  #f9f9f9 1%,#efefef 100%); /* Opera 11.10+ */
 background: -ms-linear-gradient(top,  #f9f9f9 1%,#efefef 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #f9f9f9 1%,#efefef 100%); /* W3C */
+    background: linear-gradient(to bottom, #f9f9f9 1%,rgb(239, 239, 238) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
 
-    padding: 5px 12px 0px 12px;
+  /*  padding: 5px 12px 0px 12px;*/
 	border-bottom:1px solid #ddd;
 border-left:1px solid #ddd;
 border-right:1px solid #ddd;
@@ -456,7 +456,7 @@ color: #1084a0;
     font-weight: bold;
 }
 .superescapes  ul{
-background: transparent linear-gradient(to bottom, #F9F9F9 1%, #EFEFEF 100%) repeat scroll 0% 0%;
+background: linear-gradient(to bottom, #f9f9f9 1%,rgb(239, 239, 238) 100%);
 padding: 5px 12px 0px;
 border-bottom: 1px solid #DDD;
 border-left: 1px solid #DDD;

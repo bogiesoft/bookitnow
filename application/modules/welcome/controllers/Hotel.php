@@ -459,17 +459,19 @@ class Hotel extends CI_Controller {
 				$type_s = 'full_flight';
 				$cry = $this->uri->segment(2);
 				
-				$data['seleted_info'] =  ' <div class="basket_item bg_grey padded border_b clearfix">
+				$data['seleted_info'] =  ' <div class="deals">	<h2>Your Selections	</h2></div>
+	               <div class="conatiner-bg"style=" font-weight: 500;color: inherit;">
+						<div class="basket_item bg_grey padded border_b clearfix">
             			<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
                 			<div class="left">
                     			<h4>Flights</h4>
                 			</div>
 			                <div class="right" style="text-align: right;">
-			                    <h4>&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']).'</h4>
+			                    <h4 style="margin-left: 164px;margin-top: 10px;color: #0088cc;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']).'</h4>
 			                </div>
 			            </div>
 			            <div style="margin-bottom: 5px; margin-top: 5px;">
-			                <strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
+			                <strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
 			                <br>
 			                <!-- <div style="position: relative;" class="clearfix">
 			                   <div class="left">
@@ -483,7 +485,7 @@ class Hotel extends CI_Controller {
 			                <span class="txt_color_2"></span>			                
 			            </div>
 			            <div style="margin-bottom: 5px;">
-		                	<strong><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
+		                	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
 			                <!--<div style="position: relative;" class="clearfix">
 			                    <div class="left">
 			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
@@ -506,13 +508,14 @@ class Hotel extends CI_Controller {
 			                </div>
 			            </div>
 			          </div>
+			           <div class="conatiner-bg" >
 			          <div class="basket_item bg_grey padded border_b" style="position: relative;">
 					    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
 			                <div class="left">
-			                    <h4>Atol Protection</h4>
+			                    <h4 style="color: rgba(241, 113, 19, 0.98);">Atol Protection</h4>
 			                </div>
 			                <div class="right" style="text-align: right;">
-			                    <h4>&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 ).'</h4>
+			                    <h4 style="margin-left: 162px;margin-top: 10px;color: #0088cc;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 ).'</h4>
 			                </div>
 			            </div>
 			            <div style="position: relative;" class="clearfix">
@@ -521,8 +524,8 @@ class Hotel extends CI_Controller {
 			                    </small>
 			                </div>               
            			   </div>
-			        </div>';
-				
+			        </div></div></div></div>';
+								
 				/**************end*******************************/
 				$data['type'] = 'pack_hotel';
 				$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));

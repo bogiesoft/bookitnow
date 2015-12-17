@@ -296,7 +296,7 @@ p.pera {
 }
 .superescapes ul li a {
 font-size: 15px;
-	color: #ff9900;
+	 color: #F07419;
 	 padding: 5px 9px;
 	text-decoration: none;
 	font-weight: 600;
@@ -343,7 +343,7 @@ font-size: 15px;
 }
 .reviews {
 	width: 100%;
-	margin-top: 1em;
+	margin-top: -9px;
 }
 .reviews h2 {
 	background-color: #ff9900;
@@ -358,6 +358,7 @@ font-size: 15px;
 	padding: 5px;
 	color: #333;
 	font-size: 13px;
+	   background: linear-gradient(to bottom, #f9f9f9 1%,rgb(240, 240, 239) 100%);
 }
 .review img {
 	float: right;
@@ -444,6 +445,7 @@ font-size: 15px;
 	border-radius: 0 0 5px 5px;
 	position: relative;
 	width: 100%;
+	
 }
 .deal_img img:hover {
 }
@@ -805,9 +807,10 @@ ul.steps {
 	display: block;
 	margin: 0px;
 	padding: 0px;
-	border-top: 1px solid #DDD;
+	/*border-top: 1px solid #DDD;*/
 	border-right: 1px solid #DDD;
 	border-left: 1px solid #DDD;
+	
 }
 .gridContainer {
 	width: 100%;
@@ -818,6 +821,18 @@ ul.steps {
 	margin: auto;
 	height: 50px;
 	border: none !important;
+	
+}
+.gridContainer1 {
+	width: 100%;
+	padding-left: 1%;
+	padding-right: 1%;
+	clear: none;
+	float: none;
+	margin: auto;
+	height: 50px;
+	border: none !important;
+	margin-left: 117px;
 }
 ul.steps li:first-child {
 	border-left: medium none;
@@ -836,15 +851,16 @@ ul.steps.fh li {
 }
 ul.steps li.current {
 	background: #FFF none repeat scroll 0% 0%;
-	color: #036;
-}
+	/*color: #665A00;
+	background: rgba(253, 249, 249, 0.59) linear-gradient(to bottom, #F9F9F9 1%, rgba(152, 116, 60, 0.76) 100%) repeat scroll 0% 0%;
+*/}
 ul.steps li {
 	display: block;
 	float: left;
 	height: 50px;
 	padding: 10px 14px;
 	border-left: 1px solid #DDD;
-	color: #CCC;
+    color: rgba(105, 159, 195, 0.74);
 	text-align: center;
 	line-height: 30px;
 	font-size: 16px;
@@ -981,4 +997,9 @@ ul.contactform li {
 	padding: 10px 0 0px 0px;
 	font-size: 14px;
 	margin-left: 20px;
+}
+.border_b {
+    border-bottom: 1px solid #DDD;
+        border-bottom: 1px solid #DDD;
+     background: rgba(253, 249, 249, 0.59) linear-gradient(to bottom, #F9F9F9 1%, rgba(224, 222, 220, 0.76) 100%) repeat scroll 0% 0%;
 }

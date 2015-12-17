@@ -13,6 +13,8 @@ define("SUBSCRIBERSSLIST_TABLE", "subscribers_list");
 define("BOOKINFO_TABLE", "booking_info");
 define("EXTRA_CATEGORIES_TABLE", "extra_categories");
 define("OPTIONS", "options");
+define("BULKBOOKING", "bulk_booking");
+
 
 define("CONTACTSADMINEMAIL", "satya@expertwebworx.com");
 define("BOOKINGADMINEMAIL", "satya.bhxpro@gmail.com");

@@ -14,6 +14,29 @@
 				}
 				?>
 			</section>
+			
+			
+			
+			<div id="deals_div" style="display: none;">
+  <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
+      <div>
+	    	 <form class="f-box" id="deal_extras_form" method="post">
+	    	    <div class="form-group">
+	    			<input type="text" class="form-control" placeholder="Feature - 1" name="feature_1" />
+	    		</div>	    			    		
+	    		<div class="form-group">
+	    			<input type="text" class="form-control" placeholder="Feature - 2" name="feature_2" />
+	    		</div><div class="form-group">
+	    			<input type="text" class="form-control" placeholder="Feature - 3" name="feature_3" />
+	    		</div><div class="form-group">
+	    			<input type="text" class="form-control" placeholder="Feature - 4" name="feature_4" />
+	    		</div>	   		
+	    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
+	    	</form>    
+	    	
+     </div>
+  </div>     
+</div>
 <style>
 .parets_cus{
     color: #11AFE6;
@@ -24,6 +47,7 @@
 </style>
 			
 <script type="text/javascript">
+	
 	function countryOnly(e)
 	{	
 		blockSearchingTabs();
@@ -43,7 +67,7 @@
 	
 	function area(e,mapng)
 	{
-		if($(e).next().prop("tagName").toLowerCase() == 'ul')
+		if($(e).next().prop("tagName") == 'ul')
 		{
 			$(e).next().remove();
 		}
@@ -88,8 +112,8 @@
 // 	}
 	function region(e,mapng)
 	{	
-		alert($(e).next().prop("tagName").toLowerCase());
-		if($(e).next().prop("tagName").toLowerCase() == 'ul')
+		
+		if($(e).next().prop("tagName") == 'ul')
 		{
 			$(e).next().remove();
 		}
@@ -113,7 +137,7 @@
 
 	function resort(e,mapng)
 	{
-		if($(e).next().prop("tagName").toLowerCase() == 'ul')
+		if($(e).next().prop("tagName") == 'ul')
 		{
 			$(e).next().remove();
 		}
@@ -137,7 +161,14 @@
 	
 	function checkMe(e,name)
 	{	
-		blockSearchingTabs();	
+		if($(e).prop("checked") == true){
+			$.fancybox({
+                'href': '#deals_div'               
+            });
+
+            $('#deal_extras_form')
+		}
+		/*blockSearchingTabs();	
 		if($(e).prop("checked") == true){
 			var check = 1;
 		}
@@ -147,7 +178,7 @@
 		}			
 		$.post('/admin/saveListingFun',{check_result:check,val:$(e).val(),cat:$('select[name="categories"]').val(),name:$(e).next('span').html(),arapts:$(e).attr('arrivals')},function(result){			
 			unblockSearchingTabs();
-		},'html');
+		},'html');*/
 	}
 	//popup for block further search options during ajax request
 	function blockSearchingTabs() {

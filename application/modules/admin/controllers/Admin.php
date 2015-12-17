@@ -109,10 +109,12 @@ class Admin extends CI_Controller {
 				'css/google_font.css',
 				'css/admin/custom.css',
 				'css/admin/accordion.css',
+				'css/jquery.fancybox.css',
 				'js/admin/metisMenu.min.js',
 				'js/admin/custom.js',
 				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
+				'js/admin/rickshaw.js',
+				'js/jquery.fancybox.pack.js'
 		) );
 		$this->layouts->set_title ( 'Deals page' );
 		$this->layouts->view ( 'deals', $data, 'admin' );

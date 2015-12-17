@@ -705,15 +705,68 @@ body a:focus {
   <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
       <div>
 	    	 <form class="f-box" id="bulk_form" method="post">
-	    		<div class="form-group">	    			
-	    			<input type="text" class="form-control" placeholder="Name" name="first_name">
+	    	    <div class="form-group noHotel">	   
+	    	    	<label>Fly From : </label> 			
+	    			<select class="input-block-level"  name="fly_from" onchange="arrivals(this.value,document.getElementById('arrival_airports_p'))">
+  						<option value="-1">Select Destination</option>
+  							<?php
+								foreach($filtered_departures as $key => $val)
+								{						
+									$opt_val_str = '';
+									foreach($val as $key1 => $val1)
+									{
+										$opt_val_str .= $key1.'|';		
+									}
+									echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+								}
+							  ?>	                    
+		              </select>
 	    		</div>
 	    		<div class="form-group">
-	    			
+					<label>Travel To : </label>    			
+	    			<select class="input-block-level"  id="arrival_airports_p" name="travel_to">
+                		<option value="-1">Select Destination</option>                            
+              		</select>
+	    		</div>
+	    		<div class="form-group noHotel">	
+	    			<label> Departure Date : </label>    			
+	    			<input type="text" class="form-control datePicker" placeholder="Departure Date" name="Date_of_departure">
+	    		</div>
+	    		<div class="form-group noFull noFlight">	
+	    			<label> Check In Date : </label>    			
+	    			<input type="text" class="form-control datePicker" placeholder="Check In Date" name="check_in_date">
+	    		</div>
+	    		<div class="form-group">
+	    			<label> Nights : </label>	    			
+	    			<input type="text" class="form-control" placeholder="Nights" name="number_of_nights">
+	    		</div>	    			    		
+	    		<div class="form-group noFlight">	
+	    			<label> Rooms: </label>    			
+	    			<input type="text" class="form-control" placeholder="Number of rooms" name="rooms">
+	    		</div>
+	    		<div class="form-group">
+	    			<label> Adults: </label>    		    			
+	    			<input type="text" class="form-control" placeholder="Number of adults" name="Adults">
+	    		</div>	    		
+	    		<div class="form-group">
+	    			<label> Children : </label>    		    			
+	    			<input type="text" class="form-control" placeholder="Number of Children" name="Children">
+	    		</div>
+	    		<div class="form-group">
+	    			<label> Name : </label>	    			
+	    			<input type="text" class="form-control" placeholder="Name" name="first_name">
+	    		</div>  		
+	    		<div class="form-group">	
+	    			<label> Email : </label>    			
 	    			<input type="text" class="form-control" placeholder="Email" name="email">
 	    		</div>
-	    		<div class="form-group">	    			
+	    		<div class="form-group">	    
+	    			<label> Mobile : </label>			
 	    			<input type="text" class="form-control" placeholder="Mobile" name="mobile">
+	    		</div>		    		
+	    		<div class="form-group">	    
+	    			<label> Comments : </label>			
+	    			<textarea class="form-control" placeholder="Comments" name="comments"></textarea>
 	    		</div>		    		
 	    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
 	    	</form>    
