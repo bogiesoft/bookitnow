@@ -129,19 +129,19 @@
           <div class="option month" style="display: inline-block; font-size: 11px;">
             <label style="color:#fff;">Month:</label>
             <br>
-            <select name="ctl00$cphContent$ucCalendarDeals$ddlMonthYear" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphContent$ucCalendarDeals$ddlMonthYear\',\'\')', 0)" id="cphContent_ucCalendarDeals_ddlMonthYear">
-              <option value="12012015">Dec 2015</option>
-              <option value="01012016">Jan 2016</option>
-              <option selected="selected" value="02012016">Feb 2016</option>
-              <option value="03012016">Mar 2016</option>
-              <option value="04012016">Apr 2016</option>
-              <option value="05012016">May 2016</option>
-              <option value="06012016">Jun 2016</option>
-              <option value="07012016">Jul 2016</option>
-              <option value="08012016">Aug 2016</option>
-              <option value="09012016">Sep 2016</option>
-              <option value="10012016">Oct 2016</option>
-              <option value="11012016">Nov 2016</option>
+            <select name="ctl00$cphContent$ucCalendarDeals$ddlMonthYear" onchange="monthCal(this)" >
+              <option value="12-2015">Dec 2015</option>
+              <option value="01-2016">Jan 2016</option>
+              <option value="02-2016">Feb 2016</option>
+              <option value="03-2016">Mar 2016</option>
+              <option value="04-2016">Apr 2016</option>
+              <option value="05-2016">May 2016</option>
+              <option value="06-2016">Jun 2016</option>
+              <option value="07-2016">Jul 2016</option>
+              <option value="08-2016">Aug 2016</option>
+              <option value="09-2016">Sep 2016</option>
+              <option value="10-2016">Oct 2016</option>
+              <option value="11-2016">Nov 2016</option>
             </select>
           </div>
           <div class="option nights" style="display: none;">
@@ -164,7 +164,9 @@
               <div class="calendar_span day-header">Fri</div>
               <div class="calendar_span day-header">Sat</div>
               <div class="calendar_span day-header">Sun</div>
+              
               <br>
+              <div id="dates_base">
               <span>
               <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_0" class="calendar_span calendar-price calendar_best_price">
                 <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_0"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_0" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl01$lbtnprice','')"> <small class="date"> 01 Feb</small> <small class="from">from</small>
@@ -343,7 +345,9 @@
                   <div class="price"> £125 </div>
                   </a> </div>
               </div>
-              </span><br>
+              </span>
+              </div>
+              <br>
             </div>
           </div>
           <!--GRIDVIEW--> 
@@ -461,4 +465,5 @@ body {
  //*font-family: 'Open Sans', sans-serif;*//
  background-color: #fff;
 }
+
 </style>

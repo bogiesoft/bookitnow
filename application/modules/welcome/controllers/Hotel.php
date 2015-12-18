@@ -200,7 +200,15 @@ class Hotel extends CI_Controller {
 			 		
 		//	echo '<pre>';print_r($data['change_search_info']);exit;
 			
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+					'css/jquery-ui.css','css/font-awesome.min.css',
+					'css/google_font.css','css/custom.css',
+					'css/responsive.css','css/inner-page.css',
+					'css/menu.css','css/bxslider/jquery.bxslider.css',
+					'css/jquery.fancybox.css','css/popup_fancy.css',
+					'js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js',
+					'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
+					'js/jquery.fancybox.pack.js','js/script-hotels.js'));
 			$this->layouts->set_title('Available Hotels');
 			$this->layouts->view('available_hotels_view',$data);
 		}
@@ -528,7 +536,15 @@ class Hotel extends CI_Controller {
 								
 				/**************end*******************************/
 				$data['type'] = 'pack_hotel';
-				$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
+				$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+						'css/jquery-ui.css','css/font-awesome.min.css',
+						'css/google_font.css','css/custom.css',
+						'css/responsive.css','css/inner-page.css',
+						'css/menu.css','css/bxslider/jquery.bxslider.css',
+						'css/jquery.fancybox.css','css/popup_fancy.css',
+						'js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js',
+						'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
+						'js/jquery.fancybox.pack.js','js/script-hotels.js'));
 				//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script-hotels.js'));
 				$this->layouts->set_title('Available Hotels');
 				

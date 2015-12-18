@@ -265,12 +265,12 @@
 			if(Number($('select[name="hotel_adults"]').val()) >= 10)
 			{				
 				var mformData ={}; 
-				mformData['Travel_To'] = $('[name="hotel_travel_to"] option:selected').text();
+				/*mformData['Travel_To'] = $('[name="hotel_travel_to"] option:selected').text();
 				mformData['Departure_Date'] = $('[name="hotel_check_in_date"]').val();
 				mformData['Rooms'] = $('[name="hotel_rooms"] option:selected').text();
 				mformData['Nights'] = $('[name="hotel_nights"] option:selected').text();
 				mformData['Adults'] = $('[name="hotel_adults"] option:selected').text();
-				mformData['Children'] = $('[name="hotel_childrens"] option:selected').text();
+				mformData['Children'] = $('[name="hotel_childrens"] option:selected').text();*/
 				$('.noFlight,.noFull').show();
 				$('.noHotel').hide();
 				
@@ -641,37 +641,38 @@
            });
     	   $('#arrival_airports_p').html('');
     	   if(type == 'full'){
-			   var excludeFields = ['check_in_date'];     			 
+			   var excludeFields = ['check_in_date','Children'];     			 
 		   }
 		   if(type == 'hotel'){
 			   arrivals("ALL",document.getElementById('arrival_airports_p'));
-			   var excludeFields = ['fly_from'];
+			   var excludeFields = ['fly_from','Children','Date_of_departure'];
 		   }
 		   if(type == 'flight'){
-			   var excludeFields = ['check_in_date','rooms'];
+			   var excludeFields = ['check_in_date','rooms','Children','Date_of_departure'];
 		   }
     	   $('#bulk_form').submit(function(){    		
     		   var bformData = $(this).serializeArray();
-
-    		  
-
-    		   var count = 0;
-    		   
-    		  
-    		   
+    		   var swap ={};
+    		   var count = 0;   		   
     		   $.each(bformData, function(index, value){
     			   
-    			   if((value.name != 'Children') && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == '') && ($.inArray(value.name, excludeFields) == -1) )
+    			   if((value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == '') && ($.inArray(value.name, excludeFields) == -1) )
    					{
 	   					var msg = $('[name="'+ value.name +'"]').attr('placeholder');
 	   					alert('Please fill '+ value.name +' field');   
 	   					count++;
-	   					return false; 
+	   					return false;
 	   					
-   					}    			 
+   					}
+    			   else{
+    				   if(value.name == 'fly_from' || value.name == 'travel_to')
+    				   {
+    					   if($.inArray(value.name, excludeFields) == -1)bformData[index]['value'] = $('select[name="'+value.name+'"] option:selected').text();    					  
+	    			   }	
+    			   }
 	    			   if(value.name == 'email' && !validateEmail(value.value))
 	       			   {
-	    				   alert('Please enter valid email address'); 
+	    				  alert('Please enter valid email address'); 
 	    				   count++;
 		   					return false; 
 		   					
@@ -682,11 +683,12 @@
 		   					return false; 
 	    			   }
 	    			   
-	    			   if(value.name == 'fly_from' || value.name == 'travel_to'){
-	    				   bformData[index]['value'] = $('select[name="'+value.name+'"] option:selected').text();
-	    			   } 			   
+	    			  	   
 	    			   
-   			   });    		  
+   			   });  
+
+    		 //  console.log(bformData);return false;
+
     		   if(count)return false;
     		 
     		   $.post( baseUrl + "welcome/bulkSubmit",{bformData}, function( data ) {
@@ -743,13 +745,13 @@
     			if(Number($('select[name="full_adults"]').val()) >= 10)
     			{
     				var mformData ={};     				
-    				mformData['Fly_From'] = $('[name="full_departure_airports"] option:selected').text();
+    				/*mformData['Fly_From'] = $('[name="full_departure_airports"] option:selected').text();
     				mformData['Travel_To'] = $('[name="full_arrival_airports"] option:selected').text();
     				mformData['Departure_Date'] = $('[name="full_departure_date"]').val();
     				mformData['Rooms'] = $('[name="full_rooms"] option:selected').text();
     				mformData['Nights'] = $('[name="full_nights"] option:selected').text();
     				mformData['Adults'] = $('[name="full_adults"] option:selected').text();
-    				mformData['Children'] = $('[name="full_children"] option:selected').text();
+    				mformData['Children'] = $('[name="full_children"] option:selected').text();*/
     				$('.noFlight,.noHotel').show();
     				$('.noFull').hide();
     				bulkForm(mformData,'full');

@@ -188,9 +188,12 @@
 </div>
 </div>
 <<style>
-<!--
+
 .label{
 	color:#333; 
 }
--->
+td{
+	padding: 5px;
+	}
+
 </style>

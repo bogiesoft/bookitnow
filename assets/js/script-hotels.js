@@ -552,7 +552,23 @@
     			var t = {};
     			t['name'] = 'mapper';
     			t['value'] = $('select[name="full_arrival_airports"] option[value="'+arr_val+'"]').attr('mapper');
-    			request_data.push(t);
+    			request_data.push(t);    			
+    			if(Number($('select[name="full_adults"]').val()) >= 10)
+    			{
+    				var mformData ={};     				
+    				/*mformData['Fly_From'] = $('[name="full_departure_airports"] option:selected').text();
+    				mformData['Travel_To'] = $('[name="full_arrival_airports"] option:selected').text();
+    				mformData['Departure_Date'] = $('[name="full_departure_date"]').val();
+    				mformData['Rooms'] = $('[name="full_rooms"] option:selected').text();
+    				mformData['Nights'] = $('[name="full_nights"] option:selected').text();
+    				mformData['Adults'] = $('[name="full_adults"] option:selected').text();
+    				mformData['Children'] = $('[name="full_children"] option:selected').text();*/
+    				$('.noFlight,.noHotel').show();
+    				$('.noFull').hide();
+    				bulkForm(mformData,'full');
+    				return false;
+    			}
+    			
     			
     			/****************Room parllalization**************/
     			
@@ -563,7 +579,8 @@
                         'href': '#rooms_div',
                         beforeShow: function() {
                             this.wrap.draggable();
-                        }
+                        },
+                       
                     });
     				
     				
@@ -576,14 +593,14 @@
     				}
     				for(var i=1;i<=$('select[name="full_rooms"]').val();i++)
         			{
-    					if((i%3)== 1)
+    					if((i%2)== 1)
     					{
     						str += '<div class="row form-pop-container"><div class="col-md-12">';
     					}
     					str += '<div class="form-group"><p>Room-'+i+'</p>';
     					str += '<input class="form-control room_box_adult" placeholder="Adults" style="150px;" name="num_adult_'+i+'">';
     					str += '<input name="num_child_'+i+'" class="form-control room_box_child" placeholder="Children"></div>';							
-    					if(!(i%3) || i == $('select[name="full_rooms"]').val())
+    					if(!(i%2) || i == $('select[name="full_rooms"]').val())
     					{
     						str += '</div></div><br>';
     					}
@@ -685,6 +702,7 @@
         }
         
         
+        
         function submit_fnh_fun(request_data)
         {        
         	var str = '';       	
@@ -766,7 +784,7 @@
 				if(value.name != 'hotel_childrens' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
 				{
 					var msg = $('[name="'+ value.name +'"]').prev('label').text();
-					alert('Please select '+ msg +' field');
+					//alert('Please select '+ msg +' field');
 					count++;
 					return false;
 				}
@@ -778,6 +796,21 @@
 			t['name'] = 'mapper';
 			t['value'] = $('select[name="hotel_travel_to"] option[value="'+arr_val+'"]').attr('mapper');
 			request_data.push(t);
+			if(Number($('select[name="hotel_adults"]').val()) >= 10)
+			{				
+				var mformData ={}; 
+				/*mformData['Travel_To'] = $('[name="hotel_travel_to"] option:selected').text();
+				mformData['Departure_Date'] = $('[name="hotel_check_in_date"]').val();
+				mformData['Rooms'] = $('[name="hotel_rooms"] option:selected').text();
+				mformData['Nights'] = $('[name="hotel_nights"] option:selected').text();
+				mformData['Adults'] = $('[name="hotel_adults"] option:selected').text();
+				mformData['Children'] = $('[name="hotel_childrens"] option:selected').text();*/
+				$('.noFlight,.noFull').show();
+				$('.noHotel').hide();
+				
+				bulkForm(mformData,'hotel');
+				return false;
+			}
 			room_parllalization(request_data);
 			return false;
         	
@@ -979,5 +1012,87 @@
         	//}
         }
 
-               
+        function bulkForm(mformData,type){  
+     	   var dateToday = new Date();
+     	   $('.datePicker').datepicker({
+     			defaultDate: "+1w",	   
+     			minDate: dateToday,  
+     			dateFormat: "dd/mm/yy"
+     		});      
+     	   $('#bulk_form').trigger("reset");
+     	   $.fancybox({
+                'href': '#bluk_div',            
+                beforeShow: function() {
+                    this.wrap.draggable();
+                },              
+            });
+     	   $('#arrival_airports_p').html('');
+     	   if(type == 'full'){
+ 			   var excludeFields = ['check_in_date','Children'];     			 
+ 		   }
+ 		   if(type == 'hotel'){
+ 			   arrivals("ALL",document.getElementById('arrival_airports_p'));
+ 			   var excludeFields = ['fly_from','Children','Date_of_departure'];
+ 		   }
+ 		   if(type == 'flight'){
+ 			   var excludeFields = ['check_in_date','rooms','Children','Date_of_departure'];
+ 		   }
+     	   $('#bulk_form').submit(function(){    		
+     		   var bformData = $(this).serializeArray();
+     		   var swap ={};
+     		   var count = 0;   		   
+     		   $.each(bformData, function(index, value){
+     			   
+     			   if((value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == '') && ($.inArray(value.name, excludeFields) == -1) )
+    					{
+ 	   					var msg = $('[name="'+ value.name +'"]').attr('placeholder');
+ 	   					alert('Please fill '+ value.name +' field');   
+ 	   					count++;
+ 	   					return false;
+ 	   					
+    					}
+     			   else{
+     				   if(value.name == 'fly_from' || value.name == 'travel_to')
+     				   {
+     					   if($.inArray(value.name, excludeFields) == -1)bformData[index]['value'] = $('select[name="'+value.name+'"] option:selected').text();    					  
+ 	    			   }	
+     			   }
+ 	    			   if(value.name == 'email' && !validateEmail(value.value))
+ 	       			   {
+ 	    				  alert('Please enter valid email address'); 
+ 	    				   count++;
+ 		   					return false; 
+ 		   					
+ 	       			   }
+ 	    			   if(value.name == 'mobile' && !phonenumber(value.value)){
+ 	    				   alert('Please enter valid mobile number');
+ 	    				   count++;
+ 		   					return false; 
+ 	    			   }
+ 	    			   
+ 	    			  	   
+ 	    			   
+    			   });  
+
+     		 //  console.log(bformData);return false;
+
+     		   if(count)return false;
+     		 
+     		   $.post( baseUrl + "welcome/bulkSubmit",{bformData}, function( data ) {
+     			   alert('Thank you,We will contact you soon');
+     			   window.location = '/';    			   
+     		   },'json');  		  
+     		   return false;
+     	   })
+        }      
+        function arrivals(code,target){		
+    		var request_data = {};
+    		request_data.dest_shrtcode = code;
+    		$(target).html('');	
+    		if(Number(code) != -1)
+    		$.post( "/welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {
+    				$(target).append(data);   					 	
+    			}, "html");
+    		
+    	}
         

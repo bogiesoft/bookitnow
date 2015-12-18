@@ -693,13 +693,12 @@ body a:focus {
 
 
 <div id="rooms_div" style="display: none;">
-  <h2>Rooms - Persons</h2>
-     <div>
-        <h4 class="has_bottom_margin">Please share the members for each room.</h4>
-	    	<form id="rooms_form">
-	    	</form>
-                      
-     </div>     
+  <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
+      <div>
+	    	<form id="rooms_form" class="form-inline f-box">
+	    	</form>                      
+     </div>
+  </div>     
 </div>
 <div id="bluk_div" style="display: none;">
   <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>

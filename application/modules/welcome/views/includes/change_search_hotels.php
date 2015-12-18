@@ -159,42 +159,46 @@
 
 
 </div>
-<div class="clearfix"></div>
-
-<div id="select_names">
-<div class="container">
-<!--STEPS
-<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
-      <div class="gridContainer ">
-    <ul class="fluidList steps fh clearfix">
-    
-    	<?php if(@$row[0]['type_search'] == 'full_package'){ ?>
-    		
-    		<li class=""><strong class="done">1. Select Flights </strong></li>
-    		<li class="current"><strong>2. Select Hotel</strong></li>
-    		<li class=""><strong>3. Savings &amp; Extras</strong></li>
-    		<li class=""><strong>4. Book</strong></li>
-    		<li class="bg_1 clearfix">
-    			<div class="right"></div>
-    		</li>
-    		
-    	<?php }
-    	else 
-    	{?>
-          <li class="current"><strong>1. Select Hotel </strong></li>
-          <li class=""><strong class="done">2. Book</strong></li>          
-          <li class="bg_1 clearfix">
-        <div id="LP_DIV_1429625391320" class="right"></div>
-      </li>
-      <?php } ?>
-     </ul>
+<?php 
+	//echo "<pre>";print_r($controller->router->fetch_method());exit; 
+	?>
+<div class="clearfix"></div>   
+    <div style="display: block;" id="dvToggle" class=""> 
+		<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">     
+	    <?php if($type != 'hotel_only'){	  ?>
+		    <div class="gridContainer ">
+		    	<ul class="fluidList steps fh clearfix">
+		    	<?php     	
+			    	$f_done = ($controller->router->fetch_method() != 'fullFlightsavailable') ? 'class="done"' : 'class="current"';			    	
+			    ?>
+		    	 <li <?php echo $f_done;?>><strong>1. Select Flight</strong></li>
+		    	 <?php 
+		    	 	$f_done = ($controller->router->fetch_method() == 'full_available_hotels') ? 'class="done"' : '';
+	    			$current = ($controller->router->fetch_method() == 'full_available_hotels') ? 'class="current"' : '';
+	    		 ?>
+		          <li <?php echo $current;?>><strong>2. Select Hotel</strong></li>
+		          <li class=""><strong>3. Savings &amp; Extras</strong></li>
+		          <li class=""><strong>4. Book</strong></li>
+		          <li class="bg_1 clearfix">
+		        		<div class="right"></div>
+		      	  </li>
+		      	 </ul>
+		  	</div>
+	      	<?php } else { ?>
+	      	<div class="gridContainer1 ">
+		    	<ul class="fluidList steps fh clearfix">
+		      		<li class="current"><strong>1. Select Hotel </strong></li>
+		      		<li class=""><strong>2. Book</strong></li>
+			      	<li class="bg_1 clearfix">
+			        	<div class="right"></div>
+			      	</li>
+		       </ul>
+	  		</div>
+	      	<?php }?> 
+  		</div>
+  	</div>
   </div>
-    </div>
--->
 
-</div>
-
-</div>
    
 <div id="body_content" style="margin:0px;">
 
@@ -202,125 +206,94 @@
 
 <div id="middle_conent">
 <div class="container">
-<div class="gridContainer clearfix"> 
-          <!--Search From Grid Info-->
-          <div style="display: none;">
-        <h3>Your Selections:</h3>
-        <div style="display: none;"> 1 rooms
-              2 adult(s)
-              <h5 class="blue"> <strong>Your Search</strong></h5>
-              02 October 2015, <span id="cphContent_ltrNoOfNights">7</span>Nights
-              <div class="row-margin-sm small"> London Airports
-            to
-            Benidorm<br>
-            02 October 2015<br>
-            <br>
-            <span id="cphContent_ltrHotelResortName">,Benidorm</span><br>
-            <span id="cphContent_ltrBoardType">All Inclusive</span><br>
-          </div>
-              <div class="row-margin-sm small">
-            <h6 class="left">Guide Price</h6>
-            <h6 class="right blue">£<span ></span><small>pp</small></h6>
-            <div class="clear"> </div>
-            <small class="left">flights guide price:</small><small class="right">£<span id="cphContent_ltrFlightPrice"></span>pp</small>
-            <div class="clear"> </div>
-            <small class="left">rooms guide price:</small><small class="right">£<span id="cphContent_ltrHotelPrice"></span>pp</small>
-            <div class="clear"> </div>
-          </div>
-            </div>
-      </div>
-          <!--Search From Grid Info--> 
-          <!--Search Info-->
-          <div style="display: none;">
-        <h5 class="blue"> <strong>Your Search</strong></h5>
-        <div class="row-margin-sm small"> London Airports
-              to
-              Benidorm<br>
-              02 October 2015<br>
-              7
-              Nights<br>
-              Any Star Rating<br>
-              1
-              rooms<br>
-              All Inclusive <br>
-              2 adult(s) </div>
-        <a href="#" class="button small">MODIFY SEARCH</a> </div>
-          <!--Search Info--> 
+
+        
+        
           
           <!-- /FILTER COLUMN-->
          
-         <div id="rooms_div" style="display: none;">
+   <div id="rooms_div" style="display: none;">
   <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
       <div>
 	    	<form id="rooms_form" class="form-inline f-box">
 	    	</form>                      
      </div>
-  </div>     
-</div>
-<style>
-.input-block-level{
-	height:auto !important;
-}
+  </div>  
+  
+  <div id="bluk_div" style="display: none;">
+  <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
+      <div>
+	    	 <form class="f-box" id="bulk_form" method="post">
+	    	    <div class="form-group noHotel">	   
+	    	    	<label>Fly From : </label> 			
+	    			<select class="input-block-level"  name="fly_from" onchange="arrivals(this.value,document.getElementById('arrival_airports_p'))">
+  						<option value="-1">Select Destination</option>
+  							<?php
+								foreach($filtered_departures as $key => $val)
+								{						
+									$opt_val_str = '';
+									foreach($val as $key1 => $val1)
+									{
+										$opt_val_str .= $key1.'|';		
+									}
+									echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+								}
+							  ?>	                    
+		              </select>
+	    		</div>
+	    		<div class="form-group">
+					<label>Travel To : </label>    			
+	    			<select class="input-block-level"  id="arrival_airports_p" name="travel_to">
+                		<option value="-1">Select Destination</option>                            
+              		</select>
+	    		</div>
+	    		<div class="form-group noHotel">	
+	    			<label> Departure Date : </label>    			
+	    			<input type="text" class="form-control datePicker" placeholder="Departure Date" name="Date_of_departure">
+	    		</div>
+	    		<div class="form-group noFull noFlight">	
+	    			<label> Check In Date : </label>    			
+	    			<input type="text" class="form-control datePicker" placeholder="Check In Date" name="check_in_date">
+	    		</div>
+	    		<div class="form-group">
+	    			<label> Nights : </label>	    			
+	    			<input type="text" class="form-control" placeholder="Nights" name="number_of_nights">
+	    		</div>	    			    		
+	    		<div class="form-group noFlight">	
+	    			<label> Rooms: </label>    			
+	    			<input type="text" class="form-control" placeholder="Number of rooms" name="rooms">
+	    		</div>
+	    		<div class="form-group">
+	    			<label> Adults: </label>    		    			
+	    			<input type="text" class="form-control" placeholder="Number of adults" name="Adults">
+	    		</div>	    		
+	    		<div class="form-group">
+	    			<label> Children : </label>    		    			
+	    			<input type="text" class="form-control" placeholder="Number of Children" name="Children">
+	    		</div>
+	    		<div class="form-group">
+	    			<label> Name : </label>	    			
+	    			<input type="text" class="form-control" placeholder="Name" name="first_name">
+	    		</div>  		
+	    		<div class="form-group">	
+	    			<label> Email : </label>    			
+	    			<input type="text" class="form-control" placeholder="Email" name="email">
+	    		</div>
+	    		<div class="form-group">	    
+	    			<label> Mobile : </label>			
+	    			<input type="text" class="form-control" placeholder="Mobile" name="mobile">
+	    		</div>		    		
+	    		<div class="form-group">	    
+	    			<label> Comments : </label>			
+	    			<textarea class="form-control" placeholder="Comments" name="comments"></textarea>
+	    		</div>		    		
+	    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
+	    	</form>    
+	    	
+     </div>
+  </div>  
+  
+     
 
 
-
-.form-inline .form-control {
-    display: inline-block;
-    width: auto;
-    vertical-align: middle;
-  width: 85px;
-	border-radius:none;
-}
-.fancybox-skin {
-    border: 5px solid #e48b05;
-	font-size:12px;
-
-}
-
-.btn-pop{
-float:right;
-margin-top:20px;
-margin-bottom:20px;
-}
-
-.btn-primary-pop{
-       background-color: #058ab9!important;
-    background-position: 0px -15px;
-	color:#fff;
-	border-radius:0px;
-	border-color:#e48b05;
-}
-.btn-primary-pop:hover{
- background-color: #e48b05!important;
-border-radius:0px;
-    background-position: 0px -15px;
-	color:#fff;
-}
-
-.form-control { 
-    border-radius: 0px;
-}
-
-.form-pop-container {
-    margin: 0px;
-    float: left;
-}
-
-.f-box{
-margin: 0px 0px 0px 4px;
-margin-top: 20px;
-}
-.img-title{
-margin-top:10px;
-}
-
-.btn-pop {
-border-radius:0px;
-}
-
-input{
-margin : 2px;
-}
-
-</style>
 

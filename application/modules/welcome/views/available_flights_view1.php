@@ -1,4 +1,5 @@
-    <?php if($this->router->fetch_method() == 'fullFlightsavailable')$type_flight = 'full_flight_date';
+    <?php 
+    if($this->router->fetch_method() == 'fullFlightsavailable')$type_flight = 'full_flight_date';
             	  else $type_flight = 'flight_date';
             ?>
 <div id="body_content" style="margin:0px;">
@@ -6,15 +7,17 @@
 <div id="your_Search">
 <div class="container">
 <?php 
+	$type = $type_flight;
 	if($type_flight == 'full_flight_date')
 	{
 		include_once 'includes/change_search_hotels.php';
 	}
 	else{
+		
 		include_once 'includes/change_search_flight_only.php';
 	}
 ?> 
- <div  class="col-sm-2" style="width: 100.666667%;
+ <!-- <div  class="col-sm-2" style="width: 100.666667%;
     margin-top: -89px;">
    
           <div style="display: block;" id="dvToggle" class=""> 
@@ -52,10 +55,10 @@
   
   
   
-<!--/STEPS-->
+
 
 </div>
-
+ -->
 
 
 <div class="clearfix"></div>

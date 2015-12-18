@@ -20,7 +20,7 @@ class Welcome extends CI_Controller {
 	 */
 	
 	public function __construct()
-	{	
+	{			
 		parent::__construct();	
 		$this->load->library('Layouts');
 		$this->layouts->add_include($this->config->item('header_css'));
@@ -45,7 +45,25 @@ class Welcome extends CI_Controller {
 	public function index()
 	{	
 		$data = array();
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/parallax-slider/jquery.cslider.js','js/jquery.fancybox.pack.js','js/script-home.js'));
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+				'css/jquery-ui.css',
+				'css/font-awesome.min.css',
+				'css/google_font.css',
+				'css/custom.css',
+				'css/responsive.css',
+				'css/menu.css',
+				'css/preview.min.css',
+				'css/bxslider/jquery.bxslider.css',
+				'css/jquery.fancybox.css',
+				'css/popup_fancy.css',
+				'js/jquery-ui.js',
+				'js/jquery.blockUI.js',
+				'js/responsee.js',
+				'js/responsiveslides.min.js',
+				'js/bxslider/jquery.bxslider.js',
+				'js/parallax-slider/jquery.cslider.js',
+				'js/jquery.fancybox.pack.js',
+				'js/script-home.js'));
 		$this->layouts->set_title('Home');
 		$results = array();		
 		/************fetching departure airports**************/		
@@ -426,34 +444,8 @@ class Welcome extends CI_Controller {
 	public function loadFlightDataFun($service_url,$u_selected_date,$row)
 	{		
 		$data= array();$results=array();
-		$results['controller']=$this;
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/jquery.fancybox.css','css/style.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script.js'));
-		$this->layouts->set_title('Search Page');
-		$results['suppliers_list'] = array(
-				'AVRO' => '/images/AVROF.gif',
-				'EJET' => '/images/EASYJET.gif',
-				'NFFT' => '/images/NORWAIR.jpg',
-				'MNFT' => '/images/FLYM.gif',
-				'EJFT' => '/images/AVROF.gif',
-				'MONA' => '/images/FLYM.gif',
-				'MNNF' => '/images/MNNF.gif',
-				'NORW' => '/images/NORWAIR.jpg',
-				'EJNF' => '/images/EJNF.gif',
-				'FLTH' => '/images/THOMASCOOK.png',
-				'TFFT' => '/images/THOMSON.gif',
-				'FTNF' => '/images/FTNF.gif',
-				'TFNF' => '/images/TFNF.gif',
-				'THFL' => '/images/THFL.gif',
-				'TOHO' => '/images/TOHO.gif',
-				'RYAT' => '/images/logo_ryan_txt.png',
-				'JET2' => '/images/JET2.gif',
-				'AERL' => '/images/AERL.gif',
-				'EJTF' => '/images/EJTF.gif',
-				'NFTF' => '/images/NFTF.gif',
-				'FTTF' => '/images/FTTF.gif',
-				'MNTF' => '/images/MNTF.gif'
-		
-		);
+		$results['controller']=$this;		
+		$results['suppliers_list'] = dept_images();
 		//$this->cache->delete($service_url);
 		
 			$count = 0;$flex = 3;
@@ -584,7 +576,15 @@ class Welcome extends CI_Controller {
 				changeSearch($results);
 				/******************end***********/
 				
-				//echo '<pre>';print_r($results);exit;
+				$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+				'css/jquery-ui.css','css/font-awesome.min.css',
+				'css/google_font.css','css/custom.css','css/responsive.css',
+				'css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css',
+				'css/flight_result.css','css/jquery.fancybox.css','css/style.css','css/popup_fancy.css',
+				'js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js',
+				'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
+				'js/jquery.fancybox.pack.js','js/script.js'));
+		$this->layouts->set_title('Search Page');
 				$this->layouts->view('available_flights_view1',$results);
 			}
 			else
@@ -1444,6 +1444,7 @@ class Welcome extends CI_Controller {
 	}
 	
 	public function bulkSubmit(){
+		
 		if($this->input->post()){
 			$postData = $this->input->post();			
 		//	echo "<pre>";print_r($postData['mformData']['Fly_From']);exit;
@@ -1463,8 +1464,13 @@ class Welcome extends CI_Controller {
 				
 				if($uinfo['name'] == 'email')$from = $uinfo['value'];
 				if($uinfo['name'] == 'first_name')$sendername = $uinfo['value'];
+				if($uinfo['name'] == 'fly_from' && is_numeric($uinfo['value'])){
+					
+				}
+				else{
+					$db_data[$uinfo['name']] = $uinfo['value'];
+				}
 				
-				$db_data[$uinfo['name']] = $uinfo['value'];
 			}
 			$body .= '<p>Here is the search information :</p><br/>';
 			$body .= $search;
