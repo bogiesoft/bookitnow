@@ -196,6 +196,9 @@ class Hotel extends CI_Controller {
 			$data['change_search_info']['query'] = $query;
 			$data['change_search_info']['row'] = $rows[0];
 			$data['controller'] = $this;
+			$data['h_cur'] = 'current';
+			$data['b_cur'] = '';
+			$data['h_done'] = '';
 			//End
 			 		
 		//	echo '<pre>';print_r($data['change_search_info']);exit;
@@ -562,6 +565,15 @@ class Hotel extends CI_Controller {
  				$data['change_search_info']['query'] = $query;
  				$data['change_search_info']['row'] = $rows[0];
  				$data['controller'] = $this;
+ 				$data['fcls'] = 'done';
+ 				$data['hcls'] = 'current';
+ 				$data['ecls'] = '';
+ 				$data['bcls'] = '';
+ 				$data['f_done'] = 'done';
+ 				$data['h_done'] = '';
+ 				$data['e_done'] = '';
+ 				$data['b_done'] = '';
+ 				
  				//End				
  			
 				$this->layouts->view('available_hotels_view',$data);

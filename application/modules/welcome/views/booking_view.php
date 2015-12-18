@@ -1,4 +1,8 @@
+
 <div class="clearfix"></div>
+<div id="your_Search">
+<div class="container">
+<?php include_once 'includes/change_search_hotels.php';?>
 <div id="body_content">
 <div class="container">
 <!-- booknow start here-->

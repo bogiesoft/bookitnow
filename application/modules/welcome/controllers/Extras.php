@@ -42,6 +42,7 @@ class Extras extends CI_Controller {
 		$data['seg'] = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
 		if(!empty($data['seg']))
 		{
+			
 			$this->load->model('PhaseFlightOrHotel');
 			$this->load->model('AlLugagePrice');
 			$this->load->model('SavingsNExtFields');
@@ -86,6 +87,34 @@ class Extras extends CI_Controller {
 			
 			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','css/jquery.fancybox.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
 			$this->layouts->set_title('Extras');
+			
+			
+			//For change search poopulations
+			$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+			foreach ($departures as $departure)
+			{
+				$code = (array)$departure->attributes()->code;
+				$name = (array)$departure->attributes()->name;
+				$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+				$data['departures'][$code[0]] = $name[0];
+			}
+			$parts = parse_url($data['seg'][0]['service_url']);
+			parse_str($parts['query'], $query);
+			$data['change_search_info']['query'] = $query;
+			$data['change_search_info']['row'] = $data['seg'][0];
+			$data['controller'] = $this;
+			$data['type'] = 'pack_hotel';
+			
+			$data['fcls'] = '';
+			$data['hcls'] = '';
+			$data['ecls'] = 'current';
+			$data['bcls'] = '';
+			$data['f_done'] = 'done';
+			$data['h_done'] = 'done';
+			$data['e_done'] = '';
+			$data['b_done'] = '';
+			//End			
+			
 			$this->layouts->view('extras_view',$data);
 		}
 		else
@@ -567,6 +596,26 @@ class Extras extends CI_Controller {
 			{
 				$tot_sel += $hobj['@attributes']['sellpricepp'];
 			}
+			//For change search poopulations
+			$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+			foreach ($departures as $departure)
+			{
+				$code = (array)$departure->attributes()->code;
+				$name = (array)$departure->attributes()->name;
+				$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+				$data['departures'][$code[0]] = $name[0];
+			}
+			$parts = parse_url($data['seg'][0]['service_url']);
+			parse_str($parts['query'], $query);
+			$data['change_search_info']['query'] = $query;
+			$data['change_search_info']['row'] = $data['seg'][0];
+			$data['controller'] = $this;
+			$data['type'] = 'pack_hotel';
+			
+			$data['h_cur'] = '';
+			$data['b_cur'] = 'current';
+			$data['h_done'] = 'done';
+			//End
 			$data['res_sel_price'] = $tot_sel / count($data['hobjs']);	
 			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
 			$this->layouts->set_title('Book Hotel');
@@ -619,7 +668,31 @@ class Extras extends CI_Controller {
 			{
 				$tot_sel += $hobj['@attributes']['sellpricepp'];
 			}
-			
+			//For change search poopulations
+			$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+			foreach ($departures as $departure)
+			{
+				$code = (array)$departure->attributes()->code;
+				$name = (array)$departure->attributes()->name;
+				$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+				$data['departures'][$code[0]] = $name[0];
+			}
+			$parts = parse_url($data['seg'][0]['service_url']);
+			parse_str($parts['query'], $query);
+			$data['change_search_info']['query'] = $query;
+			$data['change_search_info']['row'] = $data['seg'][0];
+			$data['controller'] = $this;
+			$data['type'] = 'pack_hotel';
+				
+			$data['fcls'] = 'done';
+			$data['hcls'] = 'done';
+			$data['ecls'] = 'done';
+			$data['bcls'] = 'current';
+			$data['f_done'] = 'done';
+			$data['h_done'] = 'done';
+			$data['e_done'] = 'done';
+			$data['b_done'] = '';
+			//End
 			
 			/*
 			 * Selection block
@@ -1031,6 +1104,7 @@ public function book_flight()
 		if(!empty($row = $this->UserSearch->fetch_a_search(array('type_search'=>'flight_hotel','url_hash' => $this->uri->segment(2)))))
 		{
 			$data['seg'] = $row;
+			
 			$data['hobjs'] = json_decode($row[0]['pack_info'],true);
 			
 			$tot_sel=$data['hobjs']['@attributes']['sellpricepp'];
@@ -1157,6 +1231,26 @@ public function book_flight()
 			</div>
 					';
 	/**************total*******************************/
+	
+	//For change search poopulations
+	$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+	
+	foreach ($departures as $departure)
+	{
+		$code = (array)$departure->attributes()->code;
+		$name = (array)$departure->attributes()->name;
+		$data['filtered_departures'] = seperatorFlights($code[0],$name[0]);
+		$data['departures'][$code[0]] = $name[0];
+	}
+	$parts = parse_url($row[0]['service_url']);
+	parse_str($parts['query'], $query);
+	$data['change_search_info']['query'] = $query;
+	$data['change_search_info']['row'] =$row[0];
+	$data['controller'] = $this;
+	$data['fcls'] = '';
+	$data['bcls'] = 'current';
+	$data['f_done'] = 'done';
+	//End
 	/**************end*******************************/
 	$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery-ui.css','css/customeffects','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
 	$this->layouts->set_title('Book Hotel');

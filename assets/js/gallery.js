@@ -145,11 +145,32 @@ $(function() {
 		}, 5000);
 }());
 
+function generateLeastOffers(e){
+	blockSearchingTabs();
+	var request_data = $('#calendar_form').serializeArray();
+	$.post( baseUrl + "welcome/deals/calendarDeals",request_data, function( data ) {		
+		$('#dates_base').html(data);		
+		//unblockSearchingTabs();
+	});	
+	return false;
+}
 
+function blockSearchingTabs() {
+    $.blockUI.defaults.css = {};
+    $('#dates_base').block({
+        message: '<div><img src="/images/loader-bar.gif" alt=""  width="225px"/></div>',
+        overlayCSS: { backgroundColor: '#fff' }
+    });
+}
+//close popup once get the ajax response
+function unblockSearchingTabs() {
+    $('#dates_base').unblock();
+}
+/*
 function monthCal(e){
 	var request_data = {'month_cal' : $(e).val()};	
 	$.post( baseUrl + "welcome/deals/calendarDeals",request_data, function( data ) {
 		$('#dates_base').html(data);
 		//alert(data)
 	});		
-}
+}*/

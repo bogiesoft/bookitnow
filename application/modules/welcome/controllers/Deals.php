@@ -25,7 +25,7 @@ class Deals extends CI_Controller {
 		$this->load->library('Layouts');
 		$this->layouts->add_include($this->config->item('header_css'));
 		$this->layouts->add_include($this->config->item('header_js'));
-		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+		//$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->load->helper(array('form','url','common'));
 		$this->load->model('UserSearch');
 		
@@ -111,73 +111,80 @@ class Deals extends CI_Controller {
 		$this->layouts->view('deals/dynamicResort',$data);
 	}
 	
-	public function dynamicDeals(){
+	public function dynamicDeals()
+	{
 		$data = array();
 		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
-				'css/jquery-ui.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/custom.css',
-				'css/responsive.css',
-				'css/menu.css',
-				'css/preview.min.css',
-				'css/bxslider/jquery.bxslider.css',
-				'css/jquery.fancybox.css',
-				'css/mamaison.css',
-				'css/tenerife-holidays.css',				
-				'css/slideshow.css',				
-				'js/jquery-ui.js',
-				'js/jquery.blockUI.js',
-				'js/responsee.js',
-				'js/bxslider/jquery.bxslider.js',
-				'js/jquery.fancybox.pack.js',
-				'js/gallery.js',				
-				'js/script-home.js'));
+				'css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css',
+				'css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css',
+				'css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','css/mamaison.css',
+				'css/tenerife-holidays.css','css/slideshow.css','js/jquery-ui.js',
+				'js/jquery.blockUI.js','js/responsee.js','js/bxslider/jquery.bxslider.js',
+				'js/jquery.fancybox.pack.js','js/gallery.js','js/script-home.js'));
+		for($i=0;$i<12;$i++){
+			$data['calendar']['months'][date('m-Y', strtotime('+'.$i.' month'))] = date('M Y', strtotime('+'.$i.' month'));
+		}
+		$departures = new SimpleXMLElement(download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
+		
+		foreach ($departures as $departure)
+		{
+			$code = (array)$departure->attributes()->code;
+			$name = (array)$departure->attributes()->name;
+			$data['calendar']['filtered_departures'] = seperatorFlights($code[0],$name[0]);			
+		}	
+		$input_cal_info = array('month_cal' => date('m').'-'.date('Y'));
+		$data['calendar']['datesInfo'] = $this->loadDates($input_cal_info);
+		$data['calendar']['nights_limit'] = 21;
+		$data['calendar']['book_types'] = array('fh'=>'Flights & Hotel','h' => 'Just Hotel','f'=>'Just Flight');		
 		$this->layouts->set_title('Home');
 		$this->layouts->view('deals/dynamicDeals',$data);
 	}
-	public  function calendarDeals(){			
-		// show the dates array
-		
-		if($this->input->post()){		
-			$month_arr = explode('-',$this->input->post('month_cal'));
-			$num_of_days = cal_days_in_month(CAL_GREGORIAN, $month_arr[0], $month_arr[1]);
-			$html = '';
-			$months = array('MON','TUE','WED','THU','FRI','SAT','SUN');
-			$month_name = date('M',strtotime($month_arr[1] . "-" . $month_arr[0] . "-01"));
-			for($i = 1; $i <= $num_of_days; $i++)
-			{		
-				$day_name = date('D',strtotime($month_arr[1] . "-" . $month_arr[0] . "-" . str_pad($i, 2, '0', STR_PAD_LEFT)));
-				if($i == 1){
-					$fgaps = array_search(strtoupper($day_name),$months);				
-					for ($j=1;$j<=$fgaps;$j++){
-						$html .= '<span>
-		              		<div class="calendar_span calendar-price calendar_best_price">';
-							$html .=  '</div>
-	              	</span>';
-					}
-				}
-				$html .= '<span>
-	              <div class="calendar_span calendar-price calendar_best_price">
-						<div>
-								<a>
-									<small class="date"> '.$i.' '.$month_name.'</small> 
-									<small class="from">from</small>
-			                  		<div class="price" style="color:#F19412; font-weight:bold;"> <b>�119</b> </div>
-			                  	</a> 
-							</div>
-					</div>
-              	</span>';
-				
-				//if(strtoupper($day_name) == 'SUN')$html .= '<br>';
-				//$dates[] = $month_arr[1] . "-" . $month_arr[0] . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
-				
-			}
-			echo $html;exit;
-			//echo "<pre>";print_r($dates);exit;
+	
+	public  function calendarDeals(){	
+		if($this->input->post()){
+			//echo "<pre>";print_r($this->input->post());exit;
+			echo $this->loadDates($this->input->post());exit;			
 		}
 	}
 	
+	public function loadDates($input)
+	{
+		$month_arr = explode('-',$input['month_cal']);
+		$num_of_days = cal_days_in_month(CAL_GREGORIAN, $month_arr[0], $month_arr[1]);
+		$html = '';
+		$months = array('MON','TUE','WED','THU','FRI','SAT','SUN');
+		$month_name = date('M',strtotime($month_arr[1] . "-" . $month_arr[0] . "-01"));
+		for($i = 1; $i <= $num_of_days; $i++)
+		{
+			$day_name = date('D',strtotime($month_arr[1] . "-" . $month_arr[0] . "-" . str_pad($i, 2, '0', STR_PAD_LEFT)));
+			if($i == 1){
+				$fgaps = array_search(strtoupper($day_name),$months);
+				for ($j=1;$j<=$fgaps;$j++){
+					$html .= '<span>
+		              		<div class="calendar_span calendar-price calendar_best_price">';
+					$html .=  '</div>
+	              	</span>';
+				}
+			}
+			$html .= '<span>
+	              <div class="calendar_span calendar-price calendar_best_price">
+						<div>
+								<a>
+									<small class="date"> '.$i.' '.$month_name.'</small>
+									<small class="from">from</small>
+			                  		<div class="price" style="color:#F19412; font-weight:bold;"> <b>�119</b> </div>
+			                  	</a>
+							</div>
+					</div>
+              	</span>';
+		
+			//if(strtoupper($day_name) == 'SUN')$html .= '<br>';
+			//$dates[] = $month_arr[1] . "-" . $month_arr[0] . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+		
+		}
+		return $html;
+		
+	}
 	
 	
 	

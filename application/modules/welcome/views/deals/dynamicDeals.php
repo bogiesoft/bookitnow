@@ -94,67 +94,59 @@
       </div>
       <div class="" style="">
         <div class="bg_1 clearfix padded txt_white">
+          <form method="post" id="calendar_form">
           <div class="option type" style="display: inline-block; font-size: 11px;">
             <label style="color:#fff;">I'd Like to Book:</label>
             <br>
-            <select name="ctl00$cphContent$ucCalendarDeals$ddlTripType" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphContent$ucCalendarDeals$ddlTripType\',\'\')', 0)" id="cphContent_ucCalendarDeals_ddlTripType">
-              <option selected="selected" value="fh">Flights &amp; Hotel</option>
-              <option value="h">Just Hotel</option>
+            <select name="book_type" onchange="generateLeastOffers();">
+            	<?php foreach ($calendar['book_types'] as $key => $book_type){
+            		echo '<option value="'.$key.'">'.$book_type.'</option>';
+            	}?>
             </select>
           </div>
-          <div id="cphContent_ucCalendarDeals_divFlyFrom" class="option from" style="display: inline-block; font-size: 11px;">
+          <div class="option from" style="display: inline-block; font-size: 11px;">
             <label style="color:#fff;">Traveling From:</label>
             <br>
-            <select name="ctl00$cphContent$ucCalendarDeals$ddlDestination" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphContent$ucCalendarDeals$ddlDestination\',\'\')', 0)" id="cphContent_ucCalendarDeals_ddlDestination">
-              <option selected="selected" value="LGW/LTN/STN/LHR/SEN/LCY">Any London</option>
-              <option value="BFS/BHD">Belfast</option>
-              <option value="EMA/BHX">Midlands</option>
-              <option value="NCL/MME">North East</option>
-              <option value="MAN/LPL/EMA/DSA/LBA/BLK/HUY">North West</option>
-              <option value="GLA/PIK/EDI/ABZ/INV">Scotland</option>
-              <option value="BRS/EXT/CWL/BOH/SOU/EXE">South West</option>
+            <select name="fly_from" onchange="generateLeastOffers();">
+            	<?php 
+            	foreach($calendar['filtered_departures'] as $key => $val)
+            	{
+            		//echo "<option value='-1'>".$key."</option>";
+            		$opt_val_str = '';
+            		foreach($val as $key1 => $val1)
+            		{
+            			$opt_val_str .= $key1.'|';
+            		}
+            		echo "<option value=".substr($opt_val_str, 0, -1).">".$key." Airports</option>";
+            	}
+            	?>       
             </select>
           </div>
           <div class="option nights" style="display: inline-block; font-size: 11px;">
             <label style="color:#fff;">Nights:</label>
             <br>
-            <select name="ctl00$cphContent$ucCalendarDeals$ddlNight" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphContent$ucCalendarDeals$ddlNight\',\'\')', 0)" id="cphContent_ucCalendarDeals_ddlNight">
-              <option value="1">1</option>
-              <option selected="selected" value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+            <select name="nights" onchange="generateLeastOffers();">
+             <?php for($i=1;$i<=$calendar['nights_limit'];$i++){
+             	echo '<option value="'.$i.'">'.$i.'</option>';
+             }?>
             </select>
           </div>
           <div class="option month" style="display: inline-block; font-size: 11px;">
             <label style="color:#fff;">Month:</label>
             <br>
-            <select name="ctl00$cphContent$ucCalendarDeals$ddlMonthYear" onchange="monthCal(this)" >
-              <option value="12-2015">Dec 2015</option>
-              <option value="01-2016">Jan 2016</option>
-              <option value="02-2016">Feb 2016</option>
-              <option value="03-2016">Mar 2016</option>
-              <option value="04-2016">Apr 2016</option>
-              <option value="05-2016">May 2016</option>
-              <option value="06-2016">Jun 2016</option>
-              <option value="07-2016">Jul 2016</option>
-              <option value="08-2016">Aug 2016</option>
-              <option value="09-2016">Sep 2016</option>
-              <option value="10-2016">Oct 2016</option>
-              <option value="11-2016">Nov 2016</option>
+            <select name="month_cal" onchange="generateLeastOffers();" >
+            	<?php foreach($calendar['months'] as $value => $desc)
+            		{
+            			echo '<option value="'.$value.'">'.$desc.'</option>';
+            		}
+            	?>            
             </select>
-          </div>
-          <div class="option nights" style="display: none;">
-            <label>Share:</label>
-            <br>
-            <select name="ctl00$cphContent$ucCalendarDeals$ddlShare" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphContent$ucCalendarDeals$ddlShare\',\'\')', 0)" id="cphContent_ucCalendarDeals_ddlShare">
-              <option selected="selected" value="2A">2A</option>
-            </select>
-          </div>
+          </div> 
+          </form>        
         </div>
         <div class="calendar padded drop_light bg_white"> 
           <!--GRIDVIEW-->
-          <div> <span id="cphContent_ucCalendarDeals_dlstCalendar" style="display:inline-block;border-width:0px;width:100%;"><span>
+          <div> <span style="display:inline-block;border-width:0px;width:100%;"><span>
             <div class="clear clearfix grey">
               <div class="bg_1 padded txt_white" style="display: none;"> <strong style="text-transform: uppercase;"> <span id="cphContent_ucCalendarDeals_dlstCalendar_lblMonthYear">Feb 2016</span></strong> </div>
               <div class="calendar_span day-header">Mon</div>
@@ -167,187 +159,7 @@
               
               <br>
               <div id="dates_base">
-              <span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_0" class="calendar_span calendar-price calendar_best_price">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_0"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_0" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl01$lbtnprice','')"> <small class="date"> 01 Feb</small> <small class="from">from</small>
-                  <div class="price" style="color:#F19412; font-weight:bold;"> <b>£119</b> </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_1" class="calendar_span calendar-price calendar_best_price">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_1"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_1" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl02$lbtnprice','')"> <small class="date"> 02 Feb</small> <small class="from">from</small>
-                  <div class="price"> £119 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_2" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_2"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_2" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl03$lbtnprice','')"> <small class="date"> 03 Feb</small> <small class="from">from</small>
-                  <div class="price"> £127 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_3" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_3"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_3" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl04$lbtnprice','')"> <small class="date"> 04 Feb</small> <small class="from">from</small>
-                  <div class="price"> £131 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_4" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_4"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_4" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl05$lbtnprice','')"> <small class="date"> 05 Feb</small> <small class="from">from</small>
-                  <div class="price"> £159 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_5" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_5"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_5" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl06$lbtnprice','')"> <small class="date"> 06 Feb</small> <small class="from">from</small>
-                  <div class="price"> £140 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_6" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_6"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_6" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl07$lbtnprice','')"> <small class="date"> 07 Feb</small> <small class="from">from</small>
-                  <div class="price"> £123 </div>
-                  </a> </div>
-              </div>
-              </span><br>
-              <span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_7" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_7"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_7" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl08$lbtnprice','')"> <small class="date"> 08 Feb</small> <small class="from">from</small>
-                  <div class="price"> £123 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_8" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_8"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_8" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl09$lbtnprice','')"> <small class="date"> 09 Feb</small> <small class="from">from</small>
-                  <div class="price"> £123 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_9" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_9"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_9" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl10$lbtnprice','')"> <small class="date"> 10 Feb</small> <small class="from">from</small>
-                  <div class="price"> £123 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_10" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_10"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_10" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl11$lbtnprice','')"> <small class="date"> 11 Feb</small> <small class="from">from</small>
-                  <div class="price"> £149 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_11" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_11"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_11" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl12$lbtnprice','')"> <small class="date"> 12 Feb</small> <small class="from">from</small>
-                  <div class="price"> £180 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_12" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_12"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_12" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl13$lbtnprice','')"> <small class="date"> 13 Feb</small> <small class="from">from</small>
-                  <div class="price"> £191 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_13" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_13"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_13" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl14$lbtnprice','')"> <small class="date"> 14 Feb</small> <small class="from">from</small>
-                  <div class="price"> £149 </div>
-                  </a> </div>
-              </div>
-              </span><br>
-              <span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_14" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_14"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_14" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl15$lbtnprice','')"> <small class="date"> 15 Feb</small> <small class="from">from</small>
-                  <div class="price"> £145 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_15" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_15"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_15" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl16$lbtnprice','')"> <small class="date"> 16 Feb</small> <small class="from">from</small>
-                  <div class="price"> £145 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_16" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_16"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_16" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl17$lbtnprice','')"> <small class="date"> 17 Feb</small> <small class="from">from</small>
-                  <div class="price"> £149 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_17" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_17"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_17" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl18$lbtnprice','')"> <small class="date"> 18 Feb</small> <small class="from">from</small>
-                  <div class="price"> £171 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_18" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_18"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_18" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl19$lbtnprice','')"> <small class="date"> 19 Feb</small> <small class="from">from</small>
-                  <div class="price"> £185 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_19" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_19"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_19" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl20$lbtnprice','')"> <small class="date"> 20 Feb</small> <small class="from">from</small>
-                  <div class="price"> £129 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_20" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_20"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_20" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl21$lbtnprice','')"> <small class="date"> 21 Feb</small> <small class="from">from</small>
-                  <div class="price"> £125 </div>
-                  </a> </div>
-              </div>
-              </span><br>
-              <span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_21" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_21"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_21" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl22$lbtnprice','')"> <small class="date"> 22 Feb</small> <small class="from">from</small>
-                  <div class="price"> £123 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_22" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_22"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_22" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl23$lbtnprice','')"> <small class="date"> 23 Feb</small> <small class="from">from</small>
-                  <div class="price"> £125 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_23" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_23"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_23" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl24$lbtnprice','')"> <small class="date"> 24 Feb</small> <small class="from">from</small>
-                  <div class="price"> £125 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_24" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_24"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_24" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl25$lbtnprice','')"> <small class="date"> 25 Feb</small> <small class="from">from</small>
-                  <div class="price"> £139 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_25" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_25"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_25" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl26$lbtnprice','')"> <small class="date"> 26 Feb</small> <small class="from">from</small>
-                  <div class="price"> £159 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_26" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_26"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_26" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl27$lbtnprice','')"> <small class="date"> 27 Feb</small> <small class="from">from</small>
-                  <div class="price"> £139 </div>
-                  </a> </div>
-              </div>
-              </span><span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_27" class="calendar_span calendar-price calendar_best_price">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_27"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_27" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl28$lbtnprice','')"> <small class="date"> 28 Feb</small> <small class="from">from</small>
-                  <div class="price"> £119 </div>
-                  </a> </div>
-              </div>
-              </span><br>
-              <span>
-              <div id="cphContent_ucCalendarDeals_dlstCalendar_dvBox_28" class="calendar_span calendar-price ">
-                <div id="cphContent_ucCalendarDeals_dlstCalendar_Panel1_28"> <a id="cphContent_ucCalendarDeals_dlstCalendar_lbtnprice_28" href="javascript:__doPostBack('ctl00$cphContent$ucCalendarDeals$dlstCalendar$ctl29$lbtnprice','')"> <small class="date"> 29 Feb</small> <small class="from">from</small>
-                  <div class="price"> £125 </div>
-                  </a> </div>
-              </div>
-              </span>
-              </div>
-              <br>
+              	<?php echo $calendar['datesInfo'];?>                     
             </div>
           </div>
           <!--GRIDVIEW--> 

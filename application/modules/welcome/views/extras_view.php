@@ -1,21 +1,4 @@
-<div class="hide_mobile hide_tablet bg_grey border_b">
-     <div class="gridContainer ">
-       <!--STEPS-->
-      <ul class="fluidList steps fh clearfix">
-          <li class=""><strong class="done">1. Select Flights </strong></li>
-          <li class=""><strong class="done">2. Select Hotel</strong></li>
-          <li class=""><strong class="done">3. Savings &amp; Extras</strong></li>
-          <li class="current"><strong>4. Book</strong></li>
-      </ul>
-  <!--/STEPS-->
-
-                        
-
-                    
-                    
-                    
-                </div>
-            </div>
+<?php include_once 'includes/change_search_hotels.php';?>
 <div id="body_content">
 <div class="container" >
 

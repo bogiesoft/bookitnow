@@ -146,34 +146,19 @@
 
 <div id="select_names">
 <div class="container">
-<!--STEPS
-<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
+
+	<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
       <div class="gridContainer ">
-    <ul class="fluidList steps fh clearfix">
-    
-    	<?php if(@$row[0]['type_search'] == 'full_package'){ ?>
-    		
-    		<li class=""><strong class="done">1. Select Flights </strong></li>
-    		<li class="current"><strong>2. Select Hotel</strong></li>
-    		<li class=""><strong>3. Savings &amp; Extras</strong></li>
-    		<li class=""><strong>4. Book</strong></li>
-    		<li class="bg_1 clearfix">
-    			<div class="right"></div>
-    		</li>
-    		
-    	<?php }
-    	else 
-    	{?>
-          <li class="current"><strong>1. Select Hotel </strong></li>
-          <li class=""><strong class="done">2. Book</strong></li>          
-          <li class="bg_1 clearfix">
-        <div id="LP_DIV_1429625391320" class="right"></div>
-      </li>
-      <?php } ?>
-     </ul>
-  </div>
+	    <ul class="fluidList steps fh clearfix">   
+	          <li class="<?php echo $fcls;?>"><strong class="<?php echo $f_done;?>">1. Select Flight </strong></li>
+	          <li class="<?php echo $bcls;?>"><strong>2. Book</strong></li>          
+	          <li class="bg_1 clearfix">
+	        	<div id="LP_DIV_1429625391320" class="right"></div>
+	      	  </li>    
+	     </ul>
+  	  </div>
     </div>
--->
+
 
 </div>
 
@@ -185,52 +170,7 @@
 
 <div id="middle_conent">
 <div class="container">
-<div class="gridContainer clearfix"> 
-          <!--Search From Grid Info-->
-          <div style="display: none;">
-        <h3>Your Selections:</h3>
-        <div style="display: none;"> 1 rooms
-              2 adult(s)
-              <h5 class="blue"> <strong>Your Search</strong></h5>
-              02 October 2015, <span id="cphContent_ltrNoOfNights">7</span>Nights
-              <div class="row-margin-sm small"> London Airports
-            to
-            Benidorm<br>
-            02 October 2015<br>
-            <br>
-            <span id="cphContent_ltrHotelResortName">,Benidorm</span><br>
-            <span id="cphContent_ltrBoardType">All Inclusive</span><br>
-          </div>
-              <div class="row-margin-sm small">
-            <h6 class="left">Guide Price</h6>
-            <h6 class="right blue">£<span ></span><small>pp</small></h6>
-            <div class="clear"> </div>
-            <small class="left">flights guide price:</small><small class="right">£<span id="cphContent_ltrFlightPrice"></span>pp</small>
-            <div class="clear"> </div>
-            <small class="left">rooms guide price:</small><small class="right">£<span id="cphContent_ltrHotelPrice"></span>pp</small>
-            <div class="clear"> </div>
-          </div>
-            </div>
-      </div>
-          <!--Search From Grid Info--> 
-          <!--Search Info-->
-          <div style="display: none;">
-        <h5 class="blue"> <strong>Your Search</strong></h5>
-        <div class="row-margin-sm small"> London Airports
-              to
-              Benidorm<br>
-              02 October 2015<br>
-              7
-              Nights<br>
-              Any Star Rating<br>
-              1
-              rooms<br>
-              All Inclusive <br>
-              2 adult(s) </div>
-        <a href="#" class="button small">MODIFY SEARCH</a> </div>
-          <!--Search Info--> 
-          
-          <!-- /FILTER COLUMN-->
+
          
          <div id="rooms_div" style="display: none;">
   <h2>Rooms - Persons</h2>

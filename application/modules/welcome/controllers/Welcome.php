@@ -419,6 +419,9 @@ class Welcome extends CI_Controller {
 				$results['change_search_info']['query'] = $query;
 				$results['change_search_info']['row'] = $rows[0];
 				$results['controller'] = $this;
+				$results['fcls'] = 'current';
+				$results['bcls'] = '';
+				$results['f_done'] = '';
 				//End
 				//$t = findKey($results,'sellpricepp');
 			//	echo "<pre>";print_r($results);exit;
@@ -557,20 +560,20 @@ class Welcome extends CI_Controller {
 					$results['selected_date'] = $u_selected_date;
 				}
 		
-				/*$departures = new SimpleXMLElement($this->download_page('http://87.102.127.86:8005/search/websearch.exe?pageid=1&compid=1'));
-		
-				foreach ($departures as $departure)
-				{
-					$code = (array)$departure->attributes()->code;
-					$name = (array)$departure->attributes()->name;
-					$results['filtered_departures'] = $this->seperatorFlights($code[0],$name[0]);
-					$results['departures'][$code[0]] = $name[0];
-				}
-				*/
+				
 				$parts = parse_url($service_url);
 				parse_str($parts['query'], $query);
 				$results['change_search_info']['query'] = $query;
 				$results['change_search_info']['row'] = $row[0];
+				
+				$results['fcls'] = 'current';
+				$results['hcls'] = '';
+				$results['ecls'] = '';
+				$results['bcls'] = '';
+				$results['f_done'] = '';
+				$results['h_done'] = '';
+				$results['e_done'] = '';
+				$results['b_done'] = '';
 				
 				/************fetching departure airports**************/
 				changeSearch($results);

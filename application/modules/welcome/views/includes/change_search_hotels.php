@@ -165,36 +165,20 @@
 <div class="clearfix"></div>   
     <div style="display: block;" id="dvToggle" class=""> 
 		<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">     
-	    <?php if($type != 'hotel_only'){	  ?>
+	   
 		    <div class="gridContainer ">
 		    	<ul class="fluidList steps fh clearfix">
-		    	<?php     	
-			    	$f_done = ($controller->router->fetch_method() != 'fullFlightsavailable') ? 'class="done"' : 'class="current"';			    	
-			    ?>
-		    	 <li <?php echo $f_done;?>><strong>1. Select Flight</strong></li>
-		    	 <?php 
-		    	 	$f_done = ($controller->router->fetch_method() == 'full_available_hotels') ? 'class="done"' : '';
-	    			$current = ($controller->router->fetch_method() == 'full_available_hotels') ? 'class="current"' : '';
-	    		 ?>
-		          <li <?php echo $current;?>><strong>2. Select Hotel</strong></li>
-		          <li class=""><strong>3. Savings &amp; Extras</strong></li>
-		          <li class=""><strong>4. Book</strong></li>
+		    	
+		    	 <li class="<?php echo $fcls;?>"><strong class="<?php echo $f_done;?>">1. Select Flight</strong></li>		    	 
+		          <li class="<?php echo $hcls;?>"><strong class="<?php echo $h_done;?>">2. Select Hotel</strong></li>		        
+		          <li class="<?php echo $ecls;?>"><strong class="<?php echo $e_done;?>">3. Savings &amp; Extras</strong></li>
+		          <li class="<?php echo $bcls;?>"><strong class="<?php echo $b_done;?>">4. Book</strong></li>
 		          <li class="bg_1 clearfix">
 		        		<div class="right"></div>
 		      	  </li>
 		      	 </ul>
 		  	</div>
-	      	<?php } else { ?>
-	      	<div class="gridContainer1 ">
-		    	<ul class="fluidList steps fh clearfix">
-		      		<li class="current"><strong>1. Select Hotel </strong></li>
-		      		<li class=""><strong>2. Book</strong></li>
-			      	<li class="bg_1 clearfix">
-			        	<div class="right"></div>
-			      	</li>
-		       </ul>
-	  		</div>
-	      	<?php }?> 
+	      	
   		</div>
   	</div>
   </div>
