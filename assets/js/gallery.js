@@ -144,3 +144,12 @@ $(function() {
 		  $('#next-btn').trigger('click');
 		}, 5000);
 }());
+
+
+function monthCal(e){
+	var request_data = {'month_cal' : $(e).val()};	
+	$.post( baseUrl + "welcome/deals/calendarDeals",request_data, function( data ) {
+		$('#dates_base').html(data);
+		//alert(data)
+	});		
+}
