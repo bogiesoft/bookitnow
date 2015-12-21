@@ -1,7 +1,35 @@
-
-    <div class="content_bottom">
-     <div class="col-md-8 span_3">  					
-		   
+<section class="content-header">
+  <h1>Form Elements</h1>
+  <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="#">Forms</a></li>
+      <li class="active">General Elements</li>
+  </ol>
+</section>
+<section class="content" style="background:#fff;">
+    <div class="row">          
+      <!-- right column -->
+      <div class="col-md-8 ">
+         <!-- Horizontal Form -->
+         <div class="box box-info ">
+     	     <!-- /.box-header -->
+             <!-- form start -->             		
+           	 <form class="form-horizontal">
+                 <div class="box-body">        
+                    <label for="focusedinput" class="col-sm-2 control-label">Categories</label>
+					<div class="col-sm-10">
+						<select name="categories" class="form-control">
+						<?php 
+						foreach($categories as $cat)
+						{
+							echo "<option value=".$cat['id'].">".$cat['name']."</option>";
+						}
+						?>
+						</select>
+					</div>		    
+                  </div>                           
+             </form>
+          </div><!-- /.box -->	   
 		   	<!-- main -->
 			
 			<section class="ac-container" id="dvContent">
@@ -14,13 +42,14 @@
 				}
 				?>
 			</section>
-			
-			
-			
-			<div id="deals_div" style="display: none;">
+		</div><!--/.col (right) -->
+     </div>   <!-- /.row -->
+ </section>		
+
+<div id="deals_div" style="display: none;">
   <div class="img-title"><img src="<?php echo base_url();?>images/top-bg.jpg" alt="title-name"></div>
       <div>
-	    	 <form class="f-box" id="deal_extras_form" method="post">
+	    	 <form class="f-box" method="post" onsubmit="return deal_extras_form(this);">
 	    	    <div class="form-group">
 	    			<input type="text" class="form-control" placeholder="Feature - 1" name="feature_1" />
 	    		</div>	    			    		
@@ -30,10 +59,14 @@
 	    			<input type="text" class="form-control" placeholder="Feature - 3" name="feature_3" />
 	    		</div><div class="form-group">
 	    			<input type="text" class="form-control" placeholder="Feature - 4" name="feature_4" />
-	    		</div>	   		
-	    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
-	    	</form>    
-	    	
+	    		</div>	   	
+	    			<input type="hidden" name="mapper" />
+	    			<input type="hidden" name="hotel_name" />
+	    		<div class="box-footer">
+                    <button class="btn btn-info pull-right" type="submit" style="margin-top: 10px;float:right;"> Submit </button>
+	    			<a class="btn btn-default cancel"> Cancel </a>	
+                  </div>	    			    			
+	    	</form>     	
      </div>
   </div>     
 </div>
@@ -163,23 +196,47 @@
 	{	
 		if($(e).prop("checked") == true){
 			$.fancybox({
-                'href': '#deals_div'               
+                'href': '#deals_div',
+                'helpers'   : { 
+                    overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+                   }               
             });
-
-            $('#deal_extras_form')
+			$('[name="hotel_name"]').val($(e).next('span').text());
+			$('[name="mapper"]').val($(e).val()); 
+            $('.cancel').click(function(){
+				$(e).prop('checked',false);
+				$('.fancybox-close').trigger('click');
+            })
 		}
-		/*blockSearchingTabs();	
-		if($(e).prop("checked") == true){
-			var check = 1;
-		}
-		else
-		{
-			var check = 0;
-		}			
-		$.post('/admin/saveListingFun',{check_result:check,val:$(e).val(),cat:$('select[name="categories"]').val(),name:$(e).next('span').html(),arapts:$(e).attr('arrivals')},function(result){			
-			unblockSearchingTabs();
-		},'html');*/
+		else{
+			var req_data = {'mapper' : $(e).val()};
+			$.post('/admin/deletemanagerDeals',req_data,function(result){				
+				alert(result.message);			
+				return false;
+			},'json');			
+			return false;
+		}		
 	}
+
+	function deal_extras_form(obj){
+		var req_data = $(obj).serializeArray();		
+		$.post('/admin/savemanagerDeals',req_data,function(result){				
+			if(result.status == 'success'){
+				alert(result.message);
+			}
+			else if(result.status == 'fail')
+			{
+				alert(result.message);
+			}													
+			return false;
+		},'json');	
+		$('.fancybox-close').trigger('click');		
+		return false;
+	}
+
+
+
+	
 	//popup for block further search options during ajax request
 	function blockSearchingTabs() {
         $.blockUI.defaults.css = {};

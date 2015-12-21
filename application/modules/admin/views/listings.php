@@ -1,44 +1,52 @@
+<section class="content-header">
+  <h1>Form Elements</h1>
+  <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="#">Forms</a></li>
+      <li class="active">General Elements</li>
+  </ol>
+</section>
 
-    <div class="content_bottom">
-     <div class="col-md-8 span_3">	
-     
-    					 <form class="form-horizontal">
-								<div class="form-group">
-									<label for="focusedinput" class="col-sm-2 control-label">Categories</label>
-									<div class="col-sm-8">
-										<select name="categories" >
-											<?php 
-												foreach($categories as $cat)
-												{
-													echo "<option value=".$cat['id'].">".$cat['name']."</option>";
-												}
-											
-											?>
-										</select>
-									</div>									
-								</div>							
-							</form>
-		   
-		   	<!-- main -->
-			
-			<section class="ac-container" id="dvContent">
-				<?php
-				foreach ($countries['country'] as $country)
-				{
-					echo '<div><input class="country" id="country_'.$country['@attributes']['id'].'" name="accordion-1" type="checkbox" value='.$country['@attributes']['id'].' onchange="country(this)"/>
-					<label for="country_'.$country['@attributes']['id'].'" class="grid1">
-					<i></i>'.$country['@attributes']['name'].'</label><article class="ac-small" ><ul id="sub_'.$country['@attributes']['id'].'"></ul></article><div>';
-				}
-				?>
-			</section>
-<style>
-.regions{
-    color: #11AFE6;
-    font-weight: bold;
-    font-size: 16px;
-}
-</style>
-			
+<section class="content" style="background:#fff;">
+    <div class="row">          
+      <!-- right column -->
+      <div class="col-md-8 ">
+         <!-- Horizontal Form -->
+         <div class="box box-info ">
+     	     <!-- /.box-header -->
+             <!-- form start -->             		
+           	 <form class="form-horizontal">
+                 <div class="box-body">        
+                    <label for="focusedinput" class="col-sm-2 control-label">Categories</label>
+					<div class="col-sm-10">
+						<select name="categories" class="form-control">
+						<?php 
+						foreach($categories as $cat)
+						{
+							echo "<option value=".$cat['id'].">".$cat['name']."</option>";
+						}
+						?>
+						</select>
+					</div>		    
+                  </div>                           
+             </form>
+          </div><!-- /.box -->
+       
+
+	<!-- main -->
+	<section class="ac-container content" style="background:#fff;" id="dvContent">
+	<?php
+		foreach ($countries['country'] as $country)
+		{
+			echo '<div><input class="country" id="country_'.$country['@attributes']['id'].'" name="accordion-1" type="checkbox" value='.$country['@attributes']['id'].' onchange="country(this)"/>
+				<label for="country_'.$country['@attributes']['id'].'" class="grid1">
+				<i></i>'.$country['@attributes']['name'].'</label><article class="ac-small" ><ul id="sub_'.$country['@attributes']['id'].'"></ul></article><div>';
+		}
+	?>
+	</section>	
+	</div><!--/.col (right) -->
+     </div>   <!-- /.row -->
+ </section>
 <script type="text/javascript">
 	function country(e)
 	{	

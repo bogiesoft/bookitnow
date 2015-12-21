@@ -196,23 +196,28 @@ if( !function_exists('boardbasis') ) {
   }
   
   if( !function_exists('hotelsStr_fun') ) {
-  	function hotelsStr_fun($hotels,$tree = array())
+  	function hotelsStr_fun($hotels,$tree = array(),$ci)
   	{
+  		
   		
   		$str = '';
   		$cra = $tree[0] . '-' . $tree[1] . '-' . $tree[2] . '-'. $tree[3].'-';	//new
+  		
   		$count_hotel = 0;
   		foreach ($hotels as $key_hotel =>$hotel)
-  		{  	
-  			
+  		{ 
+  			$checked = '';
   			if ($key_hotel === '@attributes') {
-  				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['id']. "' onchange='checkMe(this)' /><span>". urldecode($hotel['name']) . '</span></li>';
+  				$row = $ci->ManagerChoices->fetch_a_search(array('countryid'=>$tree[0],'regionid'=>$tree[1],'areaid'=>$tree[2],'resortid'=>$tree[3],'hotelid'=>$hotel['id']));  				
+  				if(!empty($row))$checked = 'checked'; 			
+  				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['id']. "' $checked onchange='checkMe(this)' /><span>". urldecode($hotel['name']) . '</span></li>';
   				$count_hotel++;
   			}
   			if(!$count_hotel){
-  				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['@attributes']['id']. "' onchange='checkMe(this)' /><span>". urldecode($hotel['@attributes']['name']) . '</span></li>';
-  			}
-  			
+  				$row = $ci->ManagerChoices->fetch_a_search(array('countryid'=>$tree[0],'regionid'=>$tree[1],'areaid'=>$tree[2],'resortid'=>$tree[3],'hotelid'=>$hotel['@attributes']['id']));  				
+  				if(!empty($row))$checked = 'checked';  					
+  				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['@attributes']['id']. "' $checked onchange='checkMe(this)' /><span>". urldecode($hotel['@attributes']['name']) . '</span></li>';
+  			}  			
   		}
   		
   		return $str;

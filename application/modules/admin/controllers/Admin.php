@@ -23,15 +23,15 @@ class Admin extends CI_Controller {
 		//$hook =& load_class('Hooks', 'Authenticate');
 		//$hook->_call_hook('post_controller_constructor');
 		$this->load->library ( 'Layouts' );
-		$this->layouts->add_include ( $this->config->item ( 'header_css' ) );
-		$this->layouts->add_include ( $this->config->item ( 'header_js' ) );
+		$this->layouts->add_include (array('css/admin1/bootstrap.min.css','css/admin1/style.css','css/admin1/skin-blue.min.css'));
+		$this->layouts->add_include ( array('js/jquery.min.js','js/bootstrap.min.js','js/admin1/app.min.js'));
 		$this->load->helper (array( 'form', 'url', 'common') );
 	//	boookattach($this);
 		$this->load->model ( 'User' );
 		$this->load->library ( 'form_validation' );
 		
 	}
-	public function index() {
+	/*public function index() {
 		if ($this->input->post ()) {
 			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );
 			$this->form_validation->set_rules ( 'password_hash', 'Password', 'trim|required|min_length[3]' );
@@ -58,7 +58,13 @@ class Admin extends CI_Controller {
 		) );
 		$this->layouts->set_title ( 'Admin Login' );
 		$this->layouts->view ( 'login' );
+	}*/
+	public function index() {
+		$data = array();		
+		$this->layouts->set_title ( 'Admin Dashboard' );
+		$this->layouts->view ( 'dashboard',$data,'admin' );
 	}
+	
 	
 	public function dashboard() {
 		$this->layouts->add_include ( array (
@@ -74,22 +80,13 @@ class Admin extends CI_Controller {
 	}
 	public function listings() {
 		$data = array ();
-		$this->load->model ( 'Categories' );
-		$this->layouts->add_include(array('css/bxslider/jquery.bxslider.css','js/jquery.blockUI.js'));
+		$this->load->model ( 'Categories' );	
 		$data ['categories'] = $this->Categories->fetch_all ();
 		$depts_raw = new SimpleXMLElement ( download_page ( 'http://87.102.127.86:8005/search/websearch.exe?pageid=4&compid=1' ) );
 		$data ['countries'] = json_decode ( json_encode ( $depts_raw ), true );
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'css/admin/accordion.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js' 
+		$this->layouts->add_include ( array (			
+				'css/admin/accordion.css',				
+				'js/jquery.blockUI.js'
 		) );
 		$this->layouts->set_title ( 'Listings page' );
 		$this->layouts->view ( 'listings', $data, 'admin' );
@@ -98,23 +95,14 @@ class Admin extends CI_Controller {
 	
 	public function deals() {
 		$data = array ();
-		$this->load->model ( 'Categories' );	
-		$this->layouts->add_include(array('js/jquery.blockUI.js'));
+		$this->load->model ( 'Categories' );		
 		$depts_raw = new SimpleXMLElement ( download_page ( 'http://87.102.127.86:8005/search/websearch.exe?pageid=4&compid=1' ) );
 		$data ['countries'] = json_decode ( json_encode ( $depts_raw ), true );
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
+		$this->layouts->add_include ( array (			
 				'css/admin/accordion.css',
-				'css/jquery.fancybox.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js',
-				'js/jquery.fancybox.pack.js'
+				'css/jquery.fancybox.css',		
+				'js/jquery.fancybox.pack.js',
+				'js/jquery.blockUI.js'
 		) );
 		$this->layouts->set_title ( 'Deals page' );
 		$this->layouts->view ( 'deals', $data, 'admin' );
@@ -163,18 +151,7 @@ class Admin extends CI_Controller {
 	
 	public  function luggage_view()
 	{
-		$data = array ();
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
+		$data = array ();		
 		$this->load->model ( 'AlLugagePrice' );
 		$data['rows'] = $this->AlLugagePrice->getAll();		
 		$this->layouts->set_title ( 'Luggage view' );
@@ -568,6 +545,8 @@ class Admin extends CI_Controller {
 		
 		$str = '<ul>';
 		$tree = explode('-',$this->input->post ( 'mapng' ));
+		$this->load->model('ManagerChoices');
+		
 		//$tree = array(5,9,20,75);
 		
 		$depts_raw = new SimpleXMLElement ( download_page ( "http://87.102.127.86:8005/search/websearch.exe?pageid=5&compid=1&countryid=" . $tree[0] ) );
@@ -597,14 +576,14 @@ class Admin extends CI_Controller {
 										foreach ( $regions ['area'] ['resort'] as $key_resort => $resort ) {
 											
 											if ($key_resort === '@attributes') {
-												$str .= hotelsStr_fun($regions['area']['resort']['hotel'],$tree);
+												$str .= hotelsStr_fun($regions['area']['resort']['hotel'],$tree,$this);
 												$count_resort ++;
 													
 											}
 											if (! $count_resort) {
 												if($tree[3] == $resort ['@attributes'] ['id'])
 												{
-													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													$str .= hotelsStr_fun($resort['hotel'],$tree,$this);
 													break;
 												}
 												//$str .= hotelsStr_fun($regions['area']['resort']['hotel'],$tree);
@@ -630,16 +609,15 @@ class Admin extends CI_Controller {
 										$count_resort = 0;
 										foreach ( $area ['resort'] as $key_resort => $resort ) {
 											if ($key_resort === '@attributes') {
-												echo "hello";exit;
-												$count_resort ++;
-	
+												$str .= hotelsStr_fun($area['resort']['hotel'],$tree,$this);												
+												$count_resort ++;	
 											}
 											if (! $count_resort) {
 												
 												
 												if($tree[3] == $resort ['@attributes'] ['id'])
 												{
-													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													$str .= hotelsStr_fun($resort['hotel'],$tree,$this);
 													break;
 												}
 												
@@ -674,16 +652,14 @@ class Admin extends CI_Controller {
 										$count_resort = 0;
 										foreach ( $region ['area'] ['resort'] as $key_resort => $resort ) {
 											if ($key_resort === '@attributes') {
-	
-												echo "hello";exit;
-												$count_resort ++;
-	
+												$str .= hotelsStr_fun($region ['area'] ['resort']['hotel'],$tree,$this);												
+												$count_resort ++;	
 											}
 											if (! $count_resort) {
 	
 												if($tree[3] == $resort ['@attributes'] ['id'])
 												{
-													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													$str .= hotelsStr_fun($resort['hotel'],$tree,$this);
 													break;
 												}
 											}
@@ -713,7 +689,7 @@ class Admin extends CI_Controller {
 												
 												if($tree[3] == $resort ['@attributes'] ['id'])
 												{
-													$str .= hotelsStr_fun($resort['hotel'],$tree);
+													$str .= hotelsStr_fun($resort['hotel'],$tree,$this);
 													break;
 												}
 											}
@@ -1046,5 +1022,65 @@ class Admin extends CI_Controller {
 		$this->layouts->set_title ( 'Exytra category management' );
 		$this->layouts->view ( 'margins.php', $data, 'admin' );
 	}
+	
+	public function savemanagerDeals(){
+		$loc_arr = explode('-',$this->input->post('mapper'));
+		$array = array('countryid','regionid','areaid','resortid','hotelid');
+		$formData = $this->input->post();
+		$this->load->model('ManagerChoices');
+		$check_arr = array();
+		for($i=0;$i<count($array);$i++)
+		{
+			$formData[$array[$i]] = (int)$loc_arr[$i];
+			$check_arr[$array[$i]] = (int)$loc_arr[$i];
+		}
+		unset($formData['mapper']);
+		
+		$row = $this->ManagerChoices->fetch_a_search($check_arr);
+		
+		if(empty($row))
+		{
+			if($this->ManagerChoices->createRecord($formData))
+			{
+				echo json_encode(array('status'=>'success','message'=>'Record inserted successfully'));
+			}
+			else{
+				echo json_encode(array('status'=>'fail','message'=>'Something went wrong'));
+			}
+		}
+		else{
+			echo json_encode(array('status'=>'','message'=>'Something went wrong'));
+		}
+		exit;
+	}
+	
+	public function deletemanagerDeals(){
+		$array = array('countryid','regionid','areaid','resortid','hotelid');
+		$loc_arr = explode('-',$this->input->post('mapper'));
+		$where_arr = array();
+		for($i=0;$i<count($array);$i++)
+		{
+			$where_arr[$array[$i]] = $loc_arr[$i];
+		}
+		
+		$this->load->model('ManagerChoices');
+		$row = $this->ManagerChoices->fetch_a_search($where_arr);
+		
+		if(!empty($row))
+		{
+			if($this->ManagerChoices->deleteRow($row[0]['id']))
+			{
+				echo json_encode(array('status'=>'success','message'=>'Hotel deselected successfully'));
+			}
+			else{
+				echo json_encode(array('status'=>'success','message'=>'Something went wrong'));
+			}
+		}
+		exit;
+	}
+	
+	
+	
+	
 	
 }

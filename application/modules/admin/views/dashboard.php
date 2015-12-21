@@ -1,53 +1,67 @@
 
-<div id="wrapper">
-<!--top header start-------->
-<div class="top_bg">
-  <div class="container">
-    <div class="row">
-      <div class="top_left">
-        <ul>
-          <li class="top_link"><a href="<?php echo base_url();?>">Home </a></li>
-       	  <li class="top_link"><a href="<?php echo base_url();?>admin/logout">Logout</a></li>
-        </ul>
-      </div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <section class="content">
+        <div class="site-index">
+          <div class="" style="text-align:center;">
+            <h1>Welcome!</h1>
+            <p class="lead">Welcom to Book It Now backend work for updations...</p>
+          </div>
+          <div class="body-content">
+            <div class="row">
+              <div class="col-lg-4">
+                <h2>Heading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur.</p>
+              </div>
+              <div class="col-lg-4">
+                <h2>Heading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur.</p>
+              </div>
+              <div class="col-lg-4">
+                <h2>Heading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur.</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <h2>Heading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur.</p>
+              </div>
+              <div class="col-lg-4">
+                <h2>Heading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur.</p>
+              </div>
+              <div class="col-lg-4">
+                <h2>Heading</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                  fugiat nulla pariatur.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+    
+    <!-- Main content -->
+    <section class="content"> 
       
-    </div>
-  </div>
-</div>
-<!--top header end--------> 
-
-<!--header top start-------->
-
-
-<div class="header_top">
-  <div class="container">
-    <div class="row">
-     
-    </div>
-  </div>
-</div>
-
-<div class="clearfix"> </div>
-<!--header top end-------->
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="login">
-        <h1>Dashboard</h1>
-        <div class="login-bottom">
-          
-          <div class="social-icons">
-           <div class="col-sm-12">
-        <div class="logo" ><a href="#"><img src="<?php echo base_url();?>images/logo.png" ></a></div>
-      </div>
-      <div class="clearfix"></div>
-    </div>   
-    	
-      </div>
-    </div>
-  </div>
-  <div class="clearfix"></div>
-  </div>
-</div>
-
+      <!-- Your Page Content Here --> 
+      
+    </section>
