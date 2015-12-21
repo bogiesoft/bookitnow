@@ -14,6 +14,7 @@ define("BOOKINFO_TABLE", "booking_info");
 define("EXTRA_CATEGORIES_TABLE", "extra_categories");
 define("OPTIONS", "options");
 define("BULKBOOKING", "bulk_booking");
+define("MANAGERCHOICES", "manager_chioces");
 
 
 define("CONTACTSADMINEMAIL", "satya@expertwebworx.com");
