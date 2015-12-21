@@ -1334,10 +1334,11 @@ class Welcome extends CI_Controller {
 					$newdata = array (
 							'id' => $row [0] ['id'],
 							'email' => $row [0] ['email'],
+							'name' => $row[0]['first_name'].' '.$row[0]['last_name'],
 							'logged_in' => TRUE 
 					);
 					$this->session->set_userdata ( $newdata );
-					redirect ( base_url () . 'admin/listings' );
+					redirect ( base_url () . 'admin/index' );
 				} else {
 					$this->session->set_flashdata ( 'message', 'Sorry,Invalid credentials' );
 					redirect ( base_url () . 'admin/' );

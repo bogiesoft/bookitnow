@@ -19,14 +19,11 @@ class Admin extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function __construct() {
-		parent::__construct ();
-		//$hook =& load_class('Hooks', 'Authenticate');
-		//$hook->_call_hook('post_controller_constructor');
+		parent::__construct ();		
 		$this->load->library ( 'Layouts' );
 		$this->layouts->add_include (array('css/admin1/bootstrap.min.css','css/admin1/style.css','css/admin1/skin-blue.min.css'));
 		$this->layouts->add_include ( array('js/jquery.min.js','js/bootstrap.min.js','js/admin1/app.min.js'));
-		$this->load->helper (array( 'form', 'url', 'common') );
-	//	boookattach($this);
+		$this->load->helper (array( 'form', 'url', 'common') );		
 		$this->load->model ( 'User' );
 		$this->load->library ( 'form_validation' );
 		
@@ -60,26 +57,28 @@ class Admin extends CI_Controller {
 		$this->layouts->view ( 'login' );
 	}*/
 	public function index() {
-		$data = array();		
+		$data = array();	
+		$data['active_tab_var']	= 'dashboard';
 		$this->layouts->set_title ( 'Admin Dashboard' );
 		$this->layouts->view ( 'dashboard',$data,'admin' );
 	}
 	
 	
-	public function dashboard() {
+	/*public function dashboard() {
 		$this->layouts->add_include ( array (
 				'css/login.css',
 				'css/font-awesome.min.css' 
 		) );
 		$this->layouts->set_title ( 'Admin Dashboard' );
 		$this->layouts->view ( 'dashboard' );
-	}
+	}*/
 	public function logout() {
 		$this->session->sess_destroy ();
 		redirect ( base_url () );
 	}
 	public function listings() {
 		$data = array ();
+		$data['active_tab_var']	= 'listings';
 		$this->load->model ( 'Categories' );	
 		$data ['categories'] = $this->Categories->fetch_all ();
 		$depts_raw = new SimpleXMLElement ( download_page ( 'http://87.102.127.86:8005/search/websearch.exe?pageid=4&compid=1' ) );
@@ -95,6 +94,7 @@ class Admin extends CI_Controller {
 	
 	public function deals() {
 		$data = array ();
+		$data['active_tab_var']	= 'deals';
 		$this->load->model ( 'Categories' );		
 		$depts_raw = new SimpleXMLElement ( download_page ( 'http://87.102.127.86:8005/search/websearch.exe?pageid=4&compid=1' ) );
 		$data ['countries'] = json_decode ( json_encode ( $depts_raw ), true );
@@ -109,17 +109,7 @@ class Admin extends CI_Controller {
 	}
 	public function add_luggage() {
 		$data = array ();
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',				
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js' 
-		) );
+		$data['active_tab_var']	= 'luggage';
 		
 		if ($this->input->post ()) {
 			$this->form_validation->set_rules ( 'airline_name', 'Airline name', 'trim|required' );
@@ -146,14 +136,20 @@ class Admin extends CI_Controller {
 		
 		
 		$this->layouts->set_title ( 'Admin Dashboard' );
-		$this->layouts->view ( 'add_luggage.php', $data, 'admin' );
+		$this->layouts->view ( 'add_luggage', $data, 'admin' );
 	}
 	
 	public  function luggage_view()
 	{
-		$data = array ();		
+		$data = array ();
+		$data['active_tab_var']	= 'luggage';
 		$this->load->model ( 'AlLugagePrice' );
-		$data['rows'] = $this->AlLugagePrice->getAll();		
+		$data['rows'] = $this->AlLugagePrice->getAll();	
+		$this->layouts->add_include ( array (
+				'css/admin1/dataTables.bootstrap.css',
+				'js/admin1/jquery.dataTables.min.js',
+				'js/admin1/dataTables.bootstrap.min.js'				
+		));
 		$this->layouts->set_title ( 'Luggage view' );
 		$this->layouts->view ( 'luggage_view.php', $data, 'admin' );
 	}
@@ -178,19 +174,8 @@ class Admin extends CI_Controller {
 	{
 		if ((int)$id)
 		{
-			$data = array ();
-			$this->layouts->add_include ( array (
-					'css/admin/style.css',
-					'css/admin/lines.css',
-					'css/font-awesome.min.css',
-					'css/google_font.css',
-					'css/admin/custom.css',
-					'js/admin/metisMenu.min.js',
-					'js/admin/custom.js',
-					'js/admin/d3.v3.js',
-					'js/admin/rickshaw.js'
-			) );
-			
+			$data = array ();		
+			$data['active_tab_var']	= 'luggage';
 			$this->load->model ( 'AlLugagePrice' );
 			$data['row'] = $this->AlLugagePrice->fetch_a_search(array('id'=>$id));
 			//echo '<pre>';print_r();exit;
@@ -230,25 +215,17 @@ class Admin extends CI_Controller {
 	
 	public  function booking_info()
 	{
-		$data = array ();
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
+		$data = array ();	
+		$data['active_tab_var']	= 'booking';
 		$this->load->model ( 'Bookinginfo' );
 		$data['rows'] = $this->Bookinginfo->fetch_a_search(array(),'ALL');
 		$adult_raw_info = json_decode(@$data['rows'][0]['adults_info']);
 		
-		//echo $adult_raw_info->fname[0];
-		//echo '<pre>';print_r();
-		//exit;
+		$this->layouts->add_include ( array (
+				'css/admin1/dataTables.bootstrap.css',
+				'js/admin1/jquery.dataTables.min.js',
+				'js/admin1/dataTables.bootstrap.min.js'				
+		));
 		$this->layouts->set_title ( 'Booking Information' );
 		$this->layouts->view ( 'booking_info.php', $data, 'admin' );
 	}
@@ -257,18 +234,7 @@ class Admin extends CI_Controller {
 	{
 			$data = array ();
 			$data['controller'] = $this;
-			$this->layouts->add_include ( array (
-					'css/admin/style.css',
-					'css/admin/lines.css',
-					'css/font-awesome.min.css',
-					'css/google_font.css',
-					'css/admin/custom.css',
-					'js/admin/metisMenu.min.js',
-					'js/admin/custom.js',
-					'js/admin/d3.v3.js',
-					'js/admin/rickshaw.js'
-			) );
-				
+			$data['active_tab_var']	= 'booking';
 			$this->load->model ( 'Bookinginfo' );
 			$this->load->model('UserSearch');
 			
@@ -377,7 +343,7 @@ class Admin extends CI_Controller {
 		}
 	}
 	
-	public function addExtras()
+	/*public function addExtras()
 	{
 		$data = array();
 		$this->load->model ( 'ExtraCategories' );
@@ -401,15 +367,14 @@ class Admin extends CI_Controller {
 		$this->layouts->view ( 'listings', $data, 'admin' );
 		
 		//echo '<pre>';print_r($rows);exit;
-	}
+	}*/
 	public function mang_ext_categories()
 	{
 		$this->load->model ( 'ExtraCategories' );
 		$data = array ();
-		
+		$data['active_tab_var']	= 'extras';
 		if($this->input->post())
-		{
-			
+		{			
 			if($this->ExtraCategories->updateByCond(array('status'=>0),1))
 			{
 				if(!empty($this->input->post('cat')))
@@ -422,17 +387,7 @@ class Admin extends CI_Controller {
 			}	
 		}
 		$data['categories'] = $this->ExtraCategories->fetch_a_category(array(),'ALL');
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
+		
 		
 		$this->layouts->set_title ( 'Exytra category management' );
 		$this->layouts->view ( 'ext_fld_mng.php', $data, 'admin' );
@@ -942,17 +897,12 @@ class Admin extends CI_Controller {
 	public  function contacts_list()
 	{
 		$data = array ();
+		$data['active_tab_var']	= 'contacts';
 		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
+				'css/admin1/dataTables.bootstrap.css',
+				'js/admin1/jquery.dataTables.min.js',
+				'js/admin1/dataTables.bootstrap.min.js'
+		));
 		$this->load->model ( 'Contactslist' );
 		$data['rows'] = $this->Contactslist->fetch_a_search(array(),'ALL');		
 		$this->layouts->set_title ( 'Contacts List' );
@@ -962,17 +912,12 @@ class Admin extends CI_Controller {
 	public  function Subscribers_list()
 	{
 		$data = array ();
+		$data['active_tab_var']	= 'subscribers';
 		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
+				'css/admin1/dataTables.bootstrap.css',
+				'js/admin1/jquery.dataTables.min.js',
+				'js/admin1/dataTables.bootstrap.min.js'
+		));
 		$this->load->model ( 'SubscribersList' );
 		$data['rows'] = $this->SubscribersList->fetch_a_search(array(),'ALL');
 		
@@ -982,12 +927,11 @@ class Admin extends CI_Controller {
 	
 	
 	public function margins()
-	{
-		
+	{		
 		$data = array ();
+		$data['active_tab_var']	= 'margins';
 		$this->load->model('Options');
-		$data['opt_row'] = $this->Options->fetch_a_fields(array(),1);
-		//echo "<pre>";print_r($data['opt_row']);exit;
+		$data['opt_row'] = $this->Options->fetch_a_fields(array(),1);		
 		if ($this->input->post ()) {
 			$this->form_validation->set_rules ( 'hotel_rate', 'Hotel Rate', 'trim|required|integer' );
 			$this->form_validation->set_rules ( 'flight_rate', 'Flight Rate', 'trim|required|integer' );
@@ -1005,20 +949,6 @@ class Admin extends CI_Controller {
 				redirect(base_url().'admin/margins');
 			}
 		}
-		
-		
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
-	
 		$this->layouts->set_title ( 'Exytra category management' );
 		$this->layouts->view ( 'margins.php', $data, 'admin' );
 	}
