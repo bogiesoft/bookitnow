@@ -126,108 +126,17 @@ padding-bottom:5px;
 			<div class="col-sm-12 col-md-3">
 				<div class="fluid columns_four bg_grey2">
 					<div class="padded">
-						<select id="cphContent_ddlDealType" style="font-size:15px;" onchange="blockHotelDeals();setTimeout('__doPostBack(\'ctl00$cphContent$ddlDealType\',\'\')', 0)" name="ctl00$cphContent$ddlDealType">
-						<option value="Holiday" selected="selected">Holiday Deals</option>
-						<option value="City">City Breaks</option>
+						<select style="font-size:15px;" name="dealType" onchange="blockHotelDeals(this);">
+							<option value="holiday" selected="selected">Holiday Deals</option>
+							<option value="city">City Breaks</option>
 						</select>		
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="right_side">
-				<div class="col-sm-6">
-					<div class="green_nature">	
-					<div class="image"><img src="<?php echo base_url();?>images/Pool.jpg" class="img-responsive" alt="Pool">
-						<div class="star"><img src="<?php echo base_url();?>images/star.png" class="img-responsive" alt="star"></div>
-							<div class="mini_img"><img src="<?php echo base_url();?>images/tree.jpg" alt="tree"> 
-							<img src="<?php echo base_url();?>images/family.jpg" alt="family">
-							</div>
-					</div>
-							<h2>Green Nature Diamond</h2>
-							<div class="sm-font">Luxury Turkey! | FREE Room Upgrade</div>
-							<p>FREE Marmaris City Tour and MORE!</p>
-					<div class="rate">
-						<div class="clearfix padded_v">
-							<div class="fluid columns_nine zeroMargin_desktop">
-								<small class="txt_color_1">Deals From</small><br>
-								<strong class="txt_xxtra_large txt_color_1">£172</strong><small class="txt_color_1">pp</small>                                                               
-							</div>
-							<div class="fluid columns_three">
-								<a href="#" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>
-							</div>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-			<div class="col-sm-6">
-				<div class="green_nature">
-					<div class="image"><img src="<?php echo base_url();?>images/Beach-Area.jpg" class="img-responsive" alt="Beach-Area">
-					<div class="star"><img src="<?php echo base_url();?>images/star.png" class="img-responsive" alt="star"></div>
-					<div class="mini_img"><img src="<?php echo base_url();?>images/tree.jpg" alt="tree"> </div>
-					</div>
-					<h2>Aquis Pelekas Beach</h2>
-					<div class="sm-font">Luxury Turkey! | FREE Room Upgrade</div>
-					<p>Beachfront Setting l Luxury 5-Star</p>
-
-					<div class="rate">
-						<div class="clearfix padded_v">
-							<div class="fluid columns_nine zeroMargin_desktop">
-								<small class="txt_color_1">Deals From</small><br>
-								<strong class="txt_xxtra_large txt_color_1">£172</strong><small class="txt_color_1">pp</small>																			   
-							</div>
-							<div class="fluid columns_three">
-								<a href="#" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-				<div class="col-sm-6">
-					<div class="green_nature">
-						<div class="image"><img src="<?php echo base_url();?>images/img03.jpg" class="img-responsive" alt="img03">
-						<div class="mini_img"><img src="<?php echo base_url();?>images/tree.jpg" alt="tree"></div>
-						</div>
-							<h2>Green Nature Diamond</h2>
-							<div class="sm-font">Luxury Turkey! | FREE Room Upgrade</div>
-							<p>FREE Marmaris City Tour and MORE!</p>
-							<div class="rate">
-								<div class="clearfix padded_v">
-									<div class="fluid columns_nine zeroMargin_desktop">
-										<small class="txt_color_1">Deals From</small><br>
-										<strong class="txt_xxtra_large txt_color_1">£172</strong><small class="txt_color_1">pp</small>                                                               
-									</div>
-									<div class="fluid columns_three">
-										<a href="#" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>
-									</div>
-								</div>
-							</div>
-					</div>
-				</div>
-					<div class="col-sm-6">
-						<div class="green_nature">
-							<div class="image"><img src="<?php echo base_url();?>images/img04.jpg" class="img-responsive" alt="img04">
-								<div class="mini_img"><img src="<?php echo base_url();?>images/tree.jpg" alt="tree"> </div>
-							</div>
-								<h2>Green Nature Diamond</h2>
-								<div class="sm-font">Luxury Turkey! | FREE Room Upgrade</div>
-								<p>FREE Marmaris City Tour and MORE!</p>
-								<div class="rate">
-									<div class="clearfix padded_v">
-										<div class="fluid columns_nine zeroMargin_desktop">
-											<small class="txt_color_1">Deals From</small><br>
-											<strong class="txt_xxtra_large txt_color_1">£172</strong><small class="txt_color_1">pp</small>
-										</div>
-										<div class="fluid columns_three">
-											<a href="#" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>
-										</div>
-									</div>
-								</div>
-						</div>
-					</div>
+		<div class="right_side">		
+			<?php echo $manager_deals_content;?>
 			<div class="clearfix"></div>
 		</div>
 </div>
@@ -294,33 +203,35 @@ padding-bottom:5px;
 	</div>		
 </div>
 
-<div class="col-sm-4 col-mg-4">
-	<div class="green_nature">
-		<div class="title-deal">
-			<h2>Green Nature Diamond</h2>					
-			<p>FREE Marmaris City Tour and MORE!</p>
-		</div>
-		<div class="zoom-effect-container">	
-			<div class="image-card">
-				<img src="<?php echo base_url();?>images/deal-img-3.jpg" class="img-responsive" alt="Pool">			 
-			</div> 				
-			<div class="rate">						
-				<div class="fluid image-box">
-					<a href="#" class="button">TRY IT <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>
-				</div>				
+	<div class="col-sm-4 col-mg-4">
+		<div class="green_nature">
+			<div class="title-deal">
+				<h2>Green Nature Diamond</h2>					
+				<p>FREE Marmaris City Tour and MORE!</p>
 			</div>
-		</div>
-	</div>		
-</div>
-
-
-
-
-
-
+			<div class="zoom-effect-container">	
+				<div class="image-card">
+					<img src="<?php echo base_url();?>images/deal-img-3.jpg" class="img-responsive" alt="Pool">			 
+				</div> 				
+				<div class="rate">						
+					<div class="fluid image-box">
+						<a href="#" class="button">TRY IT <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>
+					</div>				
+				</div>
+			</div>
+		</div>		
+	</div>
 </div>
 
 <!--meena adit closed-->
 </div>
 </div><!--contanier-->
 <div class="clearfix"></div>
+
+<<script type="text/javascript">
+function blockHotelDeals(e){	
+	$.post( "/welcome/deals/switchDeals",{'deal_category' : e.value}, function( data ) {
+		$('.right_side').html(data);
+	});
+}
+</script>

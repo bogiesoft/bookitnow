@@ -17,11 +17,11 @@
                  <div class="box-body">        
                     <label for="focusedinput" class="col-sm-2 control-label">Categories</label>
 					<div class="col-sm-10">
-						<select name="categories" class="form-control">
+						<select id="deal_category" class="form-control" onchange="$('.country:checked').each(function(){$(this).prop('checked',false);$(this).next().remove();});">
 						<?php 
-						foreach($categories as $cat)
+						foreach($deal_categories as $key => $cat)
 						{
-							echo "<option value=".$cat['id'].">".$cat['name']."</option>";
+							echo "<option value=".$key.">".$cat."</option>";
 						}
 						?>
 						</select>
@@ -61,6 +61,7 @@
 	    		</div>	   	
 	    			<input type="hidden" name="mapper" />
 	    			<input type="hidden" name="hotel_name" />
+	    			<input type="hidden" name="deal_category" />
 	    		<div class="box-footer">
                     <button class="btn btn-info pull-right" type="submit" style="margin-top: 10px;float:right;"> Submit </button>
 	    			<a class="btn btn-default cancel"> Cancel </a>	
@@ -99,7 +100,7 @@
 	
 	function area(e,mapng)
 	{
-		if($(e).next().prop("tagName") == 'ul')
+		if($(e).next().prop("tagName") != 'LI' && $(e).next().prop("tagName") != undefined )
 		{
 			$(e).next().remove();
 		}
@@ -119,57 +120,35 @@
 		}
 		}
 	}
-// 	function region(e,mapng)
-// 	{	
-// 		if($(e).next().prop("tagName").toLowerCase() == 'ul')
-// 		{
-// 			$(e).next().remove();
-// 		}
-// 		else{
-// 		blockSearchingTabs();	
-// 		if(!$(e).find('.areas').length )
-// 		{
-// 			$.post('admin/areassByregions',{mapng:mapng},function(result){							
-// 				$(e).after(result);
-// 					unblockSearchingTabs();			
-// 				},'html');				
-// 		}
-// 		else
-// 		{
-// 			alert('Sorry,Some thing went wrong')
-// 			unblockSearchingTabs();			
-// 		}
-// 		}
-	
-// 	}
+
 	function region(e,mapng)
 	{	
 		
-		if($(e).next().prop("tagName") == 'ul')
+		if($(e).next().prop("tagName") != 'LI' && $(e).next().prop("tagName") != undefined )
 		{
 			$(e).next().remove();
 		}
 		else{
-		blockSearchingTabs();	
-		if(!$(e).find('.areas').length )
-		{
-			$.post('admin/areassByregions',{mapng:mapng},function(result){							
-				$(e).after(result);
-					unblockSearchingTabs();			
-				},'html');				
-		}
-		else
-		{
-			alert('Sorry,Some thing went wrong')
-			unblockSearchingTabs();			
-		}
+			blockSearchingTabs();	
+			if(!$(e).find('.areas').length )
+			{
+				$.post('admin/areassByregions',{mapng:mapng},function(result){							
+					$(e).after(result);
+						unblockSearchingTabs();			
+					},'html');				
+			}
+			else
+			{
+				alert('Sorry,Some thing went wrong')
+				unblockSearchingTabs();			
+			}
 		}
 	
 	}
 
 	function resort(e,mapng)
 	{
-		if($(e).next().prop("tagName") == 'ul')
+		if($(e).next().prop("tagName") != 'LI' && $(e).next().prop("tagName") != undefined )
 		{
 			$(e).next().remove();
 		}
@@ -177,7 +156,7 @@
 			blockSearchingTabs();	
 		if(!$(e).find('.resorts').length )
 		{
-			$.post('admin/hotelsByresort',{mapng:mapng},function(result){							
+			$.post('admin/hotelsByresort',{mapng:mapng,deal_category:$('#deal_category').val()},function(result){							
 				$(e).after(result);
 					unblockSearchingTabs();			
 				},'html');				
@@ -201,7 +180,8 @@
                    }               
             });
 			$('[name="hotel_name"]').val($(e).next('span').text());
-			$('[name="mapper"]').val($(e).val()); 
+			$('[name="mapper"]').val($(e).val());
+			$('[name="deal_category"]').val($('#deal_category').val());
             $('.cancel').click(function(){
 				$(e).prop('checked',false);
 				$('.fancybox-close').trigger('click');

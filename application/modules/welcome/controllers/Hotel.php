@@ -687,8 +687,7 @@ class Hotel extends CI_Controller {
 				 </div>
 				<div class="row">
 					<div class="col-sm-6 col-md-4">
-						<div class="thumbnail box-border"><div>
-						<div class="title-name">Recommended</div>';
+						<div class="thumbnail box-border"><div>';
 						if(is_array(@getimagesize(urldecode($offers[$keys[$i]][0]['@attributes']['image'])))){
 							$html .= '    <img style="width: 100%;max-height: 180px;" src="'.urldecode($offers[$keys[$i]][0]['@attributes']['image']).'" />';
 						}

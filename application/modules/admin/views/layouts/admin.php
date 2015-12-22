@@ -18,7 +18,7 @@
 			  <!-- Main Header -->
 			  <header class="main-header">		    
 			    <!-- Logo --> 
-			    <a href="index.html" class="logo"> 
+			    <a href="<?php echo base_url();?>admin/index" class="logo"> 
 			    <!-- mini logo for sidebar mini 50x50 pixels --> 
 			    <span class="logo-mini"><b>B</b>KN</span> 
 			    <!-- logo for regular state and mobile devices --> 
@@ -178,7 +178,10 @@
 			        <li class="<?php echo $active_tab;?>"> <a href="<?php echo base_url();?>admin/luggage_view"><i class="fa fa-table"></i> <span>Luggage View</span></a> </li>
 			        <?php $active_tab = ($active_tab_var == 'margins') ? 'active' : '' ;?>
 			        <li class="<?php echo $active_tab;?>"> <a href="<?php echo base_url();?>admin/margins"><i class="fa fa-table"></i> <span>Margins</span></a> </li>
-			      </ul>
+			        <?php $active_tab = ($active_tab_var == 'bulkbooking') ? 'active' : '' ;?>
+                    <li class="<?php echo $active_tab;?>"> <a href="<?php echo base_url();?>admin/bulkbooking"><i class="fa fa-table"></i><span>BulkBooking</span></a> </li>
+			        
+                  </ul>
 			      <!-- /.sidebar-menu --> 
 			    </section>
 			    <!-- /.sidebar --> 
@@ -202,7 +205,9 @@
 		<?php echo @$this->layouts->print_includes()['js']; ?> 
 		<script type="text/javascript">
 			$(function(){
-	    		$(".table").DataTable();
+	    		$(".table").DataTable({
+	    			"scrollX": true
+			    });
 	        }); 
 		</script>
 	</body>

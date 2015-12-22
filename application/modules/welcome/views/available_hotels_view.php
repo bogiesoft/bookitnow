@@ -1,6 +1,4 @@
- 
-<div id="your_Search">
-<div class="container">
+
 <?php 
 
 	if($type == 'hotel_only'){

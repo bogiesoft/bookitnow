@@ -88,11 +88,11 @@
 		
 		
 		
-		$('form[name="flight_hotel_form"]').submit(function(){
+		/*$('form[name="flight_hotel_form"]').submit(function(){
 			var request_data = $(this).serializeArray();
 			var count = 0;
 			$.each(request_data, function(index, value){				
-				if(value.name != 'children' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+				if(value.name != 'childrens' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
 				{
 					alert('Please select '+ value.name +' field');
 					count++;
@@ -110,13 +110,11 @@
 				{
 					window.location = data;
 				}
-				  /*$('.travelto select').html('');	
-				  $('.travelto select').append(data);	
-				  unblockSearchingTabs();*/
+				
 				}, "html");
 			return false;
 		});
-		
+		*/
 		
 		
 		$(document.body).on('click', '.pager_list_pages a ' ,function(){
@@ -238,7 +236,7 @@
 			var request_data = $(this).serializeArray();
 			var count = 0;
 			$.each(request_data, function(index, value){				
-				if(value.name != 'children' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
+				if(value.name != 'childrens' && (value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == ''))
 				{
 					alert('Please select '+ value.name +' field');
 					count++;

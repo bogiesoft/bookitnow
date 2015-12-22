@@ -14,8 +14,7 @@ class ManagerChoices extends CI_Model {
 	}
 	
 	public function fetch_a_search($array,$limit=1,$offset=0)
-	{
-		
+	{		
 		return $this->db->get_where(MANAGERCHOICES, $array , $limit, $offset)->result_array();		
 	}
 	/*public function update_row($data,$id)

@@ -1,7 +1,4 @@
 <div class="clearfix"></div>
-
-<div id="your_Search">
-<div class="container">
 <?php include_once 'includes/change_search_flight_only.php';?>
 </div>
 <div id="body_content">

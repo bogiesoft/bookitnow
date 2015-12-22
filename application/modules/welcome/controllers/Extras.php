@@ -583,8 +583,10 @@ class Extras extends CI_Controller {
 	}
 	
 	public function book_hotel()
-	{		
+	{	
+		
 		$data = array();
+		$data['is_laststep'] = true;
 		$tot_sel = 0;
 		$data['controller'] = $this;
 		$data['form_type'] = 'hotel_only';
@@ -631,6 +633,7 @@ class Extras extends CI_Controller {
 		
 		
 		$data = array();
+		$data['is_laststep'] = true;
 		$data['controller'] = $this;
 		$this->load->model('FullSearch');
 		$data['seg'] = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
@@ -1093,11 +1096,10 @@ class Extras extends CI_Controller {
 					
 	}
 	
-public function book_flight()
-	{
-		
-		
+	public function book_flight()
+	{	
 		$data = array();
+		$data['is_laststep'] = true;
 		$tot_sel = 0;
 		$data['controller'] = $this;
 		$data['form_type'] = 'flight_only';

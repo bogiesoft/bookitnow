@@ -208,13 +208,13 @@ if( !function_exists('boardbasis') ) {
   		{ 
   			$checked = '';
   			if ($key_hotel === '@attributes') {
-  				$row = $ci->ManagerChoices->fetch_a_search(array('countryid'=>$tree[0],'regionid'=>$tree[1],'areaid'=>$tree[2],'resortid'=>$tree[3],'hotelid'=>$hotel['id']));  				
+  				$row = $ci->ManagerChoices->fetch_a_search(array('countryid'=>$tree[0],'regionid'=>$tree[1],'areaid'=>$tree[2],'resortid'=>$tree[3],'hotelid'=>$hotel['id'],'deal_category'=>$ci->deal_category));  				
   				if(!empty($row))$checked = 'checked'; 			
   				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['id']. "' $checked onchange='checkMe(this)' /><span>". urldecode($hotel['name']) . '</span></li>';
   				$count_hotel++;
   			}
   			if(!$count_hotel){
-  				$row = $ci->ManagerChoices->fetch_a_search(array('countryid'=>$tree[0],'regionid'=>$tree[1],'areaid'=>$tree[2],'resortid'=>$tree[3],'hotelid'=>$hotel['@attributes']['id']));  				
+  				$row = $ci->ManagerChoices->fetch_a_search(array('countryid'=>$tree[0],'regionid'=>$tree[1],'areaid'=>$tree[2],'resortid'=>$tree[3],'hotelid'=>$hotel['@attributes']['id'],'deal_category'=>$ci->deal_category));  				
   				if(!empty($row))$checked = 'checked';  					
   				$str .= "<li><input type='checkbox' value='" . $cra.$hotel['@attributes']['id']. "' $checked onchange='checkMe(this)' /><span>". urldecode($hotel['@attributes']['name']) . '</span></li>';
   			}  			

@@ -4,8 +4,7 @@
             ?>
 <div id="body_content" style="margin:0px;">
 
-<div id="your_Search">
-<div class="container">
+
 <?php 
 	$type = $type_flight;
 	if($type_flight == 'full_flight_date')

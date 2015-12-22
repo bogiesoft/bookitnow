@@ -30,13 +30,57 @@ class Deals extends CI_Controller {
 		$this->load->model('UserSearch');
 		
 	}
+	
+	public function fetchDealsFun($dealType){
+		$html = '';
+		$this->load->model('ManagerChoices');
+		$manager_deals = $this->ManagerChoices->fetch_a_search(array('deal_category'=>$dealType),'ALL');
+		
+		foreach ($manager_deals as $deal){
+			$qString = ($dealType == 'holiday') ? 'type='.$dealType.'&hotel_id='.$deal['hotelid'].'&nights=7' : 'type='.$dealType.'&hotel_id='.$deal['hotelid'].'&nights=2';
+			$html .= '<div class="col-sm-6">';
+			$html .= '<div class="green_nature">';
+			$html .= '<div class="image"><img src="'.base_url().'images/Pool.jpg" class="img-responsive" alt="'.$deal['hotel_name'].'">';
+			$html .= '<div class="star"><img src="'.base_url().'images/star.png" class="img-responsive" alt="star"></div>';
+			$html .= '<div class="mini_img"><img src="'.base_url().'images/tree.jpg" alt="tree">';
+			$html .= '<img src="'.base_url().'images/family.jpg" alt="family">';
+			$html .= '</div>';
+			$html .= '</div>';
+			$html .= '<h2>'.$deal['hotel_name'].'</h2>';
+			$html .= '<div class="sm-font">'.$deal['feature_1'].' | '.$deal['feature_2'].'</div>';
+			$html .= '<p>'.$deal['feature_3'].' | '.$deal['feature_4'].'</p>';
+			$html .= '<div class="rate">';
+			$html .= '<div class="clearfix padded_v">';
+			$html .= '<div class="fluid columns_nine zeroMargin_desktop">';
+			$html .= '<small class="txt_color_1">Deals From</small><br>';
+			$html .= '<strong class="txt_xxtra_large txt_color_1">&#163;172</strong><small class="txt_color_1">pp</small></div>';
+			$html .= '<div class="fluid columns_three">';
+			$html .= '<a href="'.base_url().'welcome/deals/dynamicDeals/?hotel_id='.$qString.'" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>';
+			$html .= '</div></div></div></div></div>';				
+		}
+		return $html;
+	}
+	
+	public function switchDeals(){
+		exit($this->fetchDealsFun($this->input->post('deal_category')));
+	}
+	
 	public function index()
 	{
 		$data = array();
-	    $this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/parallax-slider/jquery.cslider.js','js/jquery.fancybox.pack.js','js/script-home.js'));
-		$this->layouts->set_title('Home');
-		$results = array();			
-		$this->layouts->view('dynamicarea',$data);
+		$data['manager_deals_content'] = $this->fetchDealsFun('holiday');
+		
+		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+	    		'css/jquery-ui.css','css/font-awesome.min.css',
+	    		'css/google_font.css','css/custom.css',
+	    		'css/responsive.css','css/menu.css',
+	    		'css/preview.min.css','css/bxslider/jquery.bxslider.css',
+	    		'css/jquery.fancybox.css','js/jquery-ui.js',
+	    		'js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js',
+	    		'js/bxslider/jquery.bxslider.js','js/parallax-slider/jquery.cslider.js',
+	    		'js/jquery.fancybox.pack.js','js/script-home.js'));
+		$this->layouts->set_title('Manager Deals');		
+		$this->layouts->view('deals',$data);
 	}
 	public function arrival_list_basedon_dynaminc_departuere_airport()
 	{
@@ -114,6 +158,11 @@ class Deals extends CI_Controller {
 	public function dynamicDeals()
 	{
 		$data = array();
+		$this->load->model('ManagerChoices');
+		$manager_deals = $this->ManagerChoices->fetch_a_search(array('deal_category'=>$_GET['type']),'ALL');
+		
+		
+		
 		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
 				'css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css',
 				'css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css',

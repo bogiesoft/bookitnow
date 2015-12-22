@@ -1,5 +1,7 @@
-
-<div class="you">
+<?php if(!(@$is_laststep)){?>
+<div id="your_Search">
+	<div class="container">
+		<div class="you">
 <?php 
 	//echo '<pre>';print_r($change_search_info);exit;
 	$dept_arr = explode('|',$change_search_info['query']['depapt']);
@@ -132,16 +134,11 @@
 
 </div>
 
-
-
-
-
-
-
 </div>
 
 
 </div>
+<?php } ?>
 <div class="clearfix"></div>
 
 <div id="select_names">

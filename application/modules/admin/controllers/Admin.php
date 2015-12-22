@@ -104,6 +104,10 @@ class Admin extends CI_Controller {
 				'js/jquery.fancybox.pack.js',
 				'js/jquery.blockUI.js'
 		) );
+		
+		$data['deal_categories'] = array('city'=>'City Breaks','holiday' => 'Holiday Deals');
+		
+		
 		$this->layouts->set_title ( 'Deals page' );
 		$this->layouts->view ( 'deals', $data, 'admin' );
 	}
@@ -496,30 +500,25 @@ class Admin extends CI_Controller {
 	}
 	
 	public function hotelsByresort()
-	{
-		
+	{		
 		$str = '<ul>';
 		$tree = explode('-',$this->input->post ( 'mapng' ));
-		$this->load->model('ManagerChoices');
-		
-		//$tree = array(5,9,20,75);
-		
+		$this->deal_category = $this->input->post ( 'deal_category' );
+		$this->load->model('ManagerChoices');		
+		//$tree = array(5,9,20,75);		
 		$depts_raw = new SimpleXMLElement ( download_page ( "http://87.102.127.86:8005/search/websearch.exe?pageid=5&compid=1&countryid=" . $tree[0] ) );
 		$depts_raw = json_decode ( json_encode ( $depts_raw ), true );
 		$exist = 0;
 		foreach ( $depts_raw ['country'] as $key_country => $regions ) {
 	
-			if ($key_country == 'region') {
-				
+			if ($key_country == 'region') {				
 				$count = 0;
 				foreach ( $regions as $key_region => $region ) {
 					if ($key_region === '@attributes')
-					{
-						
+					{						
 						$count_area = 0;
 						foreach ( $regions ['area'] as $key_area => $area ) {
-							if ($key_area === '@attributes') {
-								
+							if ($key_area === '@attributes') {								
 								if($tree[1] == $regions ['@attributes'] ['Id'])
 								{
 									if($tree[2] == $regions ['area'] ['@attributes'] ['id'])
@@ -1009,7 +1008,109 @@ class Admin extends CI_Controller {
 		exit;
 	}
 	
+	public  function bulkbooking()
+	{
+		$data = array ();
+		$data['active_tab_var'] = 'bulkbooking';
+		$adult_raw_info = json_decode(@$data['rows'][0]['Adults']);
+		$this->layouts->add_include ( array (
+				'css/admin1/dataTables.bootstrap.css',
+				'js/admin1/jquery.dataTables.min.js',
+				'js/admin1/dataTables.bootstrap.min.js'
+		) );
+		$this->load->model ( 'bulkbooking' );
+		$data['rows'] = $this->bulkbooking->fetch_a_search(array(),'ALL');
+		$this->layouts->set_title ( 'bulkbooking' );
+		$this->layouts->view ( 'bulkbooking', $data, 'admin' );
+	}
+	public  function userprofile()
+	{
+		if ((int)$this->session->userdata('id'))
+		{
+			$data = array ();
+			$data['active_tab_var']	= 'profile';	
+			$this->load->model ( 'User' );
+			$data['rows'] = $this->User->fetch_a_user(array("id"=>$this->session->userdata('id')),1);
+			//echo "<pre>";print_r($data['rows']);exit;
+			if ($this->input->post ()) {
+				//echo "<pre>";print_r($this->input->post ());exit;
+				$this->form_validation->set_rules ( 'first_name', 'First Name', 'trim|required' );
+				$this->form_validation->set_rules ( 'last_name', 'LastName', 'trim|required|min_length[2]' );
+				$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );
+				$this->form_validation->set_rules ( 'home_telephone', 'HomeTelephone', 'trim|required|numeric' );
+				$this->form_validation->set_rules ( 'mobile', 'Mobile', 'trim|required|numeric' );
+				$this->form_validation->set_rules ( 'address', 'address', 'required' );
+					
+				if (! $this->form_validation->run ()) {
+						
+				} else {
+						
+					if($this->User->updateUser($this->input->post(),'id',$this->session->userdata('id')))
+					{
+						$this->session->set_flashdata ( 'message', '<div class="alert alert-success">Record updated successfully</div>' );
+						redirect(base_url().'admin/userprofile');
+					}
+					else
+					{
+						$this->session->set_flashdata ( 'message', 'Sorry,Something went wrong' );
+						redirect ( base_url () . 'admin/userprofile' );
+					}
+						
+				}
+			}
+			$this->layouts->set_title ( 'userprofile' );
+			$this->layouts->view ( 'userprofile', $data, 'admin' );
+		}
+	}
 	
+	public function changepassword()
+	{
+		$id = $this->session->userdata('id');	
+		if($this->session->userdata('id')){
+			$data = array ();
+			$data['active_tab_var']	= 'profile';
+			$this->load->model ( 'User' );
+			$data['row'] = $this->User->fetch_a_user(array('id'=>$id));			
+			if ($this->input->post ()) {
+				$this->form_validation->set_rules ( 'password', 'Password', 'trim|required|matches[confirm_password]' );
+				$this->form_validation->set_rules ( 'confirm_password', 'Confirm Password', 'required' );
+				if (! $this->form_validation->run ()) {
+	
+				} else {
+					$input_arr  = array('password_hash' => md5($this->input->post('password')));
+					if($this->User->updateUser($input_arr,'id',$id))
+					{
+						$this->session->set_flashdata (  'message', '<p class="success">Your password have been reset successfully.</p>' );
+						redirect(base_url().'admin/profile');
+					}
+					else
+					{
+						$this->session->set_flashdata ( 'message', '<p class="error">Sorry, We are unable to update your password.</p>'  );
+						redirect ( base_url () . 'admin/changepaassword' );
+					}
+	
+				}
+			}	
+			$this->layouts->set_title ( 'Admin Dashboard' );
+			$this->layouts->view ( 'changepassword', $data, 'admin' );
+		}		
+	}
+	
+	public  function profile()
+	{
+		$data = array ();
+		$data['active_tab_var'] = 'profile';
+		$adult_raw_info = json_decode(@$data['rows'][0]['Adults']);
+		$this->layouts->add_include ( array (
+				'css/admin1/dataTables.bootstrap.css',
+				'js/admin1/jquery.dataTables.min.js',
+				'js/admin1/dataTables.bootstrap.min.js'
+		) );
+		$this->load->model ( 'User' );
+		$data['rows'] = $this->User->fetch_a_user(array(),'ALL');		
+		$this->layouts->set_title ( 'User' );
+		$this->layouts->view ( 'view_userprofile.php', $data, 'admin' );
+	}
 	
 	
 	

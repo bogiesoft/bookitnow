@@ -1,28 +1,30 @@
-
-<div class="you">
-<?php 
-	//echo '<pre>';print_r($change_search_info['row']['num_rooms']);exit;
-	$dept_arr = explode('|',$change_search_info['query']['depapt']);
-	$t = explode('-',$departures[$dept_arr[0]]);	
-	$ser_str = array_pop($t) .' to ';	
-	$controller->load->model ( 'Arrivals' );
-	$arr_rows_cat_wise = $controller->Arrivals->fetchArrivalsByCategory();	
-	foreach ($arr_rows_cat_wise as $tarrival)
-	{		
-		if($tarrival['arapts'] == $change_search_info['row']['arapts'])
-		{
-		
-			$ser_str .= $tarrival['name_resort'];
-		}		
-	}
-	$ser_str .= ', '.$change_search_info['row']['num_adults'].' Adult(s), ';
-	$ser_str .= $change_search_info['row']['num_children'].' Children(s), ';
-	$ser_str .= $change_search_info['query']['maxstay'].' Night(s), ';
-	$ddate = isset($fselected_date) ? $fselected_date : $change_search_info['query']['depdate'];
-	$ser_str .=  date('d M Y',$controller->cvtDt(str_date($ddate)));
-	
-	
-?>
+<?php if(!(@$is_laststep)){?>
+<div id="your_Search">
+	<div class="container">
+		<div class="you">
+		<?php 
+			//echo '<pre>';print_r($change_search_info['row']['num_rooms']);exit;
+			$dept_arr = explode('|',$change_search_info['query']['depapt']);
+			$t = explode('-',$departures[$dept_arr[0]]);	
+			$ser_str = array_pop($t) .' to ';	
+			$controller->load->model ( 'Arrivals' );
+			$arr_rows_cat_wise = $controller->Arrivals->fetchArrivalsByCategory();	
+			foreach ($arr_rows_cat_wise as $tarrival)
+			{		
+				if($tarrival['arapts'] == $change_search_info['row']['arapts'])
+				{
+				
+					$ser_str .= $tarrival['name_resort'];
+				}		
+			}
+			$ser_str .= ', '.$change_search_info['row']['num_adults'].' Adult(s), ';
+			$ser_str .= $change_search_info['row']['num_children'].' Children(s), ';
+			$ser_str .= $change_search_info['query']['maxstay'].' Night(s), ';
+			$ddate = isset($fselected_date) ? $fselected_date : $change_search_info['query']['depdate'];
+			$ser_str .=  date('d M Y',$controller->cvtDt(str_date($ddate)));
+			
+			
+		?>
 
 
 <p><strong>Your Search:</strong> <?php echo $ser_str;?>.</p>
@@ -159,9 +161,7 @@
 
 
 </div>
-<?php 
-	//echo "<pre>";print_r($controller->router->fetch_method());exit; 
-	?>
+<?php }?>
 <div class="clearfix"></div>   
     <div style="display: block;" id="dvToggle" class=""> 
 		<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">     
