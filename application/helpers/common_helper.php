@@ -315,6 +315,13 @@ if( !function_exists('boardbasis') ) {
    
   }
   
+  
+  function fetchingArrivalsByDestination($obj){
+  	$this->load->model('Arrivals');
+  	$where = array();
+  	$this->Arrivals->ReadOffers();
+  }
+  
 	
 	
 	

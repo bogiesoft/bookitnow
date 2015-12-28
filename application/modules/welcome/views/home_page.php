@@ -54,7 +54,7 @@
 		              <select class="input-block-level"   name="nights">
 		                <option value="-1">---Select---</option>
 		               <?php for($i=1;$i<=21;$i++){
-		              	echo '<option>'.$i.'</option>';
+		              	echo '<option value="'.$i.'">'.$i.'</option>';
 		              }?>       
 		              </select>
 		              </div><div>
@@ -62,7 +62,7 @@
               <label>Adults:</label>
               <select class="input-block-level" name="adults">   
               <?php for($i=1;$i<=15;$i++){
-              	echo '<option>'.$i.'</option>';
+              	echo '<option value="'.$i.'">'.$i.'</option>';
               }?>             
                </select>
             </div>
@@ -71,7 +71,7 @@
               <select class="input-block-level" name="childrens">
                 <option  value="-1">0</option>
               <?php for($i=1;$i<=10;$i++){
-              	echo '<option>'.$i.'</option>';
+              	echo '<option value="'.$i.'">'.$i.'</option>';
               }?>           
               </select>
               <p style="color:#fff; text-align:center;">(Age *2-12)</p>
@@ -128,10 +128,10 @@
 					<div class="board_basis">
 		              <label>Rooms :</label>
 		              <select name="full_rooms" class="input-block-level">						
-						 <option>1</option>
-		                 <option>2</option>
-		                 <option>3</option>
-		                 <option>4</option>
+						 <option value="1">1</option>
+		                 <option value="2">2</option>
+		                 <option value="3">3</option>
+		                 <option value="4">4</option>
 					  </select>
 		            </div>
 		            <div class="adults">
@@ -139,17 +139,17 @@
 		              <select class="input-block-level"   name="full_nights">
 		                <option value="-1">---Select---</option>
 		                <?php for ($i=1;$i<=21;$i++){
-		                	echo '<option>'.$i.'</option>';
+		                	echo '<option value="'.$i.'">'.$i.'</option>';
 		                }?>		              
 		              </select>
 		            </div>
 		            <div class="adults">
 		              <label>Adults:</label>
 		              <select class="input-block-level"  name="full_adults">		               
-		               <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
+		               <option  value="1">1</option>
+		                <option value="2">2</option>
+		                <option value="3">3</option>
+		                <option value="4">4</option>
 		              </select>
 		            </div>
 
@@ -157,10 +157,10 @@
 		              <label>Childrens:</label>
 		              <select class="input-block-level"  name="full_children">
 		                <option value="-1">0</option>
-		                <option>1</option>
-		                <option>2</option>
-		                <option>3</option>
-		                <option>4</option>
+		                <option value="1">1</option>
+		                <option value="2">2</option>
+		                <option value="3">3</option>
+		                <option value="4">4</option>
 		              </select>
 		              <p style="color:#fff; text-align:center;">(Age *2-12)</p>
 		            </div>
@@ -200,7 +200,7 @@
               <select class="input-block-level" style="height:43px;margin-bottom:10px;" name="hotel_nights">
                 <option value="-1">---Select---</option>
                 <?php for ($i=1;$i<=21;$i++){
-		                	echo '<option>'.$i.'</option>';
+		                	echo '<option value="'.$i.'">'.$i.'</option>';
 		                }?>		  
               </select>
             </div>
@@ -209,30 +209,30 @@
               <label>Rooms:</label>
               <select class="input-block-level"   name="hotel_rooms" >
                 <option value="-1">---Select---</option>
-               <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+               <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
               </select>
             </div>
             <div class="hotel_adults" >
               <label>Adults:</label>
               <select class="input-block-level" name="hotel_adults">
                 <option  value="-1">---Select---</option>
-               <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+               <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
               </select>
             </div>
             <div class="hotel_childerns"  >
               <label>Childrens:</label>
               <select class="input-block-level"  name="hotel_childrens">
                 <option  value="-1">0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
               </select>
               <p style="color:#fff; text-align:center;">(Age *2-12)</p>
             </div>

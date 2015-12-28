@@ -1,6 +1,10 @@
- <div class="content_bottom">
-     <div class="col-md-8 span_3">	
-     	<table class="table table-bordered">    
+<section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+        <!-- /.box -->
+          <div class="box" >           
+           <div class="box-body">
+     	<table class="table table-bordered table-striped">    
      	 <thead>
      	  <tr><th colspan="3"><h4>Passengers Details</h4></th></tr>
           <tr>
@@ -58,7 +62,7 @@
 	$whole = 0;
 	
 	?>
-      <table class="table table-bordered">    
+      <table class="table table-bordered table-striped">    
      	 <thead>
      	  <tr><th colspan="3"><h4>Booking Information </h4></th></tr>        
         </thead>   
@@ -233,7 +237,7 @@
       
       ?>
      
-      <table class="table table-bordered">    
+      <table class="table table-bordered table-striped">    
      	 <thead>
      	  <tr><th colspan="3"><h4>Contact Information </h4></th></tr>        
         </thead>   
@@ -257,7 +261,7 @@
         </tbody>
       </table>
 		
-		 <table class="table table-bordered">    
+		 <table class="table table-bordered table-striped">    
      	 <thead>
      	  <tr><th colspan="3"><h4>Card Information </h4></th></tr>         
         </thead>   
@@ -279,4 +283,9 @@
 	 <input type="hidden" name="email" value="<?php echo $this->input->post('email');?>" />
 	 <input type="submit" name="download" value="Download"/>
 	 </form>
+	  </div><!-- /.box-body -->
+   </div><!-- /.box -->
+  </div><!-- /.col -->
+ </div><!-- /.row -->
+ </section><!-- /.content -->
 							  

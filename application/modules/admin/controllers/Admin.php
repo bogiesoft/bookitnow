@@ -28,34 +28,7 @@ class Admin extends CI_Controller {
 		$this->load->library ( 'form_validation' );
 		
 	}
-	/*public function index() {
-		if ($this->input->post ()) {
-			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );
-			$this->form_validation->set_rules ( 'password_hash', 'Password', 'trim|required|min_length[3]' );
-			if (! $this->form_validation->run ()) {
-			} else {
-				$_POST ['password_hash'] = md5 ( $this->input->post ( 'password_hash' ) );
-				if ($row = $this->User->fetch_a_user ( $this->input->post () )) {
-					$newdata = array (
-							'id' => $row [0] ['id'],
-							'email' => $row [0] ['email'],
-							'logged_in' => TRUE 
-					);
-					$this->session->set_userdata ( $newdata );
-					redirect ( base_url () . 'admin/listings' );
-				} else {
-					$this->session->set_flashdata ( 'message', 'Sorry,Invalid credentials' );
-					redirect ( base_url () . 'admin/' );
-				}
-			}
-		}
-		$this->layouts->add_include ( array (
-				'css/login.css',
-				'css/font-awesome.min.css' 
-		) );
-		$this->layouts->set_title ( 'Admin Login' );
-		$this->layouts->view ( 'login' );
-	}*/
+	
 	public function index() {
 		$data = array();	
 		$data['active_tab_var']	= 'dashboard';
@@ -63,19 +36,11 @@ class Admin extends CI_Controller {
 		$this->layouts->view ( 'dashboard',$data,'admin' );
 	}
 	
-	
-	/*public function dashboard() {
-		$this->layouts->add_include ( array (
-				'css/login.css',
-				'css/font-awesome.min.css' 
-		) );
-		$this->layouts->set_title ( 'Admin Dashboard' );
-		$this->layouts->view ( 'dashboard' );
-	}*/
 	public function logout() {
 		$this->session->sess_destroy ();
 		redirect ( base_url () );
 	}
+	
 	public function listings() {
 		$data = array ();
 		$data['active_tab_var']	= 'listings';
@@ -105,12 +70,11 @@ class Admin extends CI_Controller {
 				'js/jquery.blockUI.js'
 		) );
 		
-		$data['deal_categories'] = array('city'=>'City Breaks','holiday' => 'Holiday Deals');
-		
-		
+		$data['deal_categories'] = array('city'=>'City Breaks','holiday' => 'Holiday Deals','destination' => 'Destination');		
 		$this->layouts->set_title ( 'Deals page' );
 		$this->layouts->view ( 'deals', $data, 'admin' );
 	}
+	
 	public function add_luggage() {
 		$data = array ();
 		$data['active_tab_var']	= 'luggage';
@@ -120,8 +84,7 @@ class Admin extends CI_Controller {
 			$this->form_validation->set_rules ( 'airline_code', 'Airline code', 'trim|required|min_length[2]' );
 			$this->form_validation->set_rules ( 'weight', 'Bag weight', 'trim|required|numeric' );
 			$this->form_validation->set_rules ( 'price', 'Price of the bag', 'trim|required|numeric' );
-			if (! $this->form_validation->run ()) {
-				
+			if (! $this->form_validation->run ()) {				
 			} else {
 				$this->load->model ( 'AlLugagePrice' );
 				if($this->AlLugagePrice->insertRecord($this->input->post()))
@@ -136,9 +99,7 @@ class Admin extends CI_Controller {
 				}
 				
 			}
-		}
-		
-		
+		}	
 		$this->layouts->set_title ( 'Admin Dashboard' );
 		$this->layouts->view ( 'add_luggage', $data, 'admin' );
 	}
@@ -274,48 +235,25 @@ class Admin extends CI_Controller {
 						
 					$data['fobj'] = json_decode($data['flit'][0]['pack_info'],true);
 					$data['lug_row'] = $this->AlLugagePrice->fetch_a_search(array('airline_code'=>$data['fobj']['@attributes']['suppcode']));
-					$data['hobjs'] = json_decode($data['hotel'][0]['pack_info'],true);
-						
-					$tot_sel = 0;
-					
-					//modules::load('module/controller/method');
+					$data['hobjs'] = json_decode($data['hotel'][0]['pack_info'],true);						
+					$tot_sel = 0;									
 					$data['departures'] = fetch_departures();
 					$data['arrivals'] = fetch_arrivals();
 					$data['ext_row'] = $this->PhaseSavingsNExtras->fetch_a_search(array('full_pack_id' => $data['seg'][0]['id']));
-					//echo '<pre>';print_r($data['ext_row']);exit;
-					//Future  - Region should be dynamic
-					/*$data['ext_fields'] = $this->SavingsNExtFields->fetch_a_fields(array('region'=>0),'ALL');
-					$arr1 = array();
-					foreach ($data['ext_fields'] as $ext_fields)
-					{
-						$arr1[$ext_fields['category']][] = $ext_fields;
-					}
-					$data['ext_fields'] = $arr1;
-					//echo '<pre>';print_r($data['ext_fields']);exit;
-					foreach ($data['hobjs'] as $hobj)
-					{
-						$tot_sel += $hobj['@attributes']['sellpricepp'];
-					}*/
-						
 				}
 				else
-				{redirect(base_url().'admin/booking_info');}
-				
-			}
-			
-			
+				{
+					redirect(base_url().'admin/booking_info');
+				}				
+			}			
 			if ($this->input->post ()) {
 				$this->form_validation->set_rules ( 'adult_fname');
 				$this->form_validation->set_rules ( 'adult_lname');
 				$this->form_validation->set_rules ( 'email');
-				$this->form_validation->set_rules ( 'mobile');
-				
-			}			
-				
+				$this->form_validation->set_rules ( 'mobile');				
+			}							
 			$this->layouts->set_title ( 'Admin Dashboard' );
-			$this->layouts->view ( 'view_booking.php', $data, 'admin' );
-		
-	
+			$this->layouts->view ( 'view_booking.php', $data, 'admin' );	
 	}
 	public function cvtDt($date)
 	{
@@ -347,31 +285,6 @@ class Admin extends CI_Controller {
 		}
 	}
 	
-	/*public function addExtras()
-	{
-		$data = array();
-		$this->load->model ( 'ExtraCategories' );
-		$data['categories'] = $this->ExtraCategories->fetch_a_category(array(),'ALL');	
-		$this->layouts->add_include(array('css/bxslider/jquery.bxslider.css','js/jquery.blockUI.js'));		
-		$depts_raw = new SimpleXMLElement ( download_page ( 'http://87.102.127.86:8005/search/websearch.exe?pageid=4&compid=1' ) );
-		$data ['countries'] = json_decode ( json_encode ( $depts_raw ), true );
-		$this->layouts->add_include ( array (
-				'css/admin/style.css',
-				'css/admin/lines.css',
-				'css/font-awesome.min.css',
-				'css/google_font.css',
-				'css/admin/custom.css',
-				'css/admin/accordion.css',
-				'js/admin/metisMenu.min.js',
-				'js/admin/custom.js',
-				'js/admin/d3.v3.js',
-				'js/admin/rickshaw.js'
-		) );
-		$this->layouts->set_title ( 'Listings page' );
-		$this->layouts->view ( 'listings', $data, 'admin' );
-		
-		//echo '<pre>';print_r($rows);exit;
-	}*/
 	public function mang_ext_categories()
 	{
 		$this->load->model ( 'ExtraCategories' );

@@ -69,3 +69,6 @@ $route['book_flight/:any'] = 'welcome/extras/book_flight';
 $route['notavailable'] = 'welcome/notavailable';
 $route['managebookinglogin'] = 'welcome/extras/bookingLogin';
 $route['admin'] = 'welcome/adminLogin';
+
+$route['cheap/:any'] = 'welcome/deals/dynamicDeals/$1';
+$route['cheap/:any/:any'] = 'welcome/deals/dynamicDeals/$1/$2';

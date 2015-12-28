@@ -1558,11 +1558,13 @@ p.pera {
 }
 /*--meena css--*/
 
+
+
 @media screen and (max-width: 1366px) {	
 	.caption {
 	width: 80%;
-	position: absolute;
-	top: 36%;
+	
+	top: 30% !important;
 	left:8%;
 border-radius: 5px;
 	float: left;
@@ -1577,9 +1579,6 @@ body .tabbable {
 	padding: 10px 20px;
 }
 }
-
-
-
 @media screen and (max-width: 1280px) {
 	
 	
@@ -1603,10 +1602,32 @@ body .tabbable {
 }
 }
 
-/*--meena css--*/
+
+/*--meena css--*/ 
 
 
+/*Suresh 24-12-15*/
 
+@media screen and (max-width: 1920px) and (min-width: 900px) {
+.caption {
+ width:85%;
+ position: absolute;
+ top:25%;
+ left:8%;
+border-radius: 5px;
+ float: left;
+ z-index:99!important;
+ 
+}
+body .tabbable {
+ color: #fff !important;
+ width: 65%;
+ background-color: rgba(0, 0, 0, 0.2);
+ border-radius: 5px;
+ padding: 10px 20px;
+}
+}
+/*****End*************/
 
 
 

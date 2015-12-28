@@ -1,5 +1,5 @@
  $(function() {
-	
+	 
 		if($.cookie('notavailable_info') != '' || $.cookie('notavailable_info') != undefined || $.cookie('notavailable_info') != null)
 		{
 			$('#no_res').html($.cookie('notavailable_info'));
@@ -58,7 +58,7 @@
 		
 		/*-------------- fetch the arrivals list based on destination selection ------------------*/
 		
-		$('.flyform select').change(function(){
+		/*$('.flyform select').change(function(){
 			
 			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
 			{
@@ -72,7 +72,26 @@
 				blockSearchingTabs();
 
 			}
-		});
+		});*/
+    $('select[name="departure_airports"]').change(function(){
+		
+		if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
+		{
+			$('select[name="arrival_airports"]').html('');
+		}
+		else
+		{       				
+			var request_data = {};
+			request_data.dest_shrtcode = $(this).val();	
+
+			blockSearchingTabs();
+			$.post( baseUrl + "/welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
+				  $('select[name="arrival_airports"]').html('');	
+				  $('select[name="arrival_airports"]').append(data);       					  
+				  unblockSearchingTabs();        					 	
+				}, "html");
+		}
+	});
 		
 		$('select[name="arrival_airports"]').change(function(){
 			
@@ -245,17 +264,20 @@
 			});
 			if(count)return false;	
 			
-			var str = '';       	
-        	
+			var str = '';
+			
+			var shortMonth = fetchShortMnth($('input[name="departure_date"]').val());
         	str += $('select[name="departure_airports"] option:selected').text() +' to '
-        				+ $('select[name="arrival_airports"] option:selected').text() +'. '
-        				+ $('input[name="departure_date"]').val() +'. '
-        				+ $('select[name="nights"] option:selected').text() + ' nights.';
-        				
+        	            + $('select[name="arrival_airports"] option:selected').text() +'. '
+        				+ shortMonth +'. '
+        				+ $('select[name="nights"] option:selected').text() + ' nights.'
+        	            + $('select[name="adults"] option:selected').text() + ' adults.'
+        	            + $('select[name="childrens"] option:selected').text() + ' childrens.';
         	
+        
         	
-        	
-        		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Flights Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        		//var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Flights Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Hotels</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Flights Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br><div style="color: #428bca; font-size: 17px;">Please Wait a Moment Whilst We Get you The Best Rates...</div></div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
                 $.fancybox({
                 	content : html,
                 	'width':'500',
@@ -272,15 +294,15 @@
                 $('.fancybox-close').hide();
                 $('.fancybox-close').css('display','none');
 
-			
+                var date = new Date();
+	        	date.setTime(date.getTime() + (60 * 1000));
+	        	$.cookie('notavailable_info', str, { expires: date,path: '/' });	
 			
 			$.post( "/welcome/fetch_filtered_flights",request_data, function( data ) {
 				
 				if(data == 'notavailable')
 				{
-					var date = new Date();
-		        	date.setTime(date.getTime() + (60 * 1000));
-		        	$.cookie('notavailable_info', str, { expires: date });	
+					
 					window.location = baseUrl + "notavailable";
 				}
 				else
@@ -297,6 +319,29 @@
 			return false;
 		});
 
+		$('select[name="full_departure_airports"]').change(function(){
+    		
+			if($(this).val() == null || $(this).val() == '' || $(this).val() == -1 )
+			{
+				//alert("Please choose proper destination");
+				$('select[name="full_arrival_airports"]').html('');
+			}
+			else
+			{
+				
+				var request_data = {};
+				request_data.dest_shrtcode = $(this).val();	
+
+				blockSearchingTabs();
+				$.post( baseUrl + "welcome/arrival_list_basedon_dynaminc_departuere_airport",request_data, function( data ) {	
+					//console.log(data);return false;
+					  $('select[name="full_arrival_airports"]').html('');	
+					  $('select[name="full_arrival_airports"]').append(data);	
+					  unblockSearchingTabs();
+					  //$.cookie('selected_full_dept_cookie', request_data.dest_shrtcode);	
+					}, "html");
+			}
+		});
 		
 				
 //	$('#da-slider').cslider({
@@ -310,60 +355,17 @@
 		//popup for block further search options during ajax request
 		function blockSearchingTabs() {
             $.blockUI.defaults.css = {};
-            $('#dvContent').block({
+            $('#dvContent,#your_Search').block({
                 message: '<div><img src="/images/loader-bar.gif" alt=""  width="225px"/></div>',
                 overlayCSS: { backgroundColor: '#fff' }
             });
         }
 		//close popup once get the ajax response
         function unblockSearchingTabs() {
-            $('#dvContent').unblock();
+            $('#dvContent,#your_Search').unblock();
         }
         
-        //Range - Sliders
-        setsliderDepartTime(flight_crypt,mintime,maxtime,minrange,maxrange);
-        function setsliderDepartTime(flight_crypt,mintime,maxtime,minrange,maxrange)
-        {
-        	
-        	$("#slider-range").slider({
-                range: true,
-                min: minrange,
-                max: maxrange,
-                values: [mintime, maxtime],          
-                slide: function (event, ui) {            	
-                    $("#timerange").val(ui.values[0] + ":00 - " + ui.values[1] + ":00");                
-                },
-                change: function (event, ui) {     
-                	blockSearchingTabs();
-                	var date = $('li.current').find('.current_date').attr('dt');
-                   filterFlightsNHotels(flight_crypt,$type_flight,date,1);
-    			}
-
-            });
-            $("#timerange").val($("#slider-range").slider("values", 0) + ":00 - " + $("#slider-range").slider("values", 1) + ":00");
        
-        }
-        setsliderReturnTime(flight_crypt,mintime_R,maxtime_R,minrange_R,maxrange_R);
-        function setsliderReturnTime(flight_crypt,mintime,maxtime,minrange,maxrange)
-        {      
-        	
-	        $("#slider-rangereturn").slider({
-	            range: true,
-	            min: minrange,
-	            max: maxrange,
-	            values: [mintime, maxtime],          
-	            slide: function (event, ui) {            	
-	                $("#timerangereturn").val(ui.values[0] + ":00 - " + ui.values[1] + ":00");                
-	            },	
-	            change: function (event, ui) {
-	            	blockSearchingTabs();
-	            	var date = $('li.current').find('.current_date').attr('dt');
-	            	filterFlightsNHotels(flight_crypt,$type_flight,date,1);
-				}
-	
-	        });
-	        $("#timerangereturn").val($("#slider-rangereturn").slider("values", 0) + ":00 - " + $("#slider-rangereturn").slider("values", 1) + ":00");
-        }
         
         function filterFlightsNHotels(flight_crypt,type,date,page)
         {       	
@@ -411,7 +413,8 @@
         function Addflight(type,info,segment)
         {  
         	
-        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Your Flights Have Been Added.</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h3 class="txt_color_1">Now Checking Hotel Availability</h3> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        	//var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Your Flights Have Been Added.</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h3 class="txt_color_1">Now Checking Hotel Availability</h3> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2   style="padding-bottom: 10px;margin-bottom: 10px; color: #094fa3; font-weight: 700; border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Your Flights Have Been Added.</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h3 class="txt_color_1">Now Checking Hotel Availability</h3> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br><div style="color: #428bca; font-size: 17px;">Please Wait a Moment Whilst We Get you The Best Rates...</div></div><div><h4 style="color: #f19412;" ><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
             $.fancybox({
             	content : html,
             	'width':'500',
@@ -617,21 +620,26 @@
         
         
         function submit_fnh_fun(request_data)
-        {        
-        	var str = '';       	
+        {     
+        	var str = '<div>';       	
         	if(isNaN(Number($('select[name="full_children"] option:selected').text())))var t = 0;
     		else t = $('select[name="full_children"] option:selected').text();
+        	
+        	
+        	var shortMonth = fetchShortMnth($('input[name="full_departure_date"]').val());
+        	
+        	
         	str += $('select[name="full_departure_airports"] option:selected').text() +' to '
         				+ $('select[name="full_arrival_airports"] option:selected').text() +'. '
-        				+ $('input[name="full_departure_date"]').val() +'. '
-        				+ $('select[name="full_nights"] option:selected').text() + ' nights.'
+        				+ shortMonth +'. '
+        				+ $('select[name="full_nights"] option:selected').text() + ' nights.</div><div class="new2">'
         				+ $('select[name="full_adults"] option:selected').text() + ' Adult(s) '
         				+ t + ' Child(ren). '
-        				+ $('select[name="full_rooms"] option:selected').text() + ' Room(s)';
+        				+ $('select[name="full_rooms"] option:selected').text() + ' Room(s)</div>';
         	
         	
-        	
-        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Hotels</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Hotels Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Hotels</span></span><div class="wait_page_section"><h2  style="padding-bottom: 10px;margin-bottom: 10px; color: #094fa3; font-weight: 700; border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking flights availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br><div style="color: #428bca; font-size: 17px;">Please Wait a Moment Whilst We Get you The Best Rates...</div></div><div><h4 style="color: #f19412;"><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        	//var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><div class="sprite logo has_bottom_margin"></div><br><span style="display: none;"><span >Searching For Hotels</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Checking Hotels Availability</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"><h4 class="txt_color_1"><span>'+str+'</span></h5> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br>Please Wait a Moment Whilst We Get you The Best Rates...</div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
             $.fancybox({
             	content : html,
             	'width':'500',
@@ -649,19 +657,18 @@
             $('.fancybox-close').css('display','none');
             	
             	
-            
-        	
         	
         	if($.cookie('mul_submition_prevent') == 1)
         	{          		
+        		var date = new Date();
+	        	date.setTime(date.getTime() + (60 * 1000));
+	        	$.cookie('notavailable_info', str, { expires: date,path: '/' });	
         		$.cookie('mul_submition_prevent',0);
 	        	$.post( baseUrl + "welcome/check_results_for_full_pack_fun",request_data, function( data ) {
 	        		
 					if(data == 'notavailable')
 					{		        	
-			        	var date = new Date();
-			        	date.setTime(date.getTime() + (60 * 1000));
-			        	$.cookie('notavailable_info', str, { expires: date });	
+			        	
 						window.location = baseUrl + "notavailable";
 						
 					}
@@ -674,11 +681,12 @@
 						var str='';
 			    		for(var i=$('select[name="full_rooms"]').val();i<=($('select[name="full_rooms"]').val() * 4 );i++)
 			    		{
-			    			str += '<option>'+i+'</option>';
+			    			str += '<option value="'+i+'">'+i+'</option>';
 			    		}
 			    		$.cookie('selected_full_rooms_cookie', $('select[name="full_rooms"]').val());			
 			    		$.cookie('full_adults_html_cookie', str);		    		
-			    		$.cookie('selected_full_adults_cookie', $('select[name="full_adults"]').val());	
+			    		$.cookie('selected_full_adults_cookie', $('select[name="full_adults"]').val());
+			    		$.cookie('selected_full_children_cookie', $('select[name="full_children"]').val());
 			    		$.cookie('selected_full_nights_cookie', $('select[name="full_nights"]').val());
 			    		$.cookie('selected_full_date_cookie', $('input[name="full_departure_date"]').val());
 			    		window.location = baseUrl + data;
@@ -686,7 +694,7 @@
 				}, "html");
         	}
         }
-
+        
     	function arrivals(code,target){		
     		var request_data = {};
     		request_data.dest_shrtcode = code;
@@ -787,4 +795,63 @@
                  return false;
                  }
          }
+    	 //Range - Sliders
+    	 
+    	 function fetchShortMnth(df){
+    			var arr = df.split("/");
+    	    	var monthNames = [
+    			                  "Jan", "Feb", "Mar",
+    			                  "Apr", "May", "June", "July",
+    			                  "Aug", "Sep", "Oct",
+    			                  "Nov", "Dec"
+    			                ];
+    	    	var date = new Date(arr[2],arr[1]-1,arr[0]);           
+    	    	var monthIndex = date.getMonth();    	
+    	    	return arr[0] + ' ' + monthNames[monthIndex] + ' ' + arr[2];
+    		}
+         
+         function setsliderDepartTime(flight_crypt,mintime,maxtime,minrange,maxrange)
+         {
+         	
+         	$("#slider-range").slider({
+                 range: true,
+                 min: minrange,
+                 max: maxrange,
+                 values: [mintime, maxtime],          
+                 slide: function (event, ui) {            	
+                     $("#timerange").val(ui.values[0] + ":00 - " + ui.values[1] + ":00");                
+                 },
+                 change: function (event, ui) {     
+                 	blockSearchingTabs();
+                 	var date = $('li.current').find('.current_date').attr('dt');
+                    filterFlightsNHotels(flight_crypt,$type_flight,date,1);
+     			}
+
+             });
+             $("#timerange").val($("#slider-range").slider("values", 0) + ":00 - " + $("#slider-range").slider("values", 1) + ":00");
+        
+         }
+         
+         function setsliderReturnTime(flight_crypt,mintime,maxtime,minrange,maxrange)
+         {      
+         	
+ 	        $("#slider-rangereturn").slider({
+ 	            range: true,
+ 	            min: minrange,
+ 	            max: maxrange,
+ 	            values: [mintime, maxtime],          
+ 	            slide: function (event, ui) {            	
+ 	                $("#timerangereturn").val(ui.values[0] + ":00 - " + ui.values[1] + ":00");                
+ 	            },	
+ 	            change: function (event, ui) {
+ 	            	blockSearchingTabs();
+ 	            	var date = $('li.current').find('.current_date').attr('dt');
+ 	            	filterFlightsNHotels(flight_crypt,$type_flight,date,1);
+ 				}
+ 	
+ 	        });
+ 	        $("#timerangereturn").val($("#slider-rangereturn").slider("values", 0) + ":00 - " + $("#slider-rangereturn").slider("values", 1) + ":00");
+         }
+         setsliderDepartTime(flight_crypt,mintime,maxtime,minrange,maxrange);
+         setsliderReturnTime(flight_crypt,mintime_R,maxtime_R,minrange_R,maxrange_R);
       

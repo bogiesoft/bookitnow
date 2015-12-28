@@ -36,7 +36,7 @@
 		    <div id="demo" class="collapse" style="margin-top:1em;">
 		   		<div class="row" class="forms">
 		       		<form name="full_pack_form" onsubmit="return hotelsForm(this)" method="post" accept-charset="utf-8">
-		               <div class="form-group col-sm-2">
+		               <div class="form-group col-sm-3">
 		        	     <label> Travel To:</label>
 		                 <br>
 		                    <select name="hotel_travel_to" id="" class="full_width">
@@ -56,7 +56,7 @@
 				            <br>
 				            <input readonly name="hotel_check_in_date" value="<?php echo $change_search_info['row']['selected_date'];?>"  type="text" id="datepicker">
 				        </div>
-			           <div class="form-group col-sm-2">
+			           <div class="form-group col-sm-1">
 			            	<label> Nights:</label>
 			                <br>
 			                <select name="hotel_nights" class="full_width">                         
@@ -70,7 +70,7 @@
 			            </div>   
 		          
 		        
-				          <div class="form-group col-sm-2">
+				          <div class="form-group col-sm-1">
 				          	<label> Rooms:</label>
 				            <br>
 				             <!-- $change_search_info['query']['maxstay'] --> 
@@ -83,7 +83,7 @@
 				            </select>
 				          </div>
 		          
-				          <div class="form-group col-sm-2">
+				          <div class="form-group col-sm-1">
 				          <label> Adults:</label>
 				                    <br>
 				                    <select name="hotel_adults" class="full_width">
@@ -98,8 +98,8 @@
 									</select>
 				          </div>
 		          
-				          <div class="form-group col-sm-2">
-				           <label> Children 2-12 yrs:</label>
+				          <div class="form-group col-sm-1">
+				           <label> Children :</label>
 				                    <br>
 				                    <select name="hotel_childrens" class="full_width">
 				                    	<option value="-1">0</option>
@@ -113,7 +113,7 @@
 				                       ?>               
 				                        </select>
 				          </div>          
-		          		<button class="button"  type="submit" style="margin-top:1.8em;">Search Again</button>          
+		          		<button class="button"  type="submit" style="margin-top:1.2em;">Search Again</button>          
 		      		</form>
 		      	</div>
 		      </div>
@@ -134,7 +134,7 @@
 	<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
       <div class="gridContainer ">
     	<ul class="fluidList steps fh clearfix">   	
-          <li class="<?php echo $h_cur;?>"><strong class="<?php echo $h_done;?>">1. Select Hotel </strong></li>
+          <li class="<?php echo $h_cur;?>"><strong>1. Select Hotel </strong><?php if($h_done == 'done')echo '<i class="fa fa-check-circle"></i>';?></li>
           <li class="<?php echo $b_cur;?>"><strong>2. Book</strong></li>          
           <li class="bg_1 clearfix">
         	<div id="LP_DIV_1429625391320" class="right"></div>
@@ -223,11 +223,24 @@
 			    			<label> Comments : </label>			
 			    			<textarea class="form-control" placeholder="Comments" name="comments"></textarea>
 			    		</div>		    		
-			    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
+			    		<button class="btn btn-primary1" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
 		    	</form>
 		    </div>
 		</div>  
-  
+   <style>
+  .btn-primary1 {   
+     text-align: left;
+     border: 0px;
+     font-size: 12px;
+     text-transform: lowercase;
+     background: #0099cc;
+    }
+   label {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+	}
+	
+  </style>
 
 
 

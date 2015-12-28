@@ -15,13 +15,13 @@ body {
 	background-image: linear-gradient(to bottom, #FAFAFA, #DBDFE6);
 	border: 1px solid #DBDFE6
 }
-h4 {
-    font-size:20px !important; padding:5px; margin:0px;}
+
 
 
 h1, h2, h4 {
     color: #036;
-    font-weight: 700;}
+    /*font-weight: 700;*/
+    }
 
 small {
     font-size: 14px; line-height:20px;}
@@ -1485,15 +1485,11 @@ table.carparking label, table.carparking select, table.carparking tbody input {
 h1 {
 	font-size: 200%
 }
-h2 {
-	font-size: 175%
-}
+
 h3 {
 	font-size: 150%
 }
-h4 {
-	font-size: 125%
-}
+
 h5 {
 	font-size: 115%
 }
@@ -2927,3 +2923,5 @@ p.call {
 	color: #089de3;
 	font-size: 15px;
 }
+
+

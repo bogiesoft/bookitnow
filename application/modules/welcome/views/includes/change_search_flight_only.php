@@ -39,7 +39,7 @@
   <div id="demo" class="collapse" style="margin-top:1em;">
    <div class="row" class="forms">
        <form name="flight_hotel_form" method="post" accept-charset="utf-8">
-        <div class="form-group col-sm-2" >
+        <div class="form-group col-sm-3" >
         <label> Fly From:</label>
                     <br>            
                    
@@ -62,7 +62,7 @@
 					</select>
                   </div>
          
-        <div class="form-group col-sm-2">
+        <div class="form-group col-sm-3">
             <label> Travel To:</label>
                     <br>
                     <select name="arrival_airports" id="" class="full_width">
@@ -85,7 +85,7 @@
           </div>
           
           
-           <div class="form-group col-sm-2">
+           <div class="form-group col-sm-1">
             <label> Nights:</label>
                     <br>
                     <select name="nights" class="full_width">                         
@@ -97,7 +97,7 @@
                           }?>
                     </select>
           </div>   
-          <div class="form-group col-sm-2">
+          <div class="form-group col-sm-1">
           <label> Adults:</label>
                     <br>
                     <select name="adults" class="full_width">
@@ -112,8 +112,8 @@
 					</select>
           </div>
           
-          <div class="form-group col-sm-2">
-           <label> Children 2-12 yrs:</label>
+          <div class="form-group col-sm-1">
+           <label> Children</label>
                     <br>
                     <select name="childrens" class="full_width">
                     	<option value="-1">0</option>
@@ -127,7 +127,7 @@
                        ?>               
                         </select>
           </div>          
-          <button class="button"  type="submit" style="margin-top:1.8em;">Search Again</button>          
+          <button class="button"  type="submit" style="margin-top:1.2em;">Search Again</button>          
       </form>
       </div>
       </div>
@@ -147,7 +147,7 @@
 	<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">
       <div class="gridContainer ">
 	    <ul class="fluidList steps fh clearfix">   
-	          <li class="<?php echo $fcls;?>"><strong class="<?php echo $f_done;?>">1. Select Flight </strong></li>
+	          <li class="<?php echo $fcls;?>"><strong>1. Select Flight </strong><?php if($f_done == 'done')echo '<i class="fa fa-check-circle"></i>';?></li>
 	          <li class="<?php echo $bcls;?>"><strong>2. Book</strong></li>          
 	          <li class="bg_1 clearfix">
 	        	<div id="LP_DIV_1429625391320" class="right"></div>
@@ -178,3 +178,8 @@
                       
      </div>     
 </div>
+<style>
+.col-sm-2{
+        width: 15%;
+    }
+</style>

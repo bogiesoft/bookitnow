@@ -1052,6 +1052,13 @@ class Welcome extends CI_Controller {
 		echo $string;exit;
 	}
 	
+	
+	/*public function arrival_list_basedon_dynaminc_departuere_airport()
+	{		
+		echo "<pre>";print_r($this->input->post());exit; 
+		return fetchingArrivalsByDestination($this);
+	}*/
+	
 	public function download_page($path){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$path);

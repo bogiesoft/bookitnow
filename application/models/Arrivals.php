@@ -54,4 +54,26 @@ class Arrivals extends CI_Model {
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+	
+	
+	
+	public function ReadOffers($where,$limit=1,$offset=0) {
+		//$this->db->cache_on();
+		try{
+			if($this->db->get_where('offers', $where , $limit, $offset)->result_array())
+			{
+				echo "ucee";exit;
+			}
+		}
+		catch(Exception $e){
+			echo "asd";exit;
+		}
+				
+	}
+	public function ReadOffers1($where,$limit=1,$offset=0) {		
+		$this->db->select('(SELECT SUM(payments.amount) FROM payments WHERE payments.invoice_id=4) AS amount_paid', FALSE); 
+		$query = $this->db->get('mytable');
+	}
+	
+	
 }

@@ -1,6 +1,4 @@
-
-<?php 
-
+<?php
 	if($type == 'hotel_only'){
 		include_once 'includes/change_search_hotels_only.php';
 	}else{		
@@ -70,11 +68,7 @@
 	}
 	function count_hot_star($item) {
 		return count($item);
-	}
-	//array_walk($offers['populators']['star_ratting']['price'], 'output');
-//	echo '<pre>';print_r($offers['populators']);exit;
-	
-	
+	}	
 	echo '<div class="filtercheckbox filtercheckbox2">
               <span name="check">
             	<input id="chkStar_all" type="checkbox" checked="checked">

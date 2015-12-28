@@ -95,16 +95,16 @@ class Hotel extends CI_Controller {
 				$hash = $this->UserSearch->createSearch($data);
 				if(!empty($this->UserSearch->fetch_a_search(array('url_hash' => $hash))))
 				{
-					echo '/availableHotels/'.$hash;
+					echo 'availableHotels/'.$hash;
 				}
 				else
 				{
-					echo '/notavailable';
+					echo 'notavailable';
 				}
 			}
 			else
 			{
-				echo '/notavailable';
+				echo 'notavailable';
 			}	
 		}
 		exit;
@@ -471,11 +471,12 @@ class Hotel extends CI_Controller {
 				$cry = $this->uri->segment(2);
 				
 				$data['seleted_info'] =  ' <div class="deals">	<h2>Your Selections	</h2></div>
-	               <div class="conatiner-bg"style=" font-weight: 500;color: inherit;">
+	               <div class="bg_grey" style=" font-weight: 500;color: inherit;">
 						<div class="basket_item bg_grey padded border_b clearfix">
             			<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
                 			<div class="left">
-                    			<h4>Flights</h4>
+                    			<h4 style="color: #036;
+    font-weight: 700;">Flights</h4>
                 			</div>
 			                <div class="right" style="text-align: right;">
 			                    <h4 style="margin-left: 164px;margin-top: 10px;color: #0088cc;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']).'</h4>
@@ -518,12 +519,12 @@ class Hotel extends CI_Controller {
 			                    </small>
 			                </div>
 			            </div>
-			          </div>
-			           <div class="conatiner-bg" >
+			          </div>                     		
+			           <div class="bg_grey">
 			          <div class="basket_item bg_grey padded border_b" style="position: relative;">
 					    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
 			                <div class="left">
-			                    <h4 style="color: rgba(241, 113, 19, 0.98);">Atol Protection</h4>
+			                    <h4 class="bg_grey"> Atol Protection</h4>
 			                </div>
 			                <div class="right" style="text-align: right;">
 			                    <h4 style="margin-left: 162px;margin-top: 10px;color: #0088cc;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 ).'</h4>
@@ -769,9 +770,7 @@ class Hotel extends CI_Controller {
 	public function savehotel_fun()
 	{
 		if($this->input->post())
-		{
-			
-			
+		{			
 			$this->load->model('Options');
 			$margin_row = $this->Options->fetch_a_fields(array(),1);
 			
@@ -889,20 +888,41 @@ class Hotel extends CI_Controller {
 						$url = "http://87.102.127.86:8005/search/websearch.exe?pageid=6&compid=1&minstay=".$query['minstay']."&maxstay=".$query['maxstay']."&depdate=".$query['depdate']."&flex=0&countryid=".$query['countryid']."&regionid=".$query['regionid']."&areaid=".$query['areaid']."&resortid=&boards=&rating=&pax=".$query['pax']."&offersperday=200";
 						if($results = $this->loadHotelDataFun($url,$query['depdate']))
 						{
-							foreach ($results['offer'] as $offer)
+							
+							foreach ($results['offer'] as $key => $offer)
 							{
-								//margins - while hotel submition
-								$offer['@attributes']['sellpricepp'] = $offer['@attributes']['sellpricepp'] + @$margin_row[0]['hotel_rate'];
-								$offer['@attributes']['netpricepp'] = $offer['@attributes']['netpricepp'] + @$margin_row[0]['hotel_rate'];
-								//end							
 								
-								if($offer['@attributes']['resort'] == $hobj['@attributes']['resort'] &&
-										$offer['@attributes']['hotelname'] == $hobj['@attributes']['hotelname'] &&
-										$offer['@attributes']['boardbasis'] == $hobj['@attributes']['boardbasis'])
-								{
-									$reslt_obj[] = $offer;
-									break;
+								if($key === '@attributes'){
+									
+									$temp = array();
+									//margins - while hotel submition
+									$temp['@attributes']['sellpricepp'] = $offer['sellpricepp'] + @$margin_row[0]['hotel_rate'];
+									$temp['@attributes']['netpricepp'] = $offer['netpricepp'] + @$margin_row[0]['hotel_rate'];
+									//end
+									
+									if($offer['resort'] == $hobj['@attributes']['resort'] &&
+											$offer['hotelname'] == $hobj['@attributes']['hotelname'] &&
+											$offer['boardbasis'] == $hobj['@attributes']['boardbasis'])
+									{
+										$reslt_obj[] = $temp;
+										break;
+									}
 								}
+								else{									
+									//margins - while hotel submition
+									$offer['@attributes']['sellpricepp'] = $offer['@attributes']['sellpricepp'] + @$margin_row[0]['hotel_rate'];
+									$offer['@attributes']['netpricepp'] = $offer['@attributes']['netpricepp'] + @$margin_row[0]['hotel_rate'];
+									//end
+									
+									if($offer['@attributes']['resort'] == $hobj['@attributes']['resort'] &&
+											$offer['@attributes']['hotelname'] == $hobj['@attributes']['hotelname'] &&
+											$offer['@attributes']['boardbasis'] == $hobj['@attributes']['boardbasis'])
+									{
+										$reslt_obj[] = $offer;
+										break;
+									}
+								}
+								
 							}
 						}
 					}

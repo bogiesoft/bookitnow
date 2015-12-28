@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -122,14 +119,24 @@ body										{line-height:1.2; font-size:80%; min-width:auto;}
                   if(count($result['Images']['Url']) == 1)
                   {
                   	echo '<li>';
-                  	echo '<img src="'.urldecode($result['Images']['Url']).'" />';
+                  	if(is_array(@getimagesize(urldecode($result['Images']['Url'])))){
+                  		echo '<img src="'.urldecode($result['Images']['Url']).'" />';
+                  	}
+                  	else{
+                  		echo '<img style="width: 100%;max-height: 180px;" src="'.base_url().'/images/destination_placeholder.jpg"/>';
+                  	}
                   	echo '</li>';
                   }else if(count($result['Images']['Url']) > 1)
                   {
                   	
                   	foreach($result['Images']['Url'] as $url){
                   		echo '<li>';
-                  		echo '<img src="'.urldecode($url).'" />';
+                  		if(is_array(@getimagesize(urldecode($url)))){
+                  			echo '<img src="'.urldecode($url).'" />';
+                  		}
+                  		else{
+                  			echo '<img style="width: 100%;max-height: 180px;" src="'.base_url().'/images/destination_placeholder.jpg"/>';
+                  		}                  		
                   		echo '</li>';
                   	}
                   }                 

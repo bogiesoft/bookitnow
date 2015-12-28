@@ -39,7 +39,7 @@
   <div id="demo" class="collapse" style="margin-top:1em;">
    <div class="row" class="forms">
        <form name="full_pack_form" onsubmit="return full_pack_submit(this)" method="post" accept-charset="utf-8">
-        <div class="form-group col-sm-2" >
+        <div class="form-group col-sm-3" style="width: 20%;">
         <label> Fly From:</label>
                     <br>
                    
@@ -64,7 +64,7 @@
 					</select>
                   </div>
          
-        <div class="form-group col-sm-2">
+        <div class="form-group col-sm-3" style="width: 20%;">
             <label> Travel To:</label>
                     <br>
                     <select name="full_arrival_airports" id="" class="full_width">
@@ -87,7 +87,7 @@
           </div>
           
           
-           <div class="form-group col-sm-2">
+           <div class="form-group col-sm-1">
             <label> Nights:</label>
                     <br>
                     <select name="full_nights" class="full_width">                         
@@ -101,7 +101,7 @@
           </div>   
           
         
-          <div class="form-group col-sm-2">
+          <div class="form-group col-sm-1">
           <label> Rooms:</label>
                     <br>
                    <!-- $change_search_info['query']['maxstay'] --> 
@@ -114,7 +114,7 @@
                         </select>
           </div>
           
-          <div class="form-group col-sm-2">
+          <div class="form-group col-sm-1">
           <label> Adults:</label>
                     <br>
                     <select name="full_adults" class="full_width">
@@ -129,8 +129,8 @@
 					</select>
           </div>
           
-          <div class="form-group col-sm-2">
-           <label> Children 2-12 yrs:</label>
+          <div class="form-group col-sm-1">
+           <label> Children :</label>
                     <br>
                     <select name="full_children" class="full_width">
                     	<option value="-1">0</option>
@@ -144,7 +144,7 @@
                        ?>               
                         </select>
           </div>          
-          <button class="button"  type="submit" style="margin-top:1.8em;">Search Again</button>          
+          <button class="button"  type="submit" style="margin-top:1.2em;">Search Again</button>          
       </form>
       </div>
       </div>
@@ -162,19 +162,19 @@
 
 </div>
 <?php }?>
-<div class="clearfix"></div>   
+<div id="select_names">
+   <div class="container"> 
     <div style="display: block;" id="dvToggle" class=""> 
 		<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">     
 	   
 		    <div class="gridContainer ">
 		    	<ul class="fluidList steps fh clearfix">
 		    	
-		    	 <li class="<?php echo $fcls;?>"><strong class="<?php echo $f_done;?>">1. Select Flight</strong></li>		    	 
-		          <li class="<?php echo $hcls;?>"><strong class="<?php echo $h_done;?>">2. Select Hotel</strong></li>		        
-		          <li class="<?php echo $ecls;?>"><strong class="<?php echo $e_done;?>">3. Savings &amp; Extras</strong></li>
-		          <li class="<?php echo $bcls;?>"><strong class="<?php echo $b_done;?>">4. Book</strong></li>
-		          <li class="bg_1 clearfix">
-		        		<div class="right"></div>
+		    	 <li class="<?php echo $fcls;?>"><strong>1. Select Flight</strong><?php if($f_done == 'done')echo '<i class="fa fa-check-circle"></i>';?></li>		    	 
+		          <li class="<?php echo $hcls;?>"><strong>2. Select Hotel</strong><?php if($h_done == 'done')echo '<i class="fa fa-check-circle"></i>';?></li>		        
+		          <li class="<?php echo $ecls;?>"><strong>3. Savings &amp; Extras</strong><?php if($e_done == 'done')echo '<i class="fa fa-check-circle"></i>';?></li>
+		          <li class="<?php echo $bcls;?>"><strong>4. Book</strong></li>
+		          <li class="bg_1 clearfix"><div class="right"></div>
 		      	  </li>
 		      	 </ul>
 		  	</div>
@@ -182,7 +182,8 @@
   		</div>
   	</div>
   </div>
-
+ </div>
+ </div>
    
 <div id="body_content" style="margin:0px;">
 
@@ -271,12 +272,25 @@
 	    			<label> Comments : </label>			
 	    			<textarea class="form-control" placeholder="Comments" name="comments"></textarea>
 	    		</div>		    		
-	    		<button class="btn btn-primary" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
+	    		<button class="btn btn-primary1" type="submit" style="margin-top: 10px;float:right;"> Submit </button>	
 	    	</form>    
 	    	
      </div>
   </div>  
-  
+   <style>
+  .btn-primary1 {   
+    text-align: left;
+       border: 0px;
+       font-size: 12px;
+       text-transform: lowercase;
+      background: #0099cc;
+    }
+    label {
+	    font-size: 16px;
+	    font-family: 'Open Sans', sans-serif;
+	}
+	
+  </style>
      
 
 

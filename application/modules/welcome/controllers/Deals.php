@@ -55,12 +55,12 @@ class Deals extends CI_Controller {
 			$html .= '<small class="txt_color_1">Deals From</small><br>';
 			$html .= '<strong class="txt_xxtra_large txt_color_1">&#163;172</strong><small class="txt_color_1">pp</small></div>';
 			$html .= '<div class="fluid columns_three">';
-			$html .= '<a href="'.base_url().'welcome/deals/dynamicDeals/?hotel_id='.$qString.'" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>';
+			$html .= '<a href="'.base_url().'welcome/deals/dynamicDeals/?'.$qString.'" class="button">GO <i aria-hidden="true" class="icon-arrow-circle-right"></i></a>';
 			$html .= '</div></div></div></div></div>';				
 		}
 		return $html;
 	}
-	
+		
 	public function switchDeals(){
 		exit($this->fetchDealsFun($this->input->post('deal_category')));
 	}
@@ -157,11 +157,10 @@ class Deals extends CI_Controller {
 	
 	public function dynamicDeals()
 	{
+		//echo "<pre>";print_r('asdf');exit;
 		$data = array();
-		$this->load->model('ManagerChoices');
-		$manager_deals = $this->ManagerChoices->fetch_a_search(array('deal_category'=>$_GET['type']),'ALL');
-		
-		
+		//$this->load->model('ManagerChoices');
+		//$manager_deals = $this->ManagerChoices->fetch_a_search(array('deal_category'=>$_GET['type']),'ALL');
 		
 		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
 				'css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css',
@@ -236,5 +235,50 @@ class Deals extends CI_Controller {
 	}
 	
 	
+	public function cacheTest(){
+		$this->load->model('Arrivals');
+		$strat = microtime(true);
+		
+		//$t = $this->Arrivals->ReadOffers(array('DepAirportCode' => 'BHX','ArrivalAirportCode' => 'AGP'),'ALL');
+		
+			$t = $this->Arrivals->ReadOffers(array(),'ALL');
+		
+		//$t = $this->Arrivals->ReadOffers(array('DepAirportCode' => 'LGW','ArrivalAirportCode' => 'TFS'),'ALL');
+		
+		echo (microtime(true)- $strat);
+		//echo "<pre>";print_r($t);
+		exit;
+	}
 	
+	public function loadTest(){
+		
+	}
+	
+	
+	public function deleteDir($dirPath = 'test') {
+		
+		    if (! is_dir($dirPath)) {
+		    
+		        throw new InvalidArgumentException("$dirPath must be a directory");
+		    }
+		  
+		    if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+		        $dirPath .= '/';
+		    }
+		    
+		    $files = glob($dirPath . '*', GLOB_MARK);
+		    
+		   
+		    foreach ($files as $file) {
+		        if (is_dir($file)) {		        	
+		            self::deleteDir($file);
+		        } else {
+		        	echo $file;
+		            unlink($file);
+		        }
+		    }
+		   
+		    rmdir($dirPath);
+		    echo "success";
+	}	
 }

@@ -1002,3 +1002,20 @@ ul.contactform li {
         border-bottom: 1px solid #DDD;
      background: rgba(253, 249, 249, 0.59) linear-gradient(to bottom, #F9F9F9 1%, rgba(224, 222, 220, 0.76) 100%) repeat scroll 0% 0%;
 }*/
+
+
+i.fa-check-circle{
+	float: right;
+    color: #690;
+    margin-top: 8px;	
+}
+
+
+/*28-12 (divya)*/
+.new1{
+	font_size:50px;
+	}
+.new2{
+	font_size:17px;
+}
+
