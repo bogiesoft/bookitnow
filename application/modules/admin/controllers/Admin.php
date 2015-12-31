@@ -202,10 +202,11 @@ class Admin extends CI_Controller {
 			$data['active_tab_var']	= 'booking';
 			$this->load->model ( 'Bookinginfo' );
 			$this->load->model('UserSearch');
-			
+			$data['departures'] = fetch_departures();
+			$data['arrivals'] = fetch_arrivals();
 			$data['row'] = $this->Bookinginfo->fetch_a_search(array('reference_id'=>$id));
 			if(empty($data['row']))
-			{
+			{				
 				redirect(base_url().'admin/booking_info');
 			}
 			if($data['row'][0]['type_search'] == 'hotel_only'){
@@ -213,9 +214,16 @@ class Admin extends CI_Controller {
 				$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));				
 				$data['hobjs'] = json_decode($data['seg'][0]['pack_info'],true);					
 			}
+			else if($data['row'][0]['type_search'] == 'flight_only')
+			{
+				$data['seg'] = $this->UserSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
+				$data['fobj'] = json_decode($data['seg'][0]['pack_info'],true);
+				$data['flit'][0]['flight_selected_date'] = explode(' ',$data['fobj']['@attributes']['outdep'])[0];
+			}
 			else{
 				$this->load->model('FullSearch');
 			//	$this->serachInfo($data['row'][0]['base_id'])
+				//echo  $data['row'][0]['base_id'];exit;
 				$data['seg'] = $this->FullSearch->fetch_a_search(array('id' => $data['row'][0]['base_id']));
 				if(!empty($data['seg']))
 				{
@@ -242,7 +250,7 @@ class Admin extends CI_Controller {
 					$data['ext_row'] = $this->PhaseSavingsNExtras->fetch_a_search(array('full_pack_id' => $data['seg'][0]['id']));
 				}
 				else
-				{
+				{					
 					redirect(base_url().'admin/booking_info');
 				}				
 			}			

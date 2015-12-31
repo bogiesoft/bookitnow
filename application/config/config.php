@@ -522,6 +522,6 @@ $config['proxy_ips'] = '';
 */
 
 $config['header_css'] = array('css/bootstrap.min.css');
-$config['header_js']  = array('js/jquery.min.js','js/bootstrap.min.js','js/jquery.cookie.js');
+$config['header_js']  = array('js/compressed/JqBs.min.js');
 
 //enter code here

@@ -451,6 +451,8 @@ class Hotel extends CI_Controller {
 				$this->load->model('PhaseFlightOrHotel');
 				$selected_info = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$rows[0]['id']));
 				$flight_obj = json_decode($selected_info[0]['pack_info'],true);
+				
+				
 			
 				
 				$dscode = $flight_obj['@attributes']['depapt'];
@@ -470,73 +472,65 @@ class Hotel extends CI_Controller {
 				$type_s = 'full_flight';
 				$cry = $this->uri->segment(2);
 				
-				$data['seleted_info'] =  ' <div class="deals">	<h2>Your Selections	</h2></div>
-	               <div class="bg_grey" style=" font-weight: 500;color: inherit;">
-						<div class="basket_item bg_grey padded border_b clearfix">
-            			<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-                			<div class="left">
-                    			<h4 style="color: #036;
-    font-weight: 700;">Flights</h4>
-                			</div>
-			                <div class="right" style="text-align: right;">
-			                    <h4 style="margin-left: 164px;margin-top: 10px;color: #0088cc;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']).'</h4>
-			                </div>
-			            </div>
-			            <div style="margin-bottom: 5px; margin-top: 5px;">
-			                <strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
-			                <br>
-			                <!-- <div style="position: relative;" class="clearfix">
-			                   <div class="left">
-			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
-			                    </div>
-			                    <div class="right">
-			                        <span class="txt_color_2"></span>
-			                    </div>
-			                </div>-->
-			               <small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
-			                <span class="txt_color_2"></span>			                
-			            </div>
-			            <div style="margin-bottom: 5px;">
-		                	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
-			                <!--<div style="position: relative;" class="clearfix">
-			                    <div class="left">
-			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
-			                    </div>
-			                </div>-->
-			               	 <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
-			                <span class="txt_color_2"></span>
-            			</div>
+				$data['seleted_info'] =  '<div class="deals">
+											<h2>Your Selections	</h2>
+										  </div>
+	               						  <div class="bg_grey">											
+					            			<div>
+					                			<div class="left">Flights</div>
+								                <div class="right" style="text-align: right;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']).'</div>
+			           						 </div>
+								             <div style="margin-bottom: 5px; margin-top: 5px;    line-height: 20px;">
+								                <strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
+								                <br>
+								                <!-- <div style="position: relative;" class="clearfix">
+								                   <div class="left">
+								                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
+								                    </div>
+								                    <div class="right">
+								                        <span class="txt_color_2"></span>
+								                    </div>
+								                </div>-->
+								                        		
+								               <small>'. $dscode.' to '.$ascode.'<br>'.date('d M Y',$this->cvtDt(str_date($selected_info[0]['flight_selected_date']))) .' : '.$dept_start_time.'-'.$dept_arr_time.'</small><br>
+								                <span class="txt_color_2"></span>			                
+								            </div>
+								            <div style="margin-bottom: 5px;    line-height: 20px;">
+							                	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
+								                <!--<div style="position: relative;" class="clearfix">
+								                    <div class="left">
+								                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
+								                    </div>
+								                </div>-->
+								               	 <small>'.$ascode.' to '.$dscode.'<br>'.date('d M Y',$this->cvtDt(str_date(explode(' ',$flight_obj['@attributes']['indep'])[0]))).' : '.$return_start_time.'-'.$return_arr_time.'</small><br>
+								                <span class="txt_color_2"></span>
+					            			</div>
 
-			            <div style="position: relative;" class="clearfix">
-			                <div class="left">
-			                    <small>
-			                        <span id="cphContent_ucBookingSummary_lblFPersonCount"> Adults + Children : '.($rows[0]['num_adults'] + $rows[0]['num_children']).' x </span><span id="cphContent_ucBookingSummary_lblFPrice">&#163;'.$flight_obj['@attributes']['sellpricepp'].'</span>
-			                    </small>
-			                </div>			
-			                <div class="right">
-			                    <small>
-			                        <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
-			                    </small>
-			                </div>
-			            </div>
-			          </div>                     		
-			           <div class="bg_grey">
-			          <div class="basket_item bg_grey padded border_b" style="position: relative;">
-					    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-			                <div class="left">
-			                    <h4 class="bg_grey"> Atol Protection</h4>
-			                </div>
-			                <div class="right" style="text-align: right;">
-			                    <h4 style="margin-left: 162px;margin-top: 10px;color: #0088cc;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 ).'</h4>
-			                </div>
-			            </div>
-			            <div style="position: relative;" class="clearfix">
-			                <div class="left">
-			                    <small>£2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'
-			                    </small>
-			                </div>               
-           			   </div>
-			        </div></div></div></div>';
+								            <div style="position: relative;" class="clearfix">
+								                <div>
+								                    <small>
+								                        <span> Adults + Children : '.($rows[0]['num_adults'] + $rows[0]['num_children']).' x </span><span id="cphContent_ucBookingSummary_lblFPrice">&#163;'.$flight_obj['@attributes']['sellpricepp'].'</span>
+								                    </small>
+								                </div>			
+								                <div style="text-align:right;">
+								                    <small>
+								                        <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
+								                    </small>
+								                </div>
+								            </div>								           
+			          					 </div>                     		
+			           					 <div class="bg_grey">	
+								              <div>
+												<div class="left">Atol Protection</div>
+									           <div class="right" style="text-align: right;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 ).'</div>
+									          </div>
+									           	<div style="position: relative;" class="clearfix">
+									                <div class="left">
+									                    <small>£2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'
+									                    </small>
+									                </div>               
+						           			   </div>			        					
+								       	</div>';
 								
 				/**************end*******************************/
 				$data['type'] = 'pack_hotel';
@@ -669,7 +663,7 @@ class Hotel extends CI_Controller {
 				'FB' => 'Full Board'
 		);
 		$keys = array_keys($offers);
-		
+	
 		for ($i=$offset;$i<=$offset+$limit;$i++)
 		{			
 			if(isset($keys[$i]))
@@ -678,16 +672,16 @@ class Hotel extends CI_Controller {
 					<div class="row">
 						<div class="col-sm-6 col-md-7">
 							<div class="thumbnail box-border"><div>
-							<div class="title-name">'.urldecode($offers[$keys[$i]][0]['@attributes']['hotelname']).'</div>
 							<div class="star-img"><img alt="" src="'.base_url().'images/star_'.(int)$offers[$keys[$i]][0]['@attributes']['starrating'].'.png"></div>
-							<h5>'.urldecode($offers[$keys[$i]][0]['@attributes']['resort']).'</h5>
+							<div class="title-name">'.urldecode($offers[$keys[$i]][0]['@attributes']['hotelname']).'</div>							
+							<h4>'.urldecode($offers[$keys[$i]][0]['@attributes']['resort']).'</h4>
 							<p class="content">'.urldecode($offers[$keys[$i]][0]['@attributes']['content']).'</p>
-							<p> <a class="btn-small btn-default-small" role="button" onclick=fulldetails("'.$offers[$keys[$i]][0]['@attributes']['brocode'].'")>Full Details</a></p>
+							
 						</div>
 					</div>
 				 </div>
 				<div class="row">
-					<div class="col-sm-6 col-md-4">
+					<div class="col-sm-6 col-md-5">
 						<div class="thumbnail box-border"><div>';
 						if(is_array(@getimagesize(urldecode($offers[$keys[$i]][0]['@attributes']['image'])))){
 							$html .= '    <img style="width: 100%;max-height: 180px;" src="'.urldecode($offers[$keys[$i]][0]['@attributes']['image']).'" />';
@@ -695,7 +689,8 @@ class Hotel extends CI_Controller {
 						else{
 							$html .= '    <img style="width: 100%;max-height: 180px;" src="'.base_url().'/images/destination_placeholder.jpg"/>';
 						}						
-					$html .='</div>
+					$html .='</div><br/>
+							<p> <a class="btn-small btn-default-small" style="width:100%;" role="button" onclick=fulldetails("'.$offers[$keys[$i]][0]['@attributes']['brocode'].'")>Full Details</a></p>
 				</div>
 			</div>
 			</div>
@@ -705,12 +700,12 @@ class Hotel extends CI_Controller {
 			  <a href="#" class="list-group-item active"><span class="h-title">Available Rooms: </span>  </a>
 			</div>
 				<div class="orderhotels-1">';
+			
 			foreach ($offers[$keys[$i]] as $hotel)
-			{
-				
-				
+			{			
 				$plain_txt = json_encode($hotel);
 				$encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
+				
 				//echo '<pre>';print_r($encrypted_txt);exit;
 				$html .= '
 					<div class="row bg_grey">
@@ -729,16 +724,19 @@ class Hotel extends CI_Controller {
 						</div>
 					</div>
 				';
-			}
+				
+			}			
 			$html .='</div><br>'; 
 			}
 			else
 			{
 				break;
 			}
+			
 		}
+		
 		$res_count = count($offers);
-		$current_page = round(($limit)/10);
+		$current_page = round(($offset)/10)+1;
 		
 		
 		$num_pages = ($res_count%10)? ($res_count/10)+1 : $res_count/10;
@@ -1027,9 +1025,10 @@ class Hotel extends CI_Controller {
 					$rows = $this->UserSearch->fetch_a_search(array('url_hash' => trim($this->input->post('crypt'))));
 					$sel_date = $rows[0]['selected_date'];
 				}
-			
+				
 				if(!empty($rows))
 				{
+					
 					$offers = array();
 					if($rows[0]['pax'] != '')
 					{
@@ -1085,7 +1084,8 @@ class Hotel extends CI_Controller {
 												
 						}							
 					}			
-				}		
+				}	
+			
 				//If any resort selected
 				if(@$checkedValues['resorts'])
 				{
@@ -1157,8 +1157,9 @@ class Hotel extends CI_Controller {
 				//end
 				$limit = ((int)$checkedValues['page'] * 10)-1;
 				$offset = max(($limit-10),0);
+				
 				//echo '<pre>';print_r($offers['filter_data']);exit;
-				$content = $this->hotels_html($offers['filter_data'],$limit,$offset,$this->input->post('crypt'),$this->input->post('searchType'));
+				$content = $this->hotels_html($offers['filter_data'],10,$offset,$this->input->post('crypt'),$this->input->post('searchType'));
 				
 			
 			echo $content;exit;

@@ -87,8 +87,7 @@
     	}
     });
 
-    $(document.body).on('click', 'a.pagerhyperlink' ,function(){
-    	
+    $(document.body).on('click', 'a.pagerhyperlink' ,function(){    
     	var keyword=$('#hotel_key').val();
     	filterHotels(hotel_crypt,type,$(this).text(),keyword);
     });
@@ -188,7 +187,7 @@
             $.blockUI.defaults.css = {};
             
             //$('#dvContent').block({
-            $('#middle_conent,#dvContent,#body_content').block({
+            $('body').block({
                 message: '<div><img src="/images/loader-bar.gif" alt=""  width="225px"/></div>',
                 overlayCSS: { backgroundColor: '#fff' }
             });
@@ -196,7 +195,7 @@
 		//close popup once get the ajax response
         function unblockSearchingTabs() {
           //  $('#dvContent').unblock();
-        	  $('#middle_conent,#body_content').unblock();
+        	  $('body').unblock();
         }
         
         function Addhotel(type,info,segment)
@@ -204,24 +203,24 @@
         	
         	if(type == 'pack_hotel')
         	{
-        		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
-        				   +'</div><div class="wait_page_section">'
-        				   +'<h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;text-align:center;">Hotel & Room Selections Added.</h2></div>'
-        				   +'<div class="center wait_page" style="text-align:center;"><br>'
-        				   +'<h3 class="txt_color_1">Calculating Savings &amp; Checking Available Extras</h3>'
-        				   +'<h4>Enhance Your Trip For the Best Holiday Experience.</h4>'
-        				   +'<h6>Hold Luggage, Transfers, Parking &amp; Car Hire.</h6>'        				   
-        				   +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
-        				   +'<img src="/images/loader-bar.gif"></div><br>'
-        				   +'<h3 class="txt_color_1"> Please Wait a Moment Whilst We Get you The Best Rates...</h3></div><div><h4><strong>Book With Confidence</strong>'
-        				   +'</h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> '
-        				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> '
-        				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent">'
-        				   +'<img src="/images/abta.png"/></div></div></div>';
+        		  var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
+                      +'</div><div class="wait_page_section">'
+                      +'<h2 style="padding-bottom: 10px;margin-bottom: 10px; color: #094fa3; font-weight: 700; border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Hotel & Room Selections Added.</h2></div>'
+                      +'<div class="center wait_page" style="text-align:center;"><br>'
+                      +'<h4 class="txt_color_1">Calculating Savings &amp; Checking Available Extras</h4>'
+                      +'<h4>Enhance Your Trip For the Best Holiday Experience.</h4>'
+                      +'<h6>Hold Luggage, Transfers, Parking &amp; Car Hire.</h6>'               
+                      +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
+                      +'<img src="/images/loader-bar.gif"></div><br>'
+                      +'<h4 class="txt_color_1" style="color: #428bca; font-size: 17px;"> Please Wait a Moment Whilst We Get you The Best Rates...</h4></div><div><h4><strong>Book With Confidence</strong>'
+                      +'</h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> '
+                      +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> '
+                      +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent">'
+                      +'<img src="/images/abta.png"/></div></div></div>';
         	}
         	else
         	{
-        		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Selected Rooms Have Been Saved.</h2></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br><h3 class="txt_color_1">Continuing To The Final Step</h3></div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>';
+        		var html = '<div style="text-align:center;"> <img src="/images/logo.png"/></div><div class="center wait_page" style="text-align:center;"><br><span style="display: none;"><span >Searching For Flights</span></span><div class="wait_page_section"><h3  style="padding-bottom: 10px;margin-bottom: 10px; color: #094fa3; font-weight: 600; border-bottom: 1px solid #A0CCDD;letter-spacing: 0.5px;">Selected Rooms Have Been Saved.</h3></div><div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading"> <img src="/images/loader-bar.gif"></div><br><h3 style="color: #428bca; font-size: 17px;">Continuing To The Final Step</h3></div><div><h4><strong>Book With Confidence</strong></h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> <div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"><img src="/images/abta.png"/></div></div></div>'; 
         	}
         	
             $.fancybox({
@@ -334,17 +333,17 @@
         
         function callWaitPageForextra()
         { 
-        	var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
-				   +'</div><div class="wait_page_section">'
-				   +'<h2  style="font-size: 175%;padding-bottom: 10px;margin-bottom: 10px;border-bottom: 1px solid #A0CCDD;text-align:center;">Discounts Applied & Selected Options Have Been Saved.</h2></div>'
-				   +'<div class="center wait_page" style="text-align:center;"><br>'			          				   
-				   +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
-				   +'<img src="/images/loader-bar.gif"></div><br>'
-				   +'<h3 class="txt_color_1"> Proceeding To Booking Details </h3></div><div><h4><strong>Book With Confidence</strong>'
-				   +'</h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> '
-				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> '
-				   +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent">'
-				   +'<img src="/images/abta.png"/></div></div></div>';
+        	 var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
+        	       +'</div><div class="wait_page_section">'
+        	       +'<div style="padding-bottom: 10px; font-size: 19px; margin-bottom: 10px; color: #094fa3; font-weight: 700; border-bottom: 1px solid #A0CCDD;">Discounts Applied & Selected Options Have Been Saved.</div></div>'
+        	       +'<div class="center wait_page" style="text-align:center;"><br>'                    
+        	       +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
+        	       +'<img src="/images/loader-bar.gif"></div><br>'
+        	       +'<h4 class="txt_color_1"> Proceeding To Booking Details </h4></div><div><h4><strong>Book With Confidence</strong>'
+        	       +'</h4><h5>Fully ABTA and ATOL Bonded for financial protection</h5> '
+        	       +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent"></div> '
+        	       +'<div class="sprite bonding" title="ABTA and ATOL Bonded Travel Agent">'
+        	       +'<img src="/images/abta.png"/></div></div></div>';
 	
 	
  $.fancybox({

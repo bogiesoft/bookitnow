@@ -83,16 +83,7 @@
     {
     	justAFlightNHotel('#panel2');
     }   
-		
-    
-	$('#da-slider').cslider({
-	         autoplay    : true,
-	         bgincrement : 100
-	       });
 	
-	
-
-		
  });
 		
 		//popup for block further search options during ajax request

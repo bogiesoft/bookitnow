@@ -23,8 +23,8 @@ class Welcome extends CI_Controller {
 	{			
 		parent::__construct();	
 		$this->load->library('Layouts');
-		$this->layouts->add_include($this->config->item('header_css'));
-		$this->layouts->add_include($this->config->item('header_js'));
+		//$this->layouts->add_include($this->config->item('header_css'));
+		$this->layouts->add_include($this->config->item('header_js'));		
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$this->load->helper(array('form','url','common'));
 		$this->load->model('UserSearch');
@@ -45,7 +45,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{	
 		$data = array();
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+		/*$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
 				'css/jquery-ui.css',
 				'css/font-awesome.min.css',
 				'css/google_font.css',
@@ -63,6 +63,10 @@ class Welcome extends CI_Controller {
 				'js/bxslider/jquery.bxslider.js',
 				'js/parallax-slider/jquery.cslider.js',
 				'js/jquery.fancybox.pack.js',
+				'js/script-home.js'));*/
+		$this->layouts->add_include(array('css/importers/home.css',			
+				'js/compressed/JCkJUiJBUiResJBx.min.js',				
+				'js/responsiveslides.min.js',					
 				'js/script-home.js'));
 		$this->layouts->set_title('Home');
 		$results = array();		
@@ -248,8 +252,19 @@ class Welcome extends CI_Controller {
 		
 		$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
 		$data= array();$results=array();
-		$results['controller']=$this;		
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','css/flight_result.css','css/style.css','css/jquery.fancybox.css','js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery.fancybox.pack.js','js/script.js'));
+		$results['controller']=$this;	
+		$this->layouts->add_include(array('css/importers/home.css',
+				'css/flight_result.css','css/style.css',
+				'js/compressed/JCkJUiJBUiResJBx.min.js',
+				'js/script.js'));
+		/*$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+				'css/jquery-ui.css','css/font-awesome.min.css',
+				'css/google_font.css','css/custom.css','css/responsive.css',
+				'css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css',
+				'css/flight_result.css','css/style.css','css/jquery.fancybox.css',
+				'js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js',
+				'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
+				'js/jquery.fancybox.pack.js','js/script.js'));*/
 		$this->layouts->set_title('Search Page');
 		$results['suppliers_list'] = array(
 				'AVRO' => '/images/AVROF.gif',
@@ -578,15 +593,18 @@ class Welcome extends CI_Controller {
 				/************fetching departure airports**************/
 				changeSearch($results);
 				/******************end***********/
-				
-				$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+				$this->layouts->add_include(array('css/importers/home.css',
+						'css/flight_result.css','css/style.css',
+						'js/compressed/JCkJUiJBUiResJBx.min.js',
+						'js/script.js'));
+				/*$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
 				'css/jquery-ui.css','css/font-awesome.min.css',
 				'css/google_font.css','css/custom.css','css/responsive.css',
 				'css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css',
 				'css/flight_result.css','css/jquery.fancybox.css','css/style.css','css/popup_fancy.css',
 				'js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js',
 				'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
-				'js/jquery.fancybox.pack.js','js/script.js'));
+				'js/jquery.fancybox.pack.js','js/script.js'));*/
 		$this->layouts->set_title('Search Page');
 				$this->layouts->view('available_flights_view1',$results);
 			}
@@ -789,8 +807,8 @@ class Welcome extends CI_Controller {
 		$result = array();$html='';$pageHtml='';
 		$start = (($page-1)*10)-1;
 		$start = ($start < 0) ? 0 : $start;
-		$departures = ( !$this->cache->get('departures')) ? (($this->cache->save('departures', $this->fetch_departures(), 3600)) ? $this->cache->get('departures') : array() ) : $this->cache->get('departures');
-		$arrivals = ( !$this->cache->get('arrivals')) ? (($this->cache->save('arrivals', $this->fetch_arrivals(), 3600)) ? $this->cache->get('arrivals') : array() ) : $this->cache->get('arrivals');
+		$departures = fetch_departures();
+		$arrivals = fetch_arrivals();
 		
 		$suppliers_list = array(
 				'AVRO' => '/images/AVROF.gif',
@@ -843,28 +861,27 @@ class Welcome extends CI_Controller {
 				$html .= '<div id="divShowWhenSelect_1" class="flightresult">
 				                      <div class="clearfix">
 				                    	<div class="flight_info clearfix">
-				                          <div class="fluid zeroMargin_desktop flight_depart"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightdepart" aria-hidden="true"></i>Depart</strong><br>
-				                       	 	<div><!-- <img id="cphContent_lvDatePlus3_imgRightlogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">-->
+				                          <div class="flight_depart"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightdepart" aria-hidden="true"></i><h3 class="fl_dep_ret">Depart</h3></strong><br>
+				                       	 	<div><!-- <img  src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">-->
 				                              <div style="float: right"> </div>
 				                            </div>
-				                        	<strong>'.date('l d M Y',$this->cvtDt($flight_obj['@attributes']['outdep'])).'</strong><br>
-				                        	<input name="ctl00$cphContent$lvDatePlus3$ctrl0$hdOriginalOperatorCode" id="cphContent_lvDatePlus3_hdOriginalOperatorCode_0" value="13" type="hidden">
+				                        	<strong style="font-size: 16px;color: #114C6F;">'.date('l d M Y',$this->cvtDt($flight_obj['@attributes']['outdep'])).'</strong><br>				                        	
 				                       		<small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
 				                        	<span class="txt_color_2"> </span> </div>
-				                          	<div class="fluid flight_return"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightreturn" aria-hidden="true"></i>Return</strong><br>
-				                        		<div> <!--<img id="cphContent_lvDatePlus3_imgReturnFlightLogo_0" src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">--> </div>
-						                        <strong>'.date('l d M Y',$this->cvtDt($flight_obj['@attributes']['indep'])).'</strong><br>
+				                          	<div class="flight_return"> <strong class="txt_color_2"><i class="fa fa-plane icon_flightreturn" aria-hidden="true"></i><h3 class="fl_dep_ret">Return</h3></strong><br>
+				                        		<div> <!--<img src="'.@$suppliers_list[$flight_obj['@attributes']['suppcode']].'" style="border: 0;">--> </div>
+						                        <strong style="font-size: 16px;color: #114C6F;">'.date('l d M Y',$this->cvtDt($flight_obj['@attributes']['indep'])).'</strong><br>
 						                        <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
 						                        <span class="txt_color_2"> </span>
 						                    </div>
 				                          	<div class="clear flight_bags">
-				                        		<small> <span id="cphContent_lvDatePlus3_lblBaggageDepartPrice_0"></span> </small>
+				                        		<small> <span ></span> </small>
 				                      		</div>
 				                          </div>
 						                  <div class="fluid flight_price clearfix">
 						                          <div class="flight_cost"> <strong class="txt_color_1 txt_large"> <span id="cphContent_lvDatePlus3_lblTotalPrice_0">&#163;'.$flight_obj['@attributes']['sellpricepp'].'</span></strong><small class="txt_color_1">pp</small><br>
-						                        <small> <span id="cphContent_lvDatePlus3_lblBaggageReturnPrice_0" class="luggage_label"></span> </small> </div>
-						                          <div class="flight_button center"> <span id="cphContent_lvDatePlus3_lblPriceInfo_0"></span> <a  id="cphContent_lvDatePlus3_ibtnAddFlightToBasket_0" class="button"  style="margin-top: 5px;" onclick=Addflight("'.$type.'","'.$encrypted_txt.'","'.$crypt.'")>ADD <i class="fa fa-plus-circle" aria-hidden="true"></i> </a> </div>
+						                        <small> <span class="luggage_label"></span> </small> </div>
+						                          <div class="flight_button center"> <span></span> <a  class="button"  style="margin-top: 5px;" onclick=Addflight("'.$type.'","'.$encrypted_txt.'","'.$crypt.'")>ADD <i class="fa fa-plus-circle" aria-hidden="true"></i> </a> </div>
 						                        </div>
 						                  </div>
 				                   </div>';
@@ -948,9 +965,9 @@ class Welcome extends CI_Controller {
 	
 	public function notavailable()
 	{		
-		$data = array();
-		$data['message'] = '<h5 class="text-one">Bristol - Cyprus (Search all) | 1 Nights | November 20 2015 | All Inclusive | Any Rating Star | 2 Adults, 0 Children, 0 infant | 1 Rooms</h1>'; 
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/jquery-ui.css','css/font-awesome.min.css','css/custom.css','css/responsive.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/inner-page.css','js/responsee.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$data = array();		 
+		$this->layouts->add_include(array('css/importers/home.css',	'css/inner-page.css',
+				'js/compressed/JCkJUiJBUiResJBx.min.js','js/script.js'));
 		$this->layouts->set_title('No Results Page');
 		$this->layouts->view('notavailable',$data);
 	}
@@ -1105,40 +1122,67 @@ class Welcome extends CI_Controller {
 	
 	public function aboutus()
 	{		
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		/*$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+				'css/font-awesome.min.css','css/google_font.css',
+				'css/custom.css','css/responsive.css',
+				'css/menu.css','css/preview.min.css',
+				'css/bxslider/jquery.bxslider.css','js/responsee.js',
+				'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));*/
+		
+		$this->layouts->add_include(array('css/importers/static.css',				
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
+		
 		$this->layouts->set_title('About Us');
 		$this->layouts->view('aboutus');
 	}
 	
 	public function cheapHolidays()
 	{
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
 		$this->layouts->set_title('Cheap Holidays');
 		$this->layouts->view('cheap_holidays');
 	}
 	
 	public function allinclusiveholidays()
 	{
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
+		
 		$this->layouts->set_title('All Inclusive Holidays');
 		$this->layouts->view('allinclusiveholidays');
 	}
 	public function lastminuteholidays()
 	{
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
+		
 		$this->layouts->set_title('All Inclusive Holidays');
 		$this->layouts->view('lastminuteholidays');
 	}
 	public function summerholidays()
 	{
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
 		$this->layouts->set_title('Summer Holidays');
 		$this->layouts->view('summerholidays');
 	}
 	
 	public function winterholidays()
 	{
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
 		$this->layouts->set_title('Winter Holidays');
 		$this->layouts->view('winterholidays');
 	}
@@ -1181,6 +1225,7 @@ class Welcome extends CI_Controller {
 		if ($this->input->post ()) {
 			
 			$this->load->library ( 'form_validation' );
+			$this->form_validation->set_error_delimiters('<div style="color:red;">', '</div>');
 			$this->form_validation->set_rules ( 'name', 'Name', 'trim|required' );
 			$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email' );
 			$this->form_validation->set_rules ( 'subject', 'Subject', 'trim|required' );
@@ -1202,21 +1247,30 @@ class Welcome extends CI_Controller {
 				}
 			}
 		}
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
 		$this->layouts->set_title('Winter Holidays');
 		$this->layouts->view('contactus');
 	}
 	
 	public function price_promise()
 	{	
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
 		$this->layouts->set_title('price promise');
 		$this->layouts->view('price_promise');
 	}
 	
 	public function terms_of_use()
 	{	
-		$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
+		$this->layouts->add_include(array('css/importers/static.css',
+				'js/bxslider/jquery.bxslider.js',
+				'js/script.js'));
+		//$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/menu.css','css/preview.min.css','css/bxslider/jquery.bxslider.css','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/script.js'));
 		$this->layouts->set_title('terms of use');
 		$this->layouts->view('terms_of_use');
 	}
@@ -1353,6 +1407,7 @@ class Welcome extends CI_Controller {
 			}
 		}
 		$this->layouts->add_include ( array (
+				'css/bootstrap.min.css',
 				'css/login.css',
 				'css/font-awesome.min.css' 
 		) );
@@ -1361,6 +1416,7 @@ class Welcome extends CI_Controller {
 	}
 	public function forgot_pwd() {
 		$this->layouts->add_include ( array (
+				'css/bootstrap.min.css',
 				'css/login.css',
 				'css/font-awesome.min.css'
 		) );
@@ -1424,12 +1480,14 @@ class Welcome extends CI_Controller {
 			$data = array();
 			$data['flag'] = $flag;
 			$this->layouts->add_include ( array (
+					'css/bootstrap.min.css',
 					'css/login.css',
 					'css/font-awesome.min.css'
 			) );
 			if($this->input->post()){
 				//echo "<pre>";print_r($this->input->post());exit;
 				$this->load->library ( 'form_validation' );
+				$this->form_validation->set_error_delimiters('<div style="color:red;">', '</div>');
 				$this->form_validation->set_rules ( 'password', 'Password', 'trim|required|matches[confirm_password]' );
 				$this->form_validation->set_rules ( 'confirm_password', 'Confirm Password', 'trim|required' );
 				if (! $this->form_validation->run ()) {

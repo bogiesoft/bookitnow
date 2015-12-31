@@ -126,7 +126,7 @@ padding-bottom:5px;
 			<div class="col-sm-12 col-md-3">
 				<div class="fluid columns_four bg_grey2">
 					<div class="padded">
-						<select style="font-size:15px;" name="dealType" onchange="blockHotelDeals(this);">
+						<select style="font-size:15px;padding:0px;" name="dealType" onchange="blockHotelDeals(this);">
 							<option value="holiday" selected="selected">Holiday Deals</option>
 							<option value="city">City Breaks</option>
 						</select>		

@@ -928,8 +928,11 @@ class Extras extends CI_Controller {
 			
 			
 			if($rid = $this->BookingInfo->createRecord($data))
-			{				
-				$this->bookingInfoToEmail($rid,'email');
+			{	
+				//Remove comment to bellow line when it in server
+				//$this->bookingInfoToEmail($rid,'email');
+				
+				
 				//$list = array($post_data['email']);
 				//$sub = "Booking Information";
 				
