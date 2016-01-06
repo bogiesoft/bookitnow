@@ -18,7 +18,7 @@ body {
 	float: left;
 }
 .left a {
-	font-size: 0.85em;
+	font-size: 0.65em !important;
 	color: #fff;
 	line-height: 35px;
 	padding: 5px;
@@ -593,7 +593,7 @@ ul.second {
 	margin-left: 50px;
 }
 ul.third {
-	margin-left: 50px;
+	margin-left: 45px;
 }
 ul.four {
 	margin-left: 50px;
@@ -1019,3 +1019,17 @@ i.fa-check-circle{
 	font_size:17px;
 }
 
+
+/*vinod 30-12-15 */
+
+.left,.right{	
+    font-size: 20px;
+    font-weight: bold;
+    color: #024a75;
+}
+.bg_grey,.superescapes ul{
+	padding: 8px;
+    background: #F9F9F9;
+    box-shadow: 0 0 1px #B3AEAE;
+    border-bottom: 1px solid #ddd;
+}

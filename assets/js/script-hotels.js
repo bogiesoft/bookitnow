@@ -38,6 +38,7 @@
 		      });
 		  
 		      $(".toggle_atol").click(function () {
+		    	  
 		          $(".atol_info").fadeToggle("fast", function () {
 		              // Animation complete.
 		          });
@@ -138,8 +139,7 @@
 				  //$.cookie('selected_full_dept_cookie', request_data.dest_shrtcode);	
 				}, "html");
 		}
-	});
-    
+	});   
     
  });
  
@@ -335,7 +335,7 @@
         { 
         	 var html = '<div style="text-align:center;"> <img src="/images/logo.png"/>'
         	       +'</div><div class="wait_page_section">'
-        	       +'<div style="padding-bottom: 10px; font-size: 19px; margin-bottom: 10px; color: #094fa3; font-weight: 700; border-bottom: 1px solid #A0CCDD;">Discounts Applied & Selected Options Have Been Saved.</div></div>'
+        	       +'<h2 style="padding-bottom: 10px;text-align:center;font-weight: bold; color: #094fa3; border-bottom: 1px solid #A0CCDD;">Discounts Applied & Selected Options Have Been Saved.</h2></div>'
         	       +'<div class="center wait_page" style="text-align:center;"><br>'                    
         	       +'<div class="wait_page_section" style="border-bottom: 1px solid #A0CCDD;"> <div class="wait_page_loading">'
         	       +'<img src="/images/loader-bar.gif"></div><br>'
@@ -1132,4 +1132,7 @@
 	    	var monthIndex = date.getMonth();    	
 	    	return arr[0] + ' ' + monthNames[monthIndex] + ' ' + arr[2];
 		}
+       
+        	
+       
         

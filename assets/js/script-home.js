@@ -624,7 +624,7 @@
     		
         }
         
-       function bulkForm(mformData,type){  
+       function bulkForm(mformData,type){
     	   var dateToday = new Date();
     	   $('.datePicker').datepicker({
     			defaultDate: "+1w",	   
@@ -649,19 +649,20 @@
 		   if(type == 'flight'){
 			   var excludeFields = ['check_in_date','rooms','Children','Date_of_departure'];
 		   }
-    	   $('#bulk_form').submit(function(){    		
+		   var numFields = ['number_of_nights','rooms','Adults','Children'];
+		   var nameFields = ['first_name'];
+    	   $('#bulk_form').submit(function(){  		
     		   var bformData = $(this).serializeArray();
     		   var swap ={};
     		   var count = 0;   		   
     		   $.each(bformData, function(index, value){
     			   
     			   if((value.value == null || value.value == '-1' || value.value == 'undefined' || value.value == '') && ($.inArray(value.name, excludeFields) == -1) )
-   					{
+   				   {
 	   					var msg = $('[name="'+ value.name +'"]').attr('placeholder');
 	   					alert('Please fill '+ value.name +' field');   
 	   					count++;
-	   					return false;
-	   					
+	   					return false;	   					
    					}
     			   else{
     				   if(value.name == 'fly_from' || value.name == 'travel_to')
@@ -681,12 +682,26 @@
 	    				   count++;
 		   					return false; 
 	    			   }
-	    			   
-	    			  	   
-	    			   
-   			   });  
+	    			
+	    			   if($.inArray(value.name, numFields) > -1){	    				  
+	    				   var reg = /^[0-9]+$/;
+	    				   if(!(value.value).match(reg)){
+	    					   alert('Please enter valid number');
+	    					   $('[name="'+value.name+'"]').focus();
+	    					   return false;
+	    				   }    				   
+	    			   }   	
+	    			   if($.inArray(value.name, nameFields) > -1){
+	    				   var reg = /^[a-zA-Z]*$/;	    				   
+	    				   if(!(value.value).match(reg)){
+	    					   alert('Please enter valid string');
+	    					   $('[name="'+value.name+'"]').focus();
+	    					   return false;
+	    				   } 				   
+	    			   }	    			   
+   			   }); 
 
-    		 //  console.log(bformData);return false;
+    		   // console.log(bformData);return false;
 
     		   if(count)return false;
     		 
@@ -967,7 +982,7 @@
         }
         
         function submit_fnh_hotel_fun(request_data)
-        {        	
+        {       	
         		var str = '<div>';             	
             	if(isNaN(Number($('select[name="hotel_childrens"] option:selected').text())))var t = 0;
         		else t = $('select[name="hotel_childrens"] option:selected').text();
@@ -1033,7 +1048,7 @@
         
         
 
-	function arrivals(code,target){		
+	function arrivals(code,target){	
 		var request_data = {};
 		request_data.dest_shrtcode = code;
 		$(target).html('');	
