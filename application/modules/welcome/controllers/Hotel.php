@@ -114,10 +114,16 @@ class Hotel extends CI_Controller {
 	{
 		
 		if($this->uri->segment(2) != '')
-		{			
+		{		
 			/****************fetching results*****************/
 			$this->load->model('FullSearch');
-			$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
+			$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2),'type_search' => 'hotel_only'));
+			
+			//Redirect If row does not exist
+			if(empty($rows)){
+				redirect(base_url());
+			}
+			
 			$data= array();
 			$data['row'] = $rows;
 			
@@ -384,9 +390,12 @@ class Hotel extends CI_Controller {
 		{
 			$this->load->model('FullSearch');
 			$this->load->model('PhaseFlightOrHotel');
-			$rows = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
-			
+			$rows = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));			
 			$flight_row = $this->PhaseFlightOrHotel->fetch_a_search(array('type_search'=>'full_flight_date','full_pack_id'=>$rows[0]['id']));
+			if(empty($flight_row)){
+				redirect(base_url().'flightsAvailability/'.$this->uri->segment(2));
+			}
+			
 			$data['row'] = $rows;
 			$data['fselected_date'] = $flight_row[0]['flight_selected_date'];
 			if(!empty($rows))
@@ -511,12 +520,13 @@ class Hotel extends CI_Controller {
 								                    <small>
 								                        <span> Adults + Children : '.($rows[0]['num_adults'] + $rows[0]['num_children']).' x </span><span id="cphContent_ucBookingSummary_lblFPrice">&#163;'.$flight_obj['@attributes']['sellpricepp'].'</span>
 								                    </small>
+								                    <span style="float:right;">
+									                    <small>
+									                        <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
+									                    </small>
+									                </span>
 								                </div>			
-								                <div style="text-align:right;">
-								                    <small>
-								                        <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
-								                    </small>
-								                </div>
+								              
 								            </div>								           
 			          					 </div>                     		
 			           					 <div class="bg_grey">	
@@ -524,11 +534,48 @@ class Hotel extends CI_Controller {
 												<div class="left">Atol Protection</div>
 									           <div class="right" style="text-align: right;">&#163;'.(($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 ).'</div>
 									          </div>
-									           	<div style="position: relative;" class="clearfix">
-									                <div class="left">
-									                    <small>£2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'
+									           	
+									           	<div style="margin-top: 10px;" class="clearfix">
+									                 <small>&#163;2.50 x '.($rows[0]['num_adults'] + $rows[0]['num_children']).'</small>
+									                 <span style="float:right;">
+									                    <small>
+									                        <a class="toggle_atol">What\'s this?</a>
 									                    </small>
-									                </div>               
+									                </span>
+						           			   </div>			        					
+								       	</div>
+									    <div class="atol_info clearfix" style="display: none;">
+											 <div class="clearfix has_bottom_margin hide_mobile hide_tablet">
+										           <h4 class="left ">Atol Protection</h4>
+										               <a class="right toggle_atol"><small>close</small></a>
+										     </div>
+											 <div style="clear: both;">
+										        <p class="hide_mobile hide_tablet">
+										             <strong>With A1 Travel your holiday is protected!</strong><br>
+										               A1Travel hold ATOL license 5287 and we are full ABTA members.
+										       </p>
+											   <small>
+										         <p>
+										             All of our Flight Plus Holidays are financially protected by the ATOL scheme.<br>
+										             A Flight Plus Holiday is where you purchase through us, at the same time or within a day of each other, a flight plus overseas accommodation and / or car hire from separate Travel Suppliers and as separate bookings (i.e. not a package holiday)
+										         </p>
+										         <p>
+										           On all Flight Plus Holiday bookings, your money is ATOL protected. This means you will be able to continue with your holiday or suitable alternative holiday (at no extra cost) or receive a refund of the amount paid to us in the unlikely event of our insolvency or the insolvency of one or more of your service Travel Suppliers
+										         </p>
+												 <p> When you book with us, we will send you an ATOL confirmation invoice that provides you with all the information you will need about your ATOL protection
+										          </p>
+										       </small>
+										     </div>
+										 </div>
+									     <div class="bg_grey" style="margin-bottom:10px;">	
+								              <div>
+												<div class="left">Total</div>
+									           <div class="right" style="text-align: right;">&#163;'.((($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']) + (($rows[0]['num_adults'] + $rows[0]['num_children']) * 2.50 )).'</div>
+									          </div>									           	
+									          <div style="margin-top: 10px;" class="clearfix">									                 
+									                 <span style="float:right;">
+									                    <small>Per Person: '.((($rows[0]['num_adults'] + $rows[0]['num_children']) * $flight_obj['@attributes']['sellpricepp']) / ($rows[0]['num_adults'] + $rows[0]['num_children'])).' X '.(($rows[0]['num_adults'] + $rows[0]['num_children'])).'</small>
+									                </span>
 						           			   </div>			        					
 								       	</div>';
 								
@@ -539,7 +586,7 @@ class Hotel extends CI_Controller {
 						'css/google_font.css','css/custom.css',
 						'css/responsive.css','css/inner-page.css',
 						'css/menu.css','css/bxslider/jquery.bxslider.css',
-						'css/jquery.fancybox.css','css/popup_fancy.css',
+						'css/jquery.fancybox.css','css/popup_fancy.css','css/customeffects.css',
 						'js/jquery-ui.js','js/jquery.blockUI.js','js/responsee.js',
 						'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
 						'js/jquery.fancybox.pack.js','js/script-hotels.js'));
@@ -668,15 +715,14 @@ class Hotel extends CI_Controller {
 		{			
 			if(isset($keys[$i]))
 			{
-			$html .= '<div class="orderhotels thumbnail">
+			$html .= '<div class="orderhotels">
 					<div class="row">
 						<div class="col-sm-6 col-md-7">
 							<div class="thumbnail box-border"><div>
 							<div class="star-img"><img alt="" src="'.base_url().'images/star_'.(int)$offers[$keys[$i]][0]['@attributes']['starrating'].'.png"></div>
 							<div class="title-name">'.urldecode($offers[$keys[$i]][0]['@attributes']['hotelname']).'</div>							
 							<h4>'.urldecode($offers[$keys[$i]][0]['@attributes']['resort']).'</h4>
-							<p class="content">'.urldecode($offers[$keys[$i]][0]['@attributes']['content']).'</p>
-							
+							<p class="content">'.urldecode($offers[$keys[$i]][0]['@attributes']['content']).'</p>							
 						</div>
 					</div>
 				 </div>
@@ -689,8 +735,8 @@ class Hotel extends CI_Controller {
 						else{
 							$html .= '    <img style="width: 100%;max-height: 180px;" src="'.base_url().'/images/destination_placeholder.jpg"/>';
 						}						
-					$html .='</div><br/>
-							<p> <a class="btn-small btn-default-small" style="width:100%;" role="button" onclick=fulldetails("'.$offers[$keys[$i]][0]['@attributes']['brocode'].'")>Full Details</a></p>
+					$html .='</div>
+							<p style="margin:5px 0 2px;"> <a class="btn-small btn-default-small" style="width:100%;" role="button" onclick=fulldetails("'.$offers[$keys[$i]][0]['@attributes']['brocode'].'")>Full Details</a></p>
 				</div>
 			</div>
 			</div>
@@ -708,7 +754,7 @@ class Hotel extends CI_Controller {
 				
 				//echo '<pre>';print_r($encrypted_txt);exit;
 				$html .= '
-					<div class="row bg_grey">
+					<div class="row bg_grey" style="padding:0px;">
 						<div class="col-sm-6 col-md-a">
 							<h5>'.$boardbasis_arr[$hotel['@attributes']['boardbasis']].'</h5>
 							<p class="content">Premium Double/twin Balcony/terrace </p>
@@ -720,7 +766,7 @@ class Hotel extends CI_Controller {
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-2 top-add">
-							<p> <a href="#" class="btn-small btn-default-small" role="button" onclick=Addhotel("'.$type.'","'.$encrypted_txt.'","'.$crypt.'")>ADD </a></p>
+							<p> <a class="btn-small btn-default-small" role="button" onclick=Addhotel("'.$type.'","'.$encrypted_txt.'","'.$crypt.'")>ADD <i class="fa fa-plus-circle" aria-hidden="true"></i> </a></p>
 						</div>
 					</div>
 				';

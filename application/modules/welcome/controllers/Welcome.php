@@ -250,7 +250,13 @@ class Welcome extends CI_Controller {
 	public function available($id=null)
 	{
 		
-		$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
+		$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2),'type_search' => 'flight_hotel'));
+		
+		//Redirect If row does not exist
+		if(empty($rows)){
+			redirect(base_url());
+		}
+		
 		$data= array();$results=array();
 		$results['controller']=$this;	
 		$this->layouts->add_include(array('css/importers/home.css',

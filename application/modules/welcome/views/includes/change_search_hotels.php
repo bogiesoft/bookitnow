@@ -126,7 +126,7 @@
 <div id="select_names">
    <div class="container"> 
     <div style="display: block;" id="dvToggle" class=""> 
-		<div class="hide_mobile hide_tablet bg_grey border_b has_bottom_margin">    
+		<div class="hide_mobile hide_tablet border_b has_bottom_margin">    
 		    <div class="gridContainer ">
 		    	<ul class="fluidList steps fh clearfix">		    	
 			    	 <li class="<?php echo $fcls;?>"><strong>1. Select Flight</strong><?php if($f_done == 'done')echo '<i class="fa fa-check-circle"></i>';?></li>		    	 

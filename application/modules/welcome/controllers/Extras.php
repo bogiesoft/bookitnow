@@ -400,18 +400,10 @@ class Extras extends CI_Controller {
 				{
 					$field_pack = $this->SavingsNExtFields->fetch_a_fields(array('id'=>$key));
 					$final['sel_block']['segment'] .= '<div>
-                                    <small>
-                                        <strong>
-                                            <span>'.$field_pack[0]['short_desc'].'</span></strong>
-                                        <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-                                            <div class="left">
-                                                <span>'.$each / $field_pack[0]['price'].'</span>
-                                                x &#163;<span id="cphContent_lblPPerPrice">'.$field_pack[0]['price'].'</span>
-                                            </div>
-                                            <div class="right" style="text-align: right;">
-                                                <a onclick=blockAddingExtraPopup('.$key.',"'.$seg.'") title="Remove Parking" class="small right">Remove</a>
-                                            </div>
-                                        </div>
+                                    <small>'.$field_pack[0]['short_desc'] .' : <span>'.$each / $field_pack[0]['price'].' x &#163;'.$field_pack[0]['price'].'</span>                                           
+                                            <span style="float: right;">
+                                                <a onclick=blockAddingExtraPopup('.$key.',"'.$seg.'") title="Remove Parking">Remove</a>
+                                            </span>                                        
                                     </small>
                                 </div>';
 					$total += $each;
@@ -431,13 +423,9 @@ class Extras extends CI_Controller {
 			if(@$ext_row[0]['bags_count'])
 			{
 				$final['sel_block']['segment'] .= '<div id="BaggageRightSide">
-					<small>
-					<strong>Hold Luggage:
-					<span id="cphContent_lblBaggageWeight">'.$ext_row[0]['bags_count'].' x 20kg</span></strong>
-					<div class="right" style="text-align: right;">
-					<a onclick=rmBagg('.$ext_row[0]['id'].',"'.$seg.'")  title="Remove Baggage" class="small right" >Remove</a>
-					</div>
-					</div>
+						<small>
+							Hold Luggage: <span>'.$ext_row[0]['bags_count'].' x 20kg</span>
+						<span style="float:right;"><a onclick=rmBagg('.$ext_row[0]['id'].',"'.$seg.'")  title="Remove Baggage">Remove</a></span>					
 					</small>
 				</div>';
 			}
@@ -590,10 +578,25 @@ class Extras extends CI_Controller {
 		$tot_sel = 0;
 		$data['controller'] = $this;
 		$data['form_type'] = 'hotel_only';
-		if(!empty($row = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)))))
+		if(!empty($row = $this->UserSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2),'type_search' => 'hotel_only'))))
 		{			
 			$data['seg'] = $row;
+			
+			//If already booked redirect to home page
+			$this->load->model('BookingInfo');
+			$b_row = $this->BookingInfo->fetch_a_search(array('base_id' => $data['seg'][0]['id']));
+			if(!empty($b_row)){
+				redirect(base_url());
+			}
+			//End
+			
+			//If Did not select Hotels redirect to hotels search page
 			$data['hobjs'] = json_decode($row[0]['pack_info'],true);
+			if(empty($data['hobjs'])){
+				redirect(base_url().'availableHotels/'.$this->uri->segment(2));
+			}
+						
+			
 			foreach ($data['hobjs'] as $hobj)
 			{
 				$tot_sel += $hobj['@attributes']['sellpricepp'];
@@ -618,8 +621,84 @@ class Extras extends CI_Controller {
 			$data['b_cur'] = 'current';
 			$data['h_done'] = 'done';
 			//End
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+					'css/font-awesome.min.css','css/google_font.css','css/custom.css',
+					'css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css',
+					'css/customeffects.css','css/jquery-ui.css','css/jquery.fancybox.css',
+					'js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js',
+					'js/bxslider/jquery.bxslider.js','js/jquery-ui.js',
+					'js/jquery.fancybox.pack.js','js/script-hotels.js'));
+			if($this->input->post()){
+				
+				$this->load->library('form_validation');
+				$this->form_validation->set_error_delimiters('<small style="font-weight:100;" class="text-danger">', '</small>');
+					
+			
+				foreach ($this->input->post() as $key => $val){
+						
+					if (strpos($key,'adult_title') !== false) {
+						$this->form_validation->set_rules ( $key, 'Title', 'required|callback_cardTypeValidation' );
+					}
+					else if (strpos($key,'adult_fname') !== false) {
+						$this->form_validation->set_rules ( $key, 'First Name', 'trim|required|callback_alpha_dash_space' );
+					}
+					else if (strpos($key,'adult_dob') !== false) {
+						$this->form_validation->set_rules ( $key, 'DOB', 'trim|required' );
+					}
+					else if (strpos($key,'adult_lname') !== false) {
+						$this->form_validation->set_rules ( $key, 'Last Name', 'trim|required|callback_alpha_dash_space' );
+					}
+					else if (strpos($key,'child_title') !== false) {
+						$this->form_validation->set_rules ( $key, 'Title', 'required|callback_cardTypeValidation' );
+					}
+					else if (strpos($key,'child_fname') !== false) {
+						$this->form_validation->set_rules ( $key, 'First Name', 'trim|required|callback_alpha_dash_space' );
+					}
+					else if (strpos($key,'child_dob') !== false) {
+						$this->form_validation->set_rules ( $key, 'DOB', 'trim|required' );
+					}
+					else if (strpos($key,'child_lname') !== false) {
+						$this->form_validation->set_rules ( $key, 'Last Name', 'trim|required|callback_alpha_dash_space' );
+					}
+				}
+			
+			
+				$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email|matches[confirm_email]' );
+				$this->form_validation->set_rules('address_1', 'Address', 'required');
+				$this->form_validation->set_rules('city', 'city', 'required|callback_alpha_dash_space');
+				$this->form_validation->set_rules('post_code', 'postcode', 'required|numeric|max_length[8]');
+				$this->form_validation->set_rules ( 'confirm_email', ' Confirm Email', 'trim|required|valid_email' );
+				$this->form_validation->set_rules('home_tel', 'Phone Number', 'required|numeric|max_length[10]|min_length[10]');
+				$this->form_validation->set_rules('mobile', 'Mobile Number', 'required|numeric|max_length[10]|min_length[10]');
+				$this->form_validation->set_rules('card_number', 'Card Number', 'required|numeric|max_length[16]|min_length[16]');
+				$this->form_validation->set_rules('name_card', 'Card Name', 'required|callback_alpha_dash_space');
+				$this->form_validation->set_rules('card_type', 'Card type', 'required|callback_cardTypeValidation');
+				$this->form_validation->set_rules('valid_to_yr', 'valid to date', 'required|callback_dateTypeValidation');
+				$this->form_validation->set_rules('valid_to_mth', 'valid to date', 'required|callback_dateTypeValidation');
+				$this->form_validation->set_rules('cvv_number', 'CVV Number', 'required|numeric|max_length[3]|min_length[3]');
+			
+				if($this->input->post('have_diff_add')){
+					$this->form_validation->set_rules('city2', 'city2', 'required|callback_alpha_dash_space');
+					$this->form_validation->set_rules('post_code2', 'postcode', 'required|numeric|max_length[8]');
+					$this->form_validation->set_rules('address_2', 'Address', 'required');
+				}
+					
+				if (! $this->form_validation->run ()) {
+			
+				} else {
+					if($this->booking_submition())
+					{
+						$this->session->set_flashdata('submited','yes');
+					}
+					else{
+						$this->session->set_flashdata('submited','no');
+					}
+				}
+			}
+				
+			
 			$data['res_sel_price'] = $tot_sel / count($data['hobjs']);	
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
+			
 			$this->layouts->set_title('Book Hotel');
 			$this->layouts->view('book_hotel_view',$data);
 		}
@@ -630,15 +709,23 @@ class Extras extends CI_Controller {
 	
 	public function book()
 	{	
-		
-		
 		$data = array();
 		$data['is_laststep'] = true;
 		$data['controller'] = $this;
 		$this->load->model('FullSearch');
-		$data['seg'] = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));
+		$data['seg'] = $this->FullSearch->fetch_a_search(array('url_hash' => $this->uri->segment(2)));		
 		if(!empty($data['seg']))
 		{
+			//If already booked redirect to home page
+			$this->load->model('BookingInfo');
+			$b_row = $this->BookingInfo->fetch_a_search(array('base_id' => $data['seg'][0]['id']));
+			if(!empty($b_row)){
+				redirect(base_url());
+			}
+			//End
+			
+			
+			
 			$this->load->model('PhaseFlightOrHotel');
 			$this->load->model('AlLugagePrice');
 			$this->load->model('SavingsNExtFields');
@@ -700,9 +787,87 @@ class Extras extends CI_Controller {
 			/*
 			 * Selection block
 			 */
+			
+			$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+					'css/font-awesome.min.css','css/google_font.css','css/custom.css',
+					'css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css',
+					'css/customeffects.css','css/jquery-ui.css','css/jquery.fancybox.css',
+					'js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js',
+					'js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
+			if($this->input->post()){
+				
+				$this->load->library('form_validation');
+				$this->form_validation->set_error_delimiters('<small style="font-weight:100;" class="text-danger">', '</small>');
+			
+				
+				foreach ($this->input->post() as $key => $val){
+					
+					if (strpos($key,'adult_title') !== false) {						
+						$this->form_validation->set_rules ( $key, 'Title', 'required|callback_cardTypeValidation' );						
+					}
+					else if (strpos($key,'adult_fname') !== false) {
+						$this->form_validation->set_rules ( $key, 'First Name', 'trim|required|callback_alpha_dash_space' );						
+					}
+					else if (strpos($key,'adult_dob') !== false) {
+						$this->form_validation->set_rules ( $key, 'DOB', 'trim|required' );
+					}
+					else if (strpos($key,'adult_lname') !== false) {
+						$this->form_validation->set_rules ( $key, 'Last Name', 'trim|required|callback_alpha_dash_space' );
+					}
+					else if (strpos($key,'child_title') !== false) {
+						$this->form_validation->set_rules ( $key, 'Title', 'required|callback_cardTypeValidation' );
+					}
+					else if (strpos($key,'child_fname') !== false) {
+						$this->form_validation->set_rules ( $key, 'First Name', 'trim|required|callback_alpha_dash_space' );
+					}
+					else if (strpos($key,'child_dob') !== false) {
+						$this->form_validation->set_rules ( $key, 'DOB', 'trim|required' );
+					}
+					else if (strpos($key,'child_lname') !== false) {
+						$this->form_validation->set_rules ( $key, 'Last Name', 'trim|required|callback_alpha_dash_space' );
+					}
+				}
+				
+				
+				$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email|matches[confirm_email]' );
+				$this->form_validation->set_rules('address_1', 'Address', 'required');				
+				$this->form_validation->set_rules('city', 'city', 'required|callback_alpha_dash_space');
+				$this->form_validation->set_rules('post_code', 'postcode', 'required|numeric|max_length[8]');
+				$this->form_validation->set_rules ( 'confirm_email', ' Confirm Email', 'trim|required|valid_email' );
+				$this->form_validation->set_rules('home_tel', 'Phone Number', 'required|numeric|max_length[10]|min_length[10]');
+				$this->form_validation->set_rules('mobile', 'Mobile Number', 'required|numeric|max_length[10]|min_length[10]');
+				$this->form_validation->set_rules('card_number', 'Card Number', 'required|numeric|max_length[16]|min_length[16]');
+				$this->form_validation->set_rules('name_card', 'Card Name', 'required|callback_alpha_dash_space');
+				$this->form_validation->set_rules('card_type', 'Card type', 'required|callback_cardTypeValidation');
+				$this->form_validation->set_rules('valid_to_yr', 'valid to date', 'required|callback_dateTypeValidation');
+				$this->form_validation->set_rules('valid_to_mth', 'valid to date', 'required|callback_dateTypeValidation');
+				$this->form_validation->set_rules('cvv_number', 'CVV Number', 'required|numeric|max_length[3]|min_length[3]');
+				
+				if($this->input->post('have_diff_add')){
+					$this->form_validation->set_rules('city2', 'city2', 'required|callback_alpha_dash_space');
+					$this->form_validation->set_rules('post_code2', 'postcode', 'required|numeric|max_length[8]');
+					$this->form_validation->set_rules('address_2', 'Address', 'required');
+				}
+			
+				if (! $this->form_validation->run ()) {
+						
+				} else {				
+					if($this->booking_submition())
+					{
+						$this->session->set_flashdata('submited','yes');
+					}
+					else{
+						$this->session->set_flashdata('submited','no');
+					}
+				}
+			}
+			
+			
+			
+			
 			$data['sel_info'] = $this->selctionBlock_fun($this->uri->segment(2));
 			
-			$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/customeffects.css','css/jquery-ui.css','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
+			
 			$this->layouts->set_title('Book');
 			$this->layouts->view('booking_view',$data);
 		}
@@ -712,6 +877,29 @@ class Extras extends CI_Controller {
 		}
 			
 	}
+	function alpha_dash_space($str)
+	{
+		if( ! preg_match("/^([-a-z_ ])+$/i", $str)){
+			$this->form_validation->set_message('alpha_dash_space', 'Please enter valid one'); 
+			return false; 
+		}
+		return true;
+	}
+	function cardTypeValidation($ct){
+		if($ct == -1){
+			$this->form_validation->set_message('cardTypeValidation', 'Please select card type');
+			return false;
+		}
+		return true;
+	}
+	function dateTypeValidation($ct){
+		if($ct == -1){
+			$this->form_validation->set_message('dateTypeValidation', 'Please select valid to date');
+			return false;
+		}
+		return true;
+	}
+	
 	function email_body_full($postdata,$rows = array())
 	{
 		$this->load->model('PhaseFlightOrHotel');
@@ -868,22 +1056,24 @@ class Extras extends CI_Controller {
 	function booking_submition()
 	{	
 		if($this->input->post())
-		{
+		{			
 			$post_data = $this->input->post();
 			
+			$post_data['segment'] = $this->uri->segment(2);
 			$this->load->model('FullSearch');
 			$data = array();
+			
 			if(!$this->input->post('type_search'))
 			{
 				$rows = $this->FullSearch->fetch_a_search(array('url_hash' => $post_data['segment']));
 				$data['base_id'] = $rows[0]['id'];
-				$body = $this->email_body_full($post_data,$rows);
+				//$body = $this->email_body_full($post_data,$rows);
 			}
 			else{
 				$data['type_search'] = $post_data['type_search'];
 				$rows = $this->UserSearch->fetch_a_search(array('url_hash' => $post_data['segment']));
 				$data['base_id'] = $rows[0]['id'];
-				$body = $this->email_body_hotel($post_data,$rows);
+				//$body = $this->email_body_hotel($post_data,$rows);
 				
 			}	
 		
@@ -921,6 +1111,11 @@ class Extras extends CI_Controller {
 		   $data['card_number'] = $post_data['card_number'];
 		   if(isset($post_data['cvv_number']))
 		   $data['cvv_number'] = @$post_data['cvv_number'];
+		   $data['cv_from_mth'] = @$post_data['valid_from_mth'];
+		   $data['cv_from_yr'] = @$post_data['valid_from_yr'];
+		   $data['cv_to_mth'] = @$post_data['valid_to_mth'];
+		   $data['cv_to_yr'] = @$post_data['valid_to_yr'];
+		   
 			
 			
 			$this->load->model('BookingInfo');
@@ -928,7 +1123,9 @@ class Extras extends CI_Controller {
 			
 			
 			if($rid = $this->BookingInfo->createRecord($data))
-			{	
+			{
+				$this->layouts->add_include(array('js/script_bsuccess.js'));
+				return true;
 				//Remove comment to bellow line when it in server
 				//$this->bookingInfoToEmail($rid,'email');
 				
@@ -938,11 +1135,13 @@ class Extras extends CI_Controller {
 				
  				//if(emailFunction($this,$sub,$body,BOOKINGADMINEMAIL,'Admin',$list))
  				//{}
- 				echo json_encode(array('success' => 1));
+ 				//echo json_encode(array('success' => 1));
 			}
 			else
 			{
-				echo json_encode(array('success' => 0));
+				$this->layouts->add_include(array('js/script_bfailure.js'));
+				return false;
+				//echo json_encode(array('success' => 0));
 			}
 			
 		}	
@@ -1100,7 +1299,7 @@ class Extras extends CI_Controller {
 	}
 	
 	public function book_flight()
-	{	
+	{
 		$data = array();
 		$data['is_laststep'] = true;
 		$tot_sel = 0;
@@ -1110,7 +1309,21 @@ class Extras extends CI_Controller {
 		{
 			$data['seg'] = $row;
 			
+			//If already booked redirect to home page
+			$this->load->model('BookingInfo');
+			$b_row = $this->BookingInfo->fetch_a_search(array('base_id' => $data['seg'][0]['id']));
+			if(!empty($b_row)){
+				redirect(base_url());
+			}
+			//End
+			
+			//If Did not select flights redirect to flight search page
 			$data['hobjs'] = json_decode($row[0]['pack_info'],true);
+			if(empty($data['hobjs'])){
+				redirect(base_url().'available/'.$this->uri->segment(2));
+			}
+			
+			
 			
 			$tot_sel=$data['hobjs']['@attributes']['sellpricepp'];
 			$data['res_sel_price'] = $tot_sel / count($data['hobjs']);
@@ -1119,122 +1332,103 @@ class Extras extends CI_Controller {
 			$departures = $this->fetch_departures();
 			$arrivals = $this->fetch_arrivals();
 				
-	//$this->load->model('PhaseFlightOrHotel');
-	$selected_info = $row;
-	//echo "<pre>";print_r($selected_info);exit;
-	//print_r($selected_info);exit;
-	$flight_obj = json_decode($selected_info[0]['pack_info'],true);
-	
-	$dscode = $flight_obj['@attributes']['depapt'];
-	
-	//echo $dscode;exit;
-	$ascode = $flight_obj['@attributes']['arrapt'];
-	
-	$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
-	
-	$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',$arrivals[(string)$ascode])[0]);
-	
-	$dscode = trim(explode('-',$departures[(string)$dscode])[0]);
-	//print_r($flight_obj);exit;
-	
-	$dept_start_time = substr(explode(' ',$flight_obj['@attributes']['outdep'])[1],0,-3);
-	$dept_arr_time = substr(explode(' ',$flight_obj['@attributes']['outarr'])[1],0,-3);
-	$return_start_time = substr(explode(' ',$flight_obj['@attributes']['indep'])[1],0,-3);
-	$return_arr_time = substr(explode(' ',$flight_obj['@attributes']['inarr'])[1],0,-3);
-	$this->load->helper('common');
-	$dept_images = dept_images();
-	$type_s = 'full_flight';
-	$cry = $this->uri->segment(2);
-	//echo "<pre>";print_r($row);exit;
-	$data['seleted_info'] =  '
+			//$this->load->model('PhaseFlightOrHotel');
+			$selected_info = $row;
 			
-		<div class="deals">	<h2>Your Selections	</h2></div>
-	<div class="conatiner-bg"style="
-      font-weight: 500;
-       color: inherit;
-"> <div class="basket_item bg_grey padded border_b clearfix">
-            			<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-                			<div class="left">
-                    			<h4>Flights</h4>
-                			</div>
-			                <div class="right" style="text-align: right;">
-			                    <h4 style="margin-left: 125px;color: #0088cc;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']).'</h4>
-			                </div>
-			            </div>
-			            <div style="margin-bottom: 11px; margin-top: 0px;">
-			                <strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
-			                <br>
-			              <!--  <div style="position: relative;" class="clearfix">
-			                    <div class="left">
-			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="margin-left: 62px; margin-top: -42px;">
+			//print_r($selected_info);exit;
+			$flight_obj = json_decode($selected_info[0]['pack_info'],true);
+			
+			$dscode = $flight_obj['@attributes']['depapt'];
+			
+			//echo $dscode;exit;
+			$ascode = $flight_obj['@attributes']['arrapt'];
+			
+			$ascode_con = @trim(explode('-',$arrivals[(string)$ascode])[1]);
+			
+			$ascode = ($ascode_con != '') ? $ascode_con : trim(explode('-',$arrivals[(string)$ascode])[0]);
+			
+			$dscode = trim(explode('-',$departures[(string)$dscode])[0]);
+			//print_r($flight_obj);exit;
+			
+			$dept_start_time = substr(explode(' ',$flight_obj['@attributes']['outdep'])[1],0,-3);
+			
+			$dept_arr_time = substr(explode(' ',$flight_obj['@attributes']['outarr'])[1],0,-3);
+			$return_start_time = substr(explode(' ',$flight_obj['@attributes']['indep'])[1],0,-3);
+			$return_arr_time = substr(explode(' ',$flight_obj['@attributes']['inarr'])[1],0,-3);
+			$this->load->helper('common');
+			$dept_images = dept_images();
+			$type_s = 'full_flight';
+			$cry = $this->uri->segment(2);
+			//echo "<pre>";print_r($row);exit;
+			$data['seleted_info'] =  '<div class="deals"><h2>Your Selections</h2></div>
+				<div class="bg_grey">
+					<div>
+			      		<div class="left">Flights</div>
+					    <div class="right" style="text-align: right;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']).'</div>
+			        </div>
+					<div style="margin-bottom: 5px; margin-top: 5px;    line-height: 20px;">
+			             	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
+			             <br>
+			                <!--<div style="position: relative;" class="clearfix">
+			                   <div class="left">
+			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
 			                    </div>
 			                    <div class="right">
 			                        <span class="txt_color_2"></span>
 			                    </div>
 			                </div>-->
-			               <small>'. $dscode.' to '.$ascode.' '.$dept_start_time.'/'.$dept_arr_time.'</small><br>
-			                <span class="txt_color_2"></span>
-			            </div>
-			            <div style="margin-bottom: 5px;">
-		                	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
-			             <!--   <div style="position: relative;" class="clearfix">
-			                    <div class="left">
-			                        <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="margin-left: 62px; margin-top: -42px;">
-			                    </div>
-			                </div>-->
-			               	 <small>'.$ascode.' to '.$dscode.' '.$return_start_time.'/'.$return_arr_time.'</small><br>
-			                <span class="txt_color_2"></span>
-            			</div>
-	
-			            <div style="position: relative;" class="clearfix">
-			                <div class="left">
-			                    <small>
-			                        <span id="cphContent_ucBookingSummary_lblFPersonCount"> Adults + Children : '.($row[0]['num_adults'] + max($row[0]['num_children'],0)).' x </span><span id="cphContent_ucBookingSummary_lblFPrice">&#163;'.$flight_obj['@attributes']['sellpricepp'].'</span>
-			                    </small>
-			                </div>
-			                <div class="right">
-			                    <small>
-			                        <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
-			                    </small>
-			                </div>
-			            </div>
+			             <small>'. $dscode.' to '.$ascode.'<br>'.date('d M Y',$this->cvtDt(str_date(explode(' ',$flight_obj['@attributes']['outdep'])[0]))).' : '.$dept_start_time.'/'.$dept_arr_time .'</small><br>
+			             <span class="txt_color_2"></span>			                
+			        </div>         		
+			        <div style="margin-bottom: 5px;line-height: 20px;">
+			          	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
+			             <!--<div style="position: relative;" class="clearfix">
+			                  <div class="left">
+			                      <img src="'.$dept_images[$flight_obj['@attributes']['suppcode']].'" style="width: 70px; height: 16px;">
+			                  </div>
+			              </div>-->
+					   	 <small>'.$ascode.' to '.$dscode.'<br>'.date('d M Y',$this->cvtDt(str_date(explode(' ',$flight_obj['@attributes']['indep'])[0]))).' : '.$return_start_time . '/' . $return_arr_time .'</small><br>
+					     <span class="txt_color_2"></span>
+			        </div>	
+		   	 		<div style="position: relative;" class="clearfix">
+			             <div>
+			                 <small>
+			                      <span> Persons : '.($row[0]['num_adults'] + max($row[0]['num_children'],0)).' x &#163;'. $flight_obj['@attributes']['sellpricepp'] .'</span>
+			                 </small>
+			                 <span style="float:right;">
+			        	        <small>
+			                       <a href="'.base_url().'available/'.$this->uri->segment(2).'" title="Change Flight">Change</a>
+								</small>
+							</span>
+						 </div>						              
+					</div>								           
+		      	</div>
+			    <div class="bg_grey">	
+			          <div>
+							<div class="left">Atol Protection</div>
+				           <div class="right" style="text-align: right;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50).'</div>
 			          </div>
-			      <div class="conatiner-bg">
-			          <div class=" basket_item bg_grey padded border_b" style="position: relative;">
-					    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-			                <div class="left">
-			                    <h4 style="color: rgba(241, 113, 19, 0.98);">Atol Protection</h4>
-			                </div>
-			                <div class="right" style="text-align: right;">
-			                    <h4 style="margin-left: 125px;color: #0088cc;">&#163;'.(($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 ).'</h4>
-			                </div>
-			            </div>
-			            <div style="position: relative;" class="clearfix">
-			                <div class="left">
-			                    <small>£2.50 x '.($row[0]['num_adults'] + max($row[0]['num_children'],0)).'
-			                    </small>
-			                </div>
-           			   </div>
+			          <div style="margin-top: 10px;" class="clearfix">
+			               <small>'.($row[0]['num_adults'] + max($row[0]['num_children'],0)).' x &#163;2.50</small>
+			               <span style="float:right;">
+						        <small><a class="toggle_atol">What\'s this?</a></small>
+						   </span>
+			          </div>			        					
+				</div>
+			               		
+			               		
+			               		
+			               		
+			               		
+			    <div class="bg_grey" style="margin-bottom:10px;">
+     				<div>
+						<div class="left">TOTAL</div>
+				        <div class="right" style="text-align: right;">&#163;'.((($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']  ) + (($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 )).'</span></div>
 			        </div>
-			        </div>
-			           		
-			                    		
-	 
-	             <div class="basket_item bg_grey padded border_b" style="position: relative;">
-	
-                  <div class="conatiner-bg" >
-	               <div style="position: relative;" class="clearfix">
-	                 <div class="left">
-  
-	               <small> 
-                  <h3 style="font-size: 18px;">TOTAL:</h3> <h4 style="margin-left: 164px;margin-top: -19px;color: #0088cc;">&#163;'.((($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']  ) + (($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 )).'</h4>
-	
-			</small>
-			</div>
-			</div>
-					</div>
-			</div>
-					';
+					<div style="margin-bottom: 15px; margin-top: 5px;    line-height: 20px;">            
+			             <small>Per Person: &#163;<span id="pprice">'. ((($row[0]['num_adults'] + max($row[0]['num_children'],0)) * $flight_obj['@attributes']['sellpricepp']  ) + (($row[0]['num_adults'] + max($row[0]['num_children'],0)) * 2.50 )) / ($row[0]['num_adults'] + max($row[0]['num_children'],0)) .'</span>  X '.($row[0]['num_adults'] + max($row[0]['num_children'],0)).'</small>             
+			         </div>        
+				</div>';
 	/**************total*******************************/
 	
 	//For change search poopulations
@@ -1257,7 +1451,83 @@ class Extras extends CI_Controller {
 	$data['f_done'] = 'done';
 	//End
 	/**************end*******************************/
-	$this->layouts->add_include(array('css/bootstrap-responsive.min.css','css/font-awesome.min.css','css/google_font.css','css/custom.css','css/responsive.css','css/inner-page.css','css/menu.css','css/bxslider/jquery.bxslider.css','css/jquery-ui.css','css/customeffects','js/jquery.blockUI.js','js/responsee.js','js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js','js/jquery-ui.js','js/script-hotels.js'));
+	$this->layouts->add_include(array('css/bootstrap-responsive.min.css',
+			'css/font-awesome.min.css','css/google_font.css','css/custom.css',
+			'css/responsive.css','css/inner-page.css','css/menu.css',
+			'css/bxslider/jquery.bxslider.css','css/jquery.fancybox.css','css/jquery-ui.css',
+			'css/customeffects.css','js/jquery.blockUI.js','js/responsee.js',
+			'js/responsiveslides.min.js','js/bxslider/jquery.bxslider.js',
+			'js/jquery-ui.js','js/jquery.fancybox.pack.js','js/script-hotels.js'));
+	
+	if($this->input->post()){
+	
+		$this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<small style="font-weight:100;" class="text-danger">', '</small>');
+			
+			
+		foreach ($this->input->post() as $key => $val){
+	
+			if (strpos($key,'adult_title') !== false) {
+				$this->form_validation->set_rules ( $key, 'Title', 'required|callback_cardTypeValidation' );
+			}
+			else if (strpos($key,'adult_fname') !== false) {
+				$this->form_validation->set_rules ( $key, 'First Name', 'trim|required|callback_alpha_dash_space' );
+			}
+			else if (strpos($key,'adult_dob') !== false) {
+				$this->form_validation->set_rules ( $key, 'DOB', 'trim|required' );
+			}
+			else if (strpos($key,'adult_lname') !== false) {
+				$this->form_validation->set_rules ( $key, 'Last Name', 'trim|required|callback_alpha_dash_space' );
+			}
+			else if (strpos($key,'child_title') !== false) {
+				$this->form_validation->set_rules ( $key, 'Title', 'required|callback_cardTypeValidation' );
+			}
+			else if (strpos($key,'child_fname') !== false) {
+				$this->form_validation->set_rules ( $key, 'First Name', 'trim|required|callback_alpha_dash_space' );
+			}
+			else if (strpos($key,'child_dob') !== false) {
+				$this->form_validation->set_rules ( $key, 'DOB', 'trim|required' );
+			}
+			else if (strpos($key,'child_lname') !== false) {
+				$this->form_validation->set_rules ( $key, 'Last Name', 'trim|required|callback_alpha_dash_space' );
+			}
+		}
+			
+			
+		$this->form_validation->set_rules ( 'email', 'Email', 'trim|required|valid_email|matches[confirm_email]' );
+		$this->form_validation->set_rules('address_1', 'Address', 'required');
+		$this->form_validation->set_rules('city', 'city', 'required|callback_alpha_dash_space');
+		$this->form_validation->set_rules('post_code', 'postcode', 'required|numeric|max_length[8]');
+		$this->form_validation->set_rules ( 'confirm_email', ' Confirm Email', 'trim|required|valid_email' );
+		$this->form_validation->set_rules('home_tel', 'Phone Number', 'required|numeric|max_length[10]|min_length[10]');
+		$this->form_validation->set_rules('mobile', 'Mobile Number', 'required|numeric|max_length[10]|min_length[10]');
+		$this->form_validation->set_rules('card_number', 'Card Number', 'required|numeric|max_length[16]|min_length[16]');
+		$this->form_validation->set_rules('name_card', 'Card Name', 'required|callback_alpha_dash_space');
+		$this->form_validation->set_rules('card_type', 'Card type', 'required|callback_cardTypeValidation');
+		$this->form_validation->set_rules('valid_to_yr', 'valid to date', 'required|callback_dateTypeValidation');
+		$this->form_validation->set_rules('valid_to_mth', 'valid to date', 'required|callback_dateTypeValidation');
+		$this->form_validation->set_rules('cvv_number', 'CVV Number', 'required|numeric|max_length[3]|min_length[3]');
+			
+		if($this->input->post('have_diff_add')){
+			$this->form_validation->set_rules('city2', 'city2', 'required|callback_alpha_dash_space');
+			$this->form_validation->set_rules('post_code2', 'postcode', 'required|numeric|max_length[8]');
+			$this->form_validation->set_rules('address_2', 'Address', 'required');
+		}
+			
+		if (! $this->form_validation->run ()) {
+				
+		} else {
+			if($this->booking_submition())
+			{
+				$this->session->set_flashdata('submited','yes');
+			}
+			else{
+				$this->session->set_flashdata('submited','no');
+			}
+		}
+	}
+	
+	
 	$this->layouts->set_title('Book Hotel');
 	$this->layouts->view('book_flight_view',$data);
 	}

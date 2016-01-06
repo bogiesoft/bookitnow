@@ -27,7 +27,7 @@
 	    </div>
     </div>		
 	
-	<div class="list-group">
+	<div class="list-group" style="margin: inherit;margin-top: 15px;margin-left: 0px;width: 20%;">
 		<a href="#" class="list-group-item active"><span class="h-title">ADD HOLD LUGGAGE </span>  </a>  
 	</div>				
 	<div class="orderhotels-one ">			
@@ -58,7 +58,7 @@
 		{
 			
 			echo '<div class="orderhotels"></div>';
-			echo '<div class="list-group">
+			echo '<div class="list-group" style="margin: inherit;margin-top: 15px;margin-left: 0px;width: 20%;">
 			  <a href="#" class="list-group-item active"><span class="h-title">'.$heading.' </span>  </a>  
 			</div>';
 			$count = 1;
@@ -76,7 +76,7 @@
 					
 					$pp='<p class="later"><a href="#inline'.$count.'" class="various1" onclick="getpackinfo(this)">Full Details</a></p>';
 					$pp .= '<div id="#inline'.$count.'" style="display:none">'.$field['long_desc'].'</div>';
-					$tot .= '<select name="ct_'.$field['id'].'">';
+					$tot .= '<select name="ct_'.$field['id'].'"  style="width:57%">';
 					for ($i=1;$i<=$field['dropdown'];$i++)
 					{
 						$tot .= '<option value='.$i.'>'.$i.' Car &#163;'.($i * $field['price']).'</option>';
@@ -86,12 +86,12 @@
 				
 				echo '<div class="orderhotels-one ">
 					<div class="row">
-						<div class="col-sm-6 col-md-9">
+						<div class="col-sm-6 col-md-8">
 							<h5>'.$field['short_desc'].'</h6></h5>			  				
 							'.$pp.'
 						</div>
 						<br>
-						<div class="col-sm-6 col-md-3">
+						<div class="col-sm-6 col-md-4">
 						'.$tot.'
 					 	<a href="#" class="btn-small btn-default-small" role="button" onclick=addsavings('.$field['id'].',"'.$this->uri->segment(2).'")>ADD </a>
 						</div>
@@ -139,49 +139,74 @@
 	$dept_images = dept_images();
 	?>
 	<div class="deals">	<h2>Your Selections	</h2></div>
-	<div class="conatiner-bg">	
-	<div class="flight-wrap"><h5><b>&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * $fobj['@attributes']['sellpricepp']); ?> </b></h5></div>	
-	<h5><b>Flights</b></h5>	
-	<h5>Depart:</h5>
-	<!--<div style="position: relative;" class="clearfix">
-		<div class="left">
-		    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
-		</div>
-		<div class="right">
-		    <span class="txt_color_2"></span>
-		</div>
-	</div>-->
-	<h6><?php echo $dscode.' to '.$ascode;?></h6>
-	<h6><?php echo date('d M Y',$controller->cvtDt(str_date($flit[0]['flight_selected_date'])));?> : <?=$dept_start_time . ' - ' . $dept_arr_time;?></h6>
-	<h5>Return:</h5>
-	<!-- <div style="position: relative;" class="clearfix">
-		<div class="left">
-		    <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
-		</div>
-		<div class="right">
-		    <span class="txt_color_2"></span>
-		</div>
-	</div>-->
-	<h6><?php echo $ascode.' to '.$dscode;?></h6>
-	<h6><?php echo date('d M Y',$controller->cvtDt(str_date(explode(' ',$fobj['@attributes']['indep'])[0])));?> : <?=$return_start_time . ' - ' . $return_arr_time;?></h6>
+	<div class="bg_grey">											
+        <div>
+      		<div class="left">Flights</div>
+		    <div class="right" style="text-align: right;">&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * $fobj['@attributes']['sellpricepp']); ?></div>
+        </div>
+		<div style="margin-bottom: 5px; margin-top: 5px;    line-height: 20px;">
+             <strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Depart:</strong>
+             <br>
+                <!--<div style="position: relative;" class="clearfix">
+                   <div class="left">
+                        <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
+                    </div>
+                    <div class="right">
+                        <span class="txt_color_2"></span>
+                    </div>
+                </div>-->
+             <small><?php echo $dscode.' to '.$ascode;?><br><?php echo date('d M Y',$controller->cvtDt(str_date($flit[0]['flight_selected_date'])));?> : <?=$dept_start_time . ' - ' . $dept_arr_time;?></small><br>
+             <span class="txt_color_2"></span>			                
+        </div>
+        <div style="margin-bottom: 5px;    line-height: 20px;">
+          	<strong style="color: rgba(241, 113, 19, 0.98);"><i aria-hidden="true" class="icon-calendar"></i>&nbsp;Return:</strong><br>
+             <!--<div style="position: relative;" class="clearfix">
+                  <div class="left">
+                      <img src="<?php echo $dept_images[$fobj['@attributes']['suppcode']]; ?>" style="width: 70px; height: 16px;">
+                  </div>
+              </div>-->
+		   	 <small><?php echo $ascode.' to '.$dscode;?><br><?php echo date('d M Y',$controller->cvtDt(str_date(explode(' ',$fobj['@attributes']['indep'])[0])));?> : <?=$return_start_time . ' - ' . $return_arr_time;?></small><br>
+		     <span class="txt_color_2"></span>
+        </div>
+		<div style="position: relative;" class="clearfix">
+             <div>
+                 <small>
+                      <span> Persons : <?php echo $seg[0]['num_adults']+$seg[0]['num_children'];?> x &#163;<?php echo $fobj['@attributes']['sellpricepp'];?></span>
+                 </small>
+                 <span style="float:right;">
+        	        <small>
+                       <a href="'.base_url().'flightsAvailability/'.$this->uri->segment(2).'" onClick="return Change('."'".$type_s."'".','."'".$cry."'".')" title="Change Flight">Change</a>
+					</small>
+				</span>
+			 </div>			
+					              
+		</div>								           
+      </div>  
 	
-	<div class="flight-wrap"><a href="<?php echo base_url().'flightsAvailability/'.$this->uri->segment(2);?>" onClick="return Change('full_flight','<?php echo $this->uri->segment(2);?>')">change</a></div><p class="later">	
-	<h5>Persons : <?php echo $seg[0]['num_adults']+$seg[0]['num_children'];?> x &#163;<?php echo $fobj['@attributes']['sellpricepp'];?></h5><br>
-	</div>
 	
+	
+	
+	
+	
+	 <div class="bg_grey">	
+          <div>
+				<div class="left">Atol Protection</div>
+	           <div class="right" style="text-align: right;">&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * 2.50);?></div>
+          </div>
+          <div style="margin-top: 10px;" class="clearfix">
+               <small><?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']) ?> x &#163;2.50</small>
+               <span style="float:right;">
+			        <small><a class="toggle_atol">What's this?</a></small>
+			         <?php include_once 'includes/atol_tooltip.php';?>
+			   </span>
+          </div>			        					
+	 </div>
 
-	<div class="conatiner-bg">	
-	<div class="flight-wrap"><h5><b>&#163;<?php echo (($seg[0]['num_adults'] + $seg[0]['num_children']) * 2.50);?> </b></h5></div>	
-	<h5><b>Atol Protection</b></h5>	
-	<div class="flight-wrap"><a class="toggle_atol">What's this?</a></div>	
-	<?php include 'includes/atol_tooltip.php';?>
+
 	
-                                 
-	<h5> <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']) ?> x &#163;2.50</h5><br>	
-	</div>.
 	<?php //echo '<pre>';print_r($hobjs);exit; ?>
 	
-	<div class="conatiner-bg">	
+	
 	
 		<?php 
 			$det_pax_prices = '';$res_sel_price = 0;
@@ -201,11 +226,11 @@
 							$ser_arr_sub = explode('-',$ser);
 							if(in_array($ser,array_keys($sep)))
 							{							
-								$det_pax_prices .=  '<small>Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$sep[$ser] * (array_sum($ser_arr_sub)).'</span></small><br>';
+								$det_pax_prices .=  'Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$sep[$ser] * (array_sum($ser_arr_sub)).'</span><br>';
 								$res_sel_price += $sep[$ser] * (array_sum($ser_arr_sub));								
 							}
 							else{									
-								$det_pax_prices .=  '<small>Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub)).'</span></small><br>';
+								$det_pax_prices .=  'Room '.($key+1).' -> '.$ser_arr_sub[0].' Adult(s), '.$ser_arr_sub[1].' children(s) : '.$temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub)).'</span><br>';
 								$res_sel_price += $temp[0]['@attributes']['sellpricepp'] * (array_sum($ser_arr_sub));
 								$sep[$ser] = $temp[0]['@attributes']['sellpricepp'];
 								unset($temp[0]);
@@ -218,64 +243,63 @@
 					$n = distribute($seg[0]['num_adults'],$seg[0]['num_rooms']);
 					foreach ($n as $key => $val)
 					{
-						$det_pax_prices .=  '<small>Room '.$key.' -> '.$val.' Adult(s), 0 Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * $val .'</span></small><br>';
+						$det_pax_prices .=  'Room '.$key.' -> '.$val.' Adult(s), 0 Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * $val .'</span><br>';
 						$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * $val;
 					}					
 				}
 			}
 			else if($seg[0]['num_rooms'] == 1){
-				$det_pax_prices .=  '<small>Room 1 -> '.$seg[0]['num_adults'].' Adult(s), '.$seg[0]['num_children'].' Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']) .'</span></small><br>';
+				$det_pax_prices .=  'Room 1 -> '.$seg[0]['num_adults'].' Adult(s), '.$seg[0]['num_children'].' Children(s) : '.$hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']) .'</span><br>';
 				$res_sel_price += $hobjs[0]['@attributes']['sellpricepp'] * ($seg[0]['num_children'] + $seg[0]['num_adults']);
 			}		
 
 			
 		?>
-		<div class="flight-wrap"><h5><b>&#163;<?php echo ($res_sel_price);?> </b></h5></div>	
-		<h5><b>Hotel <?php echo $hobjs[0]['@attributes']['nights'];?> Nights</b>	</h5>		
-		<h5><?php echo urldecode($hobjs[0]['@attributes']['hotelname']);?></h5>
-		<h6><?php echo urldecode($hobjs[0]['@attributes']['resort']);?>,</h6>
-		<h6><?php echo boardbasis($hobjs[0]['@attributes']['boardbasis']);?></h6>
-		<h6>Check in : <?php echo date('d M Y',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate'])));?></h6>
-		<h6>Check out : <?php echo date('d M Y',strtotime('+'.$hobjs[0]['@attributes']['nights'].'days',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate']))));?></h6>
-		<div class="left">
 		
-		<?php 
-		echo $det_pax_prices;
-			
-		?>
-          
-         </div>	
-         <div class="flight-wrap"><a href="<?php echo base_url().'HotelsAvailability/'.$this->uri->segment(2);?>" onClick="return Change('full_hotel','<?php echo $this->uri->segment(2);?>')">change</a></div>	
-		<br>	
-	</div>
-	<div class="conatiner-bg">
-	    <div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-            <div class="left"> <h4>Extras</h4> </div>
-            <div class="right" style="text-align: right;">
-                <h4>&#163;<span id="ExtraTotal"><?php echo $sel_info['total'];?></span></h4>
-             </div>
+		<div class="bg_grey">	
+          <div>
+				<div class="left">Hotel <?php echo $hobjs[0]['@attributes']['nights'];?> Nights</div>
+	           <div class="right" style="text-align: right;">&#163;<?php echo ($res_sel_price);?> </div>
+          </div>
+          <div style="margin-bottom: 15px; margin-top: 5px;    line-height: 20px;">         
+             <small>
+             	<?php echo urldecode($hobjs[0]['@attributes']['hotelname']);?><br>
+             	<?php echo urldecode($hobjs[0]['@attributes']['resort']);?><br>
+             	<?php echo boardbasis($hobjs[0]['@attributes']['boardbasis']);?><br>
+             	Check in : <?php echo date('d M Y',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate'])));?><br>
+             	Check out : <?php echo date('d M Y',strtotime('+'.$hobjs[0]['@attributes']['nights'].'days',$controller->cvtDt(str_date($hobjs[0]['@attributes']['checkindate']))));?><br>            	
+            	<?php echo $det_pax_prices;?>	
+                <span style="float:right;font-size: 13px;"><a href="<?php echo base_url().'HotelsAvailability/'.$this->uri->segment(2);?>" onClick="return Change('full_hotel','<?php echo $this->uri->segment(2);?>')">Change</a></span>
+            </small>                
+        </div>		        					
+	 </div>	
+        	
+		
+	
+	<div class="bg_grey">
+	 	<div>
+			<div class="left">Extras</div>
+	        <div class="right" style="text-align: right;">&#163;<span id="ExtraTotal"><?php echo $sel_info['total'];?></span></div>
         </div>
+	    
 		<div id="extra_segments">
 		<?php echo $sel_info['sel_block']['segment'];?>
 		</div>
-		 <div class="conatiner-bg">
-		<div style="position: relative; margin-bottom: 5px; padding-bottom: 3px;" class="clearfix">
-             <div class="left">
-                  <h4>TOTAL</h4>
-              </div>              
-         </div>
-         <div class="right" style="text-align: right;">
-                  <h2 class="txt_color_1 txt_xtra_large">&#163;<span id="cphContent_lblSubTotal"><?php echo $sel_info['whole'];?></span></h2>
-                  <small>Per Person: &#163;<span id="pprice"><?php echo ($sel_info['whole'] / ($seg[0]['num_adults'] + $seg[0]['num_children']));?></span>  X <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']);?></small>
-              </div>
-         <div class="conatiner-bg">
-         	<a onclick="return callWaitPageForextra();" class="button full_width txt_xtra_large" href="<?php echo base_url().'book/'.$this->uri->segment(2);?>"><i aria-hidden="true" class="icon-lock"></i>&nbsp;BOOK NOW</a>
-    	 </div>
-	  </div>
+		 
     
      </div>	
-     
-     
+     <div class="bg_grey">
+     	<div>
+			<div class="left">TOTAL</div>
+	        <div class="right" style="text-align: right;">&#163;<span id="ExtraTotal"><span id="cphContent_lblSubTotal"><?php echo $sel_info['whole'];?></span></span></div>
+        </div>
+		<div style="margin-bottom: 15px; margin-top: 5px;    line-height: 20px;">            
+             <small>Per Person: &#163;<span id="pprice"><?php echo ($sel_info['whole'] / ($seg[0]['num_adults'] + $seg[0]['num_children']));?></span>  X <?php echo ($seg[0]['num_adults'] + $seg[0]['num_children']);?></small>             
+         </div>        
+	  </div>
+     <div class="bg_grey">
+         	<a onclick="return callWaitPageForextra();" class="button" style="width:100%;" href="<?php echo base_url().'book/'.$this->uri->segment(2);?>"><i aria-hidden="true" class="icon-lock"></i>&nbsp;BOOK NOW</a>
+     </div>
      
    
 	</div>
